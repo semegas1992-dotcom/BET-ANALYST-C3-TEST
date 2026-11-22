@@ -42,7 +42,7 @@ export default {
    const raw=await response.json();
    if(!raw||!Array.isArray(raw.matches))return reply({status:'INVALID_PROVIDER_PAYLOAD'},502,cors);
    const matches=raw.matches.slice(0,100).map(m=>({id:m?.id||null,utcDate:m?.utcDate||null,status:m?.status||null,homeTeam:m?.homeTeam?.name||null,awayTeam:m?.awayTeam?.name||null,score:m?.score?.fullTime||null}));
-   const payload={status:'RECEIVED_UNVERIFIED',provider:'football-data.org',competition:code,retrieved_at:new Date().toISOString(),truncated:raw.matches.length>100,matches};
+   const payload={status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/'+encodeURIComponent(code)+'/matches',competition:code,retrieved_at:new Date().toISOString(),truncated:raw.matches.length>100,coverage:'BASIC_MATCHES_ONLY',matches};
    try{await env.MATCH_CACHE.put(cacheKey,JSON.stringify(payload),{expirationTtl:300})}
    catch{return reply({status:'CACHE_WRITE_FAILED'},503,cors)}
    return reply({...payload,cache:'MISS'},200,cors);
