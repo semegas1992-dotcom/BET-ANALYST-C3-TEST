@@ -1,0 +1,10 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict');
+const {normalize}=require('../c3-5-ingestion.js');
+const base={sport:'FOOTBALL',event:'A - B',facts:[]};
+test('football tennis NBA accepted',()=>{for(const sport of ['FOOTBALL','TENNIS','NBA'])assert.equal(normalize({...base,sport}).sport,sport)});
+test('missing source prevents verified claim',()=>{const r=normalize({...base,facts:[{key:'shots',value:12,state:'VERIFIED'}]});assert.equal(r.facts[0].state,'DECLARED');assert.ok(r.facts[0].warnings.includes('VERIFICATION_NON_JUSTIFIEE'))});
+test('traceable fact retains claimed state without certifying sporting truth',()=>{const r=normalize({...base,facts:[{key:'shots',value:12,state:'VERIFIED',source:{reference:'TEST-D0',observed_at:'2026-11-22T18:00:00Z'}}]});assert.equal(r.facts[0].state,'VERIFIED');assert.equal(r.sporting_validation,false)});
+test('missing and conflicting facts preserved',()=>{const r=normalize({...base,facts:[{key:'injury',state:'MISSING'},{key:'injury',value:'unknown',state:'CONFLICT'}]});assert.deepEqual(r.duplicate_keys,['injury']);assert.equal(r.facts[1].state,'CONFLICT')});
+test('invalid sport and unsafe source url rejected',()=>{assert.throws(()=>normalize({...base,sport:'CRICKET'}));assert.throws(()=>normalize({...base,facts:[{key:'x',value:1,source:{url:'http://example.com'}}]}))});
+test('no external fetch or invented probability',()=>{const r=normalize(base);assert.equal(r.automatic_fetch,false);assert.equal(r.probabilities_computed,false);assert.equal(r.ready_for_sporting_analysis,false)});
