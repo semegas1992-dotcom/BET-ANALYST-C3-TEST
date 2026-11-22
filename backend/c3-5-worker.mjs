@@ -21,6 +21,16 @@ export default {
   // Explicit allowlist: never accept arbitrary URLs or pass-through paths.
   const competitions=(env.ALLOWED_COMPETITIONS||'').split(',').map(x=>x.trim()).filter(Boolean);
   if(!competitions.includes(code))return reply({status:'COMPETITION_NOT_ALLOWED'},403,cors);
+  // Cache binding is mandatory: avoid repeated upstream requests for the same competition.
+  if(!env.MATCH_CACHE||typeof env.MATCH_CACHE.get!=='function'||typeof env.MATCH_CACHE.put!=='function')return reply({status:'CACHE_NOT_CONFIGURED'},503,cors);
+  const cacheKey='football-data:matches:'+code;
+  try{
+   const cached=await env.MATCH_CACHE.get(cacheKey,'json');
+   if(cached&&cached.status==='RECEIVED_UNVERIFIED'&&cached.competition===code&&Array.isArray(cached.matches)&&typeof cached.retrieved_at==='string'){
+    const age=Date.now()-Date.parse(cached.retrieved_at);
+    if(Number.isFinite(age)&&age>=0&&age<300000)return reply({...cached,cache:'HIT'},200,cors);
+   }
+  }catch{return reply({status:'CACHE_UNAVAILABLE'},503,cors)}
   // One shared upstream quota across all competitions: never split the quota by competition.
   try{
    const decision=await env.RATE_LIMITER.limit({key:'football-data:global'});
@@ -31,7 +41,10 @@ export default {
    if(!response.ok)return reply({status:'PROVIDER_ERROR',http_status:response.status},502,cors);
    const raw=await response.json();
    const matches=Array.isArray(raw.matches)?raw.matches.slice(0,100).map(m=>({id:m.id||null,utcDate:m.utcDate||null,status:m.status||null,homeTeam:m.homeTeam&&m.homeTeam.name||null,awayTeam:m.awayTeam&&m.awayTeam.name||null,score:m.score&&m.score.fullTime||null})):[];
-   return reply({status:'RECEIVED_UNVERIFIED',provider:'football-data.org',competition:code,retrieved_at:new Date().toISOString(),matches},200,cors);
+   const payload={status:'RECEIVED_UNVERIFIED',provider:'football-data.org',competition:code,retrieved_at:new Date().toISOString(),matches};
+   try{await env.MATCH_CACHE.put(cacheKey,JSON.stringify(payload),{expirationTtl:300})}
+   catch{return reply({status:'CACHE_WRITE_FAILED'},503,cors)}
+   return reply({...payload,cache:'MISS'},200,cors);
   }catch{return reply({status:'PROVIDER_UNAVAILABLE'},502,cors)}
  }
 };
