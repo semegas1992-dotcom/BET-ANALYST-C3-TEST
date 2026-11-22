@@ -97,3 +97,27 @@ test('C3.3-B editor requests human review for distinct scenarios',()=>{
  context.checkScenarioCoherence();
  assert.match(elements['c33-coherence-result'].textContent,/REVUE_HUMAINE_REQUISE/);
 });
+
+test('C3.3-C structured notes survive data snapshot and restore',()=>{
+ base();elements['scenario-a'].value='Scénario A';
+ elements['c33c-A-hypotheses'].value='Titulaire présent';
+ elements['c33c-A-evidence'].value='D0 source vérifiable';
+ elements['c33c-A-counter'].value='Absence du titulaire';
+ elements['c33c-A-unknowns'].value='Composition inconnue';
+ const d=context.data();assert.equal(d.c3_3_c_structure.A.hypotheses,'Titulaire présent');
+ assert.equal(context.c1Validate(d).c3_3_c_structure.A.unknowns,'Composition inconnue');
+ elements['c33c-A-hypotheses'].value='modifié';
+ context.c1Fill(d);
+ assert.equal(elements['c33c-A-hypotheses'].value,'Titulaire présent');
+});
+test('C3.3-C legacy restoration clears previous structured notes',()=>{
+ const old=base();old.markets=[];old.schema='BET_ANALYST_CONSOLIDATION_V1';old.scenarios='Ancien scénario';
+ elements['c33c-B-evidence'].value='note périmée';
+ context.c1Fill(old);
+ assert.equal(elements['c33c-B-evidence'].value,'');
+});
+test('C3.3-C rejects invalid optional structured notes',()=>{
+ base();elements['scenario-a'].value='A';
+ const d=context.data();d.c3_3_c_structure.B.counter=12;
+ assert.throws(()=>context.c1Validate(d),/Documentation C3.3-C invalide/);
+});
