@@ -1,0 +1,14 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const {pathToFileURL}=require('node:url');
+const source=fs.readFileSync(path.join(__dirname,'../c3-5-snapshot.js'),'utf8');
+const dataUrl='data:text/javascript;base64,'+Buffer.from(source).toString('base64');
+const valid={status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',competition:'PL',retrieved_at:'2026-11-22T10:00:00.000Z',coverage:'BASIC_MATCHES_ONLY',truncated:false,matches:[{id:1}]};
+test('fresh, complete snapshot is usable but never verified',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot(valid,{now:Date.parse('2026-11-22T10:05:00Z')});assert.equal(r.usable,true);assert.equal(r.freshness,'FRESH');assert.equal(r.verified,false)});
+test('stale snapshot is flagged, not silently fresh',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot(valid,{now:Date.parse('2026-11-22T11:00:00Z')});assert.equal(r.usable,true);assert.equal(r.freshness,'STALE')});
+test('future timestamp blocks snapshot',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot(valid,{now:Date.parse('2026-11-22T09:00:00Z')});assert.equal(r.usable,false);assert.ok(r.errors.includes('FUTURE_TIMESTAMP'))});
+test('missing source and malformed response fail closed',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot({...valid,source_endpoint:'',matches:null});assert.equal(r.usable,false);assert.equal(r.matches.length,0)});
+test('source and competition mismatch is rejected',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot({...valid,competition:'PD'});assert.equal(r.usable,false);assert.ok(r.errors.includes('SOURCE_COMPETITION_MISMATCH'))});
+test('truncation remains explicit',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot({...valid,truncated:true},{now:Date.parse('2026-11-22T10:05:00Z')});assert.equal(r.usable,true);assert.equal(r.truncated,true)});
