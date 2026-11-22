@@ -35,3 +35,15 @@ test('provider error does not expose secret',async()=>{
  try{const r=await run(url,{FOOTBALL_DATA_TOKEN:'secret-not-to-leak',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:{get:async()=>null,put:async()=>{}},RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,502);assert.equal(r.body.http_status,429);assert.ok(!JSON.stringify(r.body).includes('secret-not-to-leak'))}
  finally{globalThis.fetch=original}
 });
+
+test('stale cache is never served as fresh when quota is exhausted',async()=>{
+ const stale=new Date(Date.now()-600000).toISOString();
+ const cache={get:async()=>({status:'RECEIVED_UNVERIFIED',competition:'PL',retrieved_at:stale,matches:[{id:1}]}),put:async()=>{}};
+ const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>({success:false})}});
+ assert.equal(r.code,429);assert.equal(r.body.status,'RATE_LIMITED');
+});
+test('malformed cache entry is never treated as verified',async()=>{
+ const cache={get:async()=>({status:'VERIFIED',competition:'PL',retrieved_at:new Date().toISOString(),matches:[{id:1}]}),put:async()=>{}};
+ const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>({success:false})}});
+ assert.equal(r.code,429);
+});
