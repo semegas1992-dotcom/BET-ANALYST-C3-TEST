@@ -1,0 +1,14 @@
+name: C3.3 scenario regression tests
+on:
+  push:
+    branches: [c3-3-scenarios-candidate]
+  workflow_dispatch:
+jobs:
+  scenarios:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/c3-3-scenarios.test.cjs
