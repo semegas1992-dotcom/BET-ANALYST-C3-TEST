@@ -22,7 +22,7 @@ function c1Validate(d,source=false){
  }
  if(d.decision==='SÉLECTION EXPÉRIMENTALE'&&!d.markets.some(m=>m.status==='SOUTENU SPORTIVEMENT'))throw Error('Sélection sans marché soutenu');
  if(!source&&d.schema!=='BET_ANALYST_CONSOLIDATION_V1')throw Error('Schéma incompatible');
- return {schema:'BET_ANALYST_CONSOLIDATION_V1',experimental:true,validated_sportively:false,calibration_authorized:false,created_at:new Date().toISOString(),markets:C3Metadata.cloneMarkets(d.markets),...Object.fromEntries(fields.map(k=>[k,d[k]])),...(d.c3_3_scenarios?{c3_3_scenarios:{...d.c3_3_scenarios}}:{})};
+ return {schema:'BET_ANALYST_CONSOLIDATION_V1',experimental:true,validated_sportively:false,calibration_authorized:false,created_at:new Date().toISOString(),markets:C3Metadata.cloneMarkets(d.markets),...Object.fromEntries(fields.map(k=>[k,d[k]])),...(d.c3_3_scenarios?{c3_3_scenarios:{...d.c3_3_scenarios}}:{}),...(d.c3_3_c_structure?{c3_3_c_structure:JSON.parse(JSON.stringify(d.c3_3_c_structure))}:{})};
 }
 function c1Fill(d){for(const k of fields)document.getElementById(k).value=d[k];markets=C3Metadata.cloneMarkets(d.markets);fillScenarioDetails(d);fillStructuredScenarios(d);render()}
 async function convertSource(){const el=document.getElementById('sourcemessage');const f=document.getElementById('sourcefile').files[0];if(!f){el.textContent='Choisis un dossier JSON.';return}try{if(f.size>1048576)throw Error('Fichier trop volumineux');const raw=JSON.parse(await f.text());const d=c1Validate(raw,true);if(!confirm('Remplacer la fiche affichée par ce dossier ?'))return;c1Fill(d);el.textContent='Conversion réussie. Validation sportive NON acquise.';el.className='ok'}catch(e){el.textContent='Conversion refusée : '+e.message;el.className='error'}}
