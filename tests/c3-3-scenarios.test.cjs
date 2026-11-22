@@ -11,7 +11,7 @@ const fields = ['sport','event','date','cutoff','sources','force','matchup','sce
 for(const k of fields)elements[k]={value:''};
 const storage=new Map();
 const context = {
- document:{getElementById:id=>elements[id]||(elements[id]={value:'',textContent:'',className:'',replaceChildren:()=>{}})},
+ document:{getElementById:id=>elements[id]||(elements[id]={value:'',textContent:'',className:'',replaceChildren:()=>{},append:()=>{}}),createElement:tag=>({tag,textContent:'',className:'',append:()=>{},replaceChildren:()=>{}})},
  C3Metadata:{cloneMarkets:x=>JSON.parse(JSON.stringify(x))},
  localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},
  console,Date,JSON,Array,Object,Set,Error,confirm:()=>true,
