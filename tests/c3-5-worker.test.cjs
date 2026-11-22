@@ -27,7 +27,7 @@ test('cache miss calls mocked provider and writes cache, without real network',a
  try{
   const cache={get:async()=>null,put:async(key,payload,opts)=>{writes++;assert.equal(key,'football-data:matches:PL');assert.equal(opts.expirationTtl,300);assert.equal(JSON.parse(payload).matches.length,1)}};
   const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async({key})=>{limits++;assert.equal(key,'football-data:global');return {success:true}}}});
-  assert.equal(r.code,200);assert.equal(r.body.status,'RECEIVED_UNVERIFIED');assert.equal(r.body.cache,'MISS');assert.equal(r.body.matches[0].homeTeam,'A');assert.equal(calls,1);assert.equal(writes,1);assert.equal(limits,1);
+  assert.equal(r.code,200);assert.equal(r.body.status,'RECEIVED_UNVERIFIED');assert.equal(r.body.cache,'MISS');assert.equal(r.body.coverage,'BASIC_MATCHES_ONLY');assert.equal(r.body.source_endpoint,'https://api.football-data.org/v4/competitions/PL/matches');assert.equal(r.body.matches[0].homeTeam,'A');assert.equal(calls,1);assert.equal(writes,1);assert.equal(limits,1);
  }finally{globalThis.fetch=original}
 });
 test('provider error does not expose secret',async()=>{
