@@ -21,9 +21,9 @@ export default {
   // Explicit allowlist: never accept arbitrary URLs or pass-through paths.
   const competitions=(env.ALLOWED_COMPETITIONS||'').split(',').map(x=>x.trim()).filter(Boolean);
   if(!competitions.includes(code))return reply({status:'COMPETITION_NOT_ALLOWED'},403,cors);
-  // Rate limit is global per competition, not client-provided, to protect the upstream free quota.
+  // One shared upstream quota across all competitions: never split the quota by competition.
   try{
-   const decision=await env.RATE_LIMITER.limit({key:'football-data:'+code});
+   const decision=await env.RATE_LIMITER.limit({key:'football-data:global'});
    if(!decision||decision.success!==true)return reply({status:'RATE_LIMITED'},429,cors);
   }catch{return reply({status:'RATE_LIMIT_UNAVAILABLE'},503,cors)}
   try{
