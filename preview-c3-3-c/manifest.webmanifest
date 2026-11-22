@@ -1,0 +1,12 @@
+{
+  "id": "./c3-3-c-preview",
+  "name": "BET ANALYST V3 C3.3-C (test)",
+  "short_name": "BET C3.3-C",
+  "description": "Documentation structurée expérimentale des scénarios A/B/C",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#17324d",
+  "lang": "fr"
+}
