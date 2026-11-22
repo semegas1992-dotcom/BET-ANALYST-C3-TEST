@@ -26,7 +26,7 @@ export default {
   const cacheKey='football-data:matches:'+code;
   try{
    const cached=await env.MATCH_CACHE.get(cacheKey,'json');
-   if(cached&&cached.status==='RECEIVED_UNVERIFIED'&&cached.competition===code&&Array.isArray(cached.matches)&&typeof cached.retrieved_at==='string'){
+   if(cached&&cached.status==='RECEIVED_UNVERIFIED'&&cached.competition===code&&cached.provider==='football-data.org'&&cached.source_endpoint==='https://api.football-data.org/v4/competitions/'+encodeURIComponent(code)+'/matches'&&cached.coverage==='BASIC_MATCHES_ONLY'&&typeof cached.truncated==='boolean'&&Array.isArray(cached.matches)&&cached.matches.length<=100&&typeof cached.retrieved_at==='string'){
     const age=Date.now()-Date.parse(cached.retrieved_at);
     if(Number.isFinite(age)&&age>=0&&age<300000)return reply({...cached,cache:'HIT'},200,cors);
    }
