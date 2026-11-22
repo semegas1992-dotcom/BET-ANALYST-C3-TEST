@@ -7,11 +7,15 @@ on:
         required: true
         default: 'PL'
         type: string
+      confirmation:
+        description: 'Type COLLECTER to explicitly authorize this single request'
+        required: true
+        type: string
 permissions:
   contents: read
 jobs:
   collect:
-    if: ${{ vars.PROVIDER_LICENSE_APPROVED == 'true' }}
+    if: ${{ vars.PROVIDER_LICENSE_APPROVED == 'true' && inputs.confirmation == 'COLLECTER' }}
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -23,9 +27,11 @@ jobs:
         env:
           COMPETITION: ${{ inputs.competition }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+          ALLOWED_COMPETITIONS: ${{ vars.ALLOWED_COMPETITIONS }}
         run: |
           node --check c3-5-collect-once.mjs
           node -e "if (!/^[A-Z0-9]{2,8}$/.test(process.env.COMPETITION || '')) process.exit(1)"
+          node -e "const a=(process.env.ALLOWED_COMPETITIONS||'').split(',').map(s=>s.trim());if(!a.includes(process.env.COMPETITION))process.exit(1)"
           test -n "$FOOTBALL_DATA_TOKEN"
       - name: Collect one provider response (never scheduled)
         env:
@@ -33,9 +39,5 @@ jobs:
           PROVIDER_LICENSE_APPROVED: ${{ vars.PROVIDER_LICENSE_APPROVED }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node c3-5-collect-once.mjs
-      - name: Keep snapshot as private workflow artifact only
-        uses: actions/upload-artifact@v4
-        with:
-          name: c3-5-manual-snapshot
-          path: c3-5-collected-matches.json
-          retention-days: 1
+      # No artifact upload: GitHub Actions artifacts may be accessible to repository readers.
+      # Publishing or sharing snapshots requires a separate license and access review.
