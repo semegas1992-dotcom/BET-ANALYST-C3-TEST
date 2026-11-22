@@ -5,13 +5,16 @@ function c3RenderModel(sheet){
  const keys=['event','date','cutoff','sources','force','matchup','scenarios','summary','decision','reason'];
  if(keys.some(k=>typeof sheet[k]!=='string'))throw Error('Champs C2 incomplets');
  if(typeof C3Metadata!=='undefined')C3Metadata.cloneMarkets(sheet.markets);else if(sheet.markets.some(m=>!m||['label','period','threshold','evidence','status'].some(k=>typeof m[k]!=='string')))throw Error('Marchés C2 incomplets');
- return {sport:sheet.sport,event:sheet.event,date:sheet.date,cutoff:sheet.cutoff,sections:[['Synthèse','summary'],['Rapport de force','force'],['Match-up','matchup'],['Scénarios A/B/C et incertitudes','scenarios'],['Sources / références D0','sources']].map(([label,key])=>({label,value:sheet[key]||'Information non renseignée'})),markets:sheet.markets.map(m=>({...m})),decision:sheet.decision,reason:sheet.reason||'Réserves non renseignées'};
+ const scenarioDetails=sheet.c3_3_scenarios;
+ if(scenarioDetails!==undefined&&(!scenarioDetails||typeof scenarioDetails!=='object'||Array.isArray(scenarioDetails)||['A','B','C'].some(k=>typeof scenarioDetails[k]!=='string')))throw Error('Scénarios C3.3 invalides');
+ return {scenarioDetails:scenarioDetails?{A:scenarioDetails.A,B:scenarioDetails.B,C:scenarioDetails.C}:null,sport:sheet.sport,event:sheet.event,date:sheet.date,cutoff:sheet.cutoff,sections:[['Synthèse','summary'],['Rapport de force','force'],['Match-up','matchup'],['Scénarios A/B/C et incertitudes','scenarios'],['Sources / références D0','sources']].map(([label,key])=>({label,value:sheet[key]||'Information non renseignée'})),markets:sheet.markets.map(m=>({...m})),decision:sheet.decision,reason:sheet.reason||'Réserves non renseignées'};
 }
 function c3Show(sheet){
  const d=c3RenderModel(sheet),root=document.getElementById('c3-reader-content');root.replaceChildren();
  const element=(tag,value)=>{const e=document.createElement(tag);e.textContent=value;return e};
  root.append(element('h3',d.event||'Rencontre non renseignée'),element('p',[d.sport,d.date||'Date manquante',d.cutoff||'Coupure non renseignée'].join(' · ')));
  for(const s of d.sections){const a=element('article','');a.append(element('h3',s.label),element('pre',s.value));root.append(a)}
+ if(d.scenarioDetails){for(const k of ['A','B','C']){const a=element('article','');a.append(element('h3','Scénario '+k+' — C3.3'),element('pre',d.scenarioDetails[k]||'Non renseigné'));root.append(a)}}
  const m=element('article','');m.append(element('h3','Marchés déclarés — collectif / individuel non précisé dans C2'));
  if(!d.markets.length)m.append(element('p','Aucun marché enregistré'));
  for(const market of d.markets){const a=element('article','');a.append(element('strong',market.label+' — '+market.status),element('p','Période : '+market.period+' | Seuil : '+(market.threshold||'Non renseigné')),element('p','Preuves déclarées : '+market.evidence));if(typeof C3Metadata!=='undefined'){const meta=C3Metadata.metadata(market);a.append(element('p','Catégorie : '+meta.category+' | Revue : '+meta.review_status),element('p','Preuves vérifiées déclarées : '+(meta.verified_evidence.join(', ')||'Aucune')),element('p','Hypothèses : '+(meta.hypotheses.join(', ')||'Aucune')),element('p','Informations manquantes : '+(meta.missing_information.join(', ')||'Aucune')))}m.append(a)}
