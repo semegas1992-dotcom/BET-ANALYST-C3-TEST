@@ -6,7 +6,9 @@ function c1Validate(d,source=false){
  if(!['FOOTBALL','TENNIS','NBA'].includes(d.sport))throw Error('Sport invalide');
  if(!['ABSTENTION','SÉLECTION EXPÉRIMENTALE'].includes(d.decision))throw Error('Décision invalide');
  for(const k of fields)if(typeof d[k]!=='string')throw Error('Champ absent : '+k);
- for(const k of ['event','date','sources','force','scenarios','reason'])if(!d[k].trim())throw Error('Champ obligatoire vide : '+k);
+ const requiredLabels={event:'Rencontre',date:'Date',sources:'Références D0',force:'Données / rapport de force',scenarios:'Scénarios',reason:'Justification et réserves'};
+ const missing=Object.keys(requiredLabels).filter(k=>!d[k].trim());
+ if(missing.length)throw Error('Champs obligatoires manquants : '+missing.map(k=>requiredLabels[k]).join(', '));
  if(!/^\d{4}-\d{2}-\d{2}$/.test(d.date)||Number.isNaN(Date.parse(d.date+'T00:00:00Z'))||new Date(d.date+'T00:00:00Z').toISOString().slice(0,10)!==d.date)throw Error('Date invalide');
  if(!Array.isArray(d.markets)||d.markets.length>100)throw Error('Liste de marchés invalide');C3Metadata.cloneMarkets(d.markets);
  const ids=new Set();
