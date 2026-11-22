@@ -18,7 +18,7 @@ test('exhausted provider quota returns 429',async()=>{const r=await run(url,{FOO
 test('limiter failure fails closed',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:{get:async()=>null,put:async()=>{}},RATE_LIMITER:{limit:async()=>{throw Error('unavailable')}}});assert.equal(r.code,503);assert.equal(r.body.status,'RATE_LIMIT_UNAVAILABLE')});
 
 test('missing cache fails closed before provider call',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,503);assert.equal(r.body.status,'CACHE_NOT_CONFIGURED')});
-test('fresh cached response skips limiter and provider',async()=>{let limits=0;const cache={get:async()=>({status:'RECEIVED_UNVERIFIED',competition:'PL',retrieved_at:new Date().toISOString(),matches:[]}),put:async()=>{throw Error('unexpected write')}};const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>{limits++;return {success:true}}}});assert.equal(r.code,200);assert.equal(r.body.cache,'HIT');assert.equal(limits,0)});
+test('fresh cached response skips limiter and provider',async()=>{let limits=0;const cache={get:async()=>({status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',coverage:'BASIC_MATCHES_ONLY',truncated:false,competition:'PL',retrieved_at:new Date().toISOString(),matches:[]}),put:async()=>{throw Error('unexpected write')}};const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>{limits++;return {success:true}}}});assert.equal(r.code,200);assert.equal(r.body.cache,'HIT');assert.equal(limits,0)});
 test('cache read failure fails closed',async()=>{const cache={get:async()=>{throw Error('down')},put:async()=>{}};const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,503);assert.equal(r.body.status,'CACHE_UNAVAILABLE')});
 
 test('cache miss calls mocked provider and writes cache, without real network',async()=>{
@@ -57,4 +57,10 @@ test('overlong upstream schedule is explicitly marked truncated',async()=>{
  const original=globalThis.fetch;globalThis.fetch=async()=>new Response(JSON.stringify({matches:Array.from({length:101},(_,i)=>({id:i+1}))}),{status:200});
  try{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:{get:async()=>null,put:async()=>{}},RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,200);assert.equal(r.body.matches.length,100);assert.equal(r.body.truncated,true)}
  finally{globalThis.fetch=original}
+});
+
+test('legacy cached payload without source is rejected',async()=>{
+ const cache={get:async()=>({status:'RECEIVED_UNVERIFIED',competition:'PL',retrieved_at:new Date().toISOString(),matches:[]}),put:async()=>{}};
+ const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>({success:false})}});
+ assert.equal(r.code,429);assert.equal(r.body.status,'RATE_LIMITED');
 });
