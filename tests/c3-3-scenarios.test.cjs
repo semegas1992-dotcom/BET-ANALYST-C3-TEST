@@ -13,6 +13,7 @@ const storage=new Map();
 const context = {
  document:{getElementById:id=>elements[id]||(elements[id]={value:'',textContent:'',className:'',replaceChildren:()=>{},append:()=>{}}),createElement:tag=>({tag,textContent:'',className:'',append:()=>{},replaceChildren:()=>{}})},
  C3Metadata:{cloneMarkets:x=>JSON.parse(JSON.stringify(x))},
+ C33Coherence:require('../c3-3-coherence.js'),
  localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},
  console,Date,JSON,Array,Object,Set,Error,confirm:()=>true,
 };
@@ -82,4 +83,17 @@ test('archive and restore retain structured scenarios',()=>{
 test('C3.2 storage keys remain untouched',()=>{
  assert.equal(storage.has('BET_ANALYST_C3_2_CANDIDATE_DRAFT'),false);
  assert.equal(storage.has('BET_ANALYST_C3_2_CANDIDATE_HISTORY'),false);
+});
+
+test('C3.3-B editor flags incomplete scenario without changing content',()=>{
+ base();elements['scenario-a'].value='A documenté';elements['scenario-b'].value='';elements['scenario-c'].value='C documenté';
+ context.checkScenarioCoherence();
+ assert.match(elements['c33-coherence-result'].textContent,/INCOMPLET/);
+ assert.match(elements['c33-coherence-result'].textContent,/B/);
+ assert.equal(elements['scenario-b'].value,'');
+});
+test('C3.3-B editor requests human review for distinct scenarios',()=>{
+ base();elements['scenario-a'].value='A';elements['scenario-b'].value='B';elements['scenario-c'].value='C';
+ context.checkScenarioCoherence();
+ assert.match(elements['c33-coherence-result'].textContent,/REVUE_HUMAINE_REQUISE/);
 });
