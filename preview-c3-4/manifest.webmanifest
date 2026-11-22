@@ -1,0 +1,12 @@
+{
+  "id": "./c3-4-preview",
+  "name": "BET ANALYST V3 C3.4 (test)",
+  "short_name": "BET C3.4",
+  "description": "Comparaison documentaire expérimentale des marchés",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#17324d",
+  "lang": "fr"
+}
