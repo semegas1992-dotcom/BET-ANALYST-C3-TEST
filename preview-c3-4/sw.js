@@ -1,0 +1,6 @@
+'use strict';
+const CACHE='bet-c3-4-preview-v1';
+const ASSETS=['./','./index.html','./c3-reader.js','./c3-metadata.js','./c3-3-coherence.js','./c3-4-market-comparison.js','./manifest.webmanifest'];
+self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(ASSETS);await self.skipWaiting()})()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{const names=await caches.keys();await Promise.all(names.filter(name=>name.startsWith('bet-c3-4-preview-')&&name!==CACHE).map(name=>caches.delete(name)));await self.clients.claim()})()));
+self.addEventListener('fetch',event=>{const req=event.request;const url=new URL(req.url);const scope=new URL(self.registration.scope);if(req.method!=='GET'||url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;event.respondWith((async()=>{const cache=await caches.open(CACHE);if(req.mode==='navigate'){try{const res=await fetch(req);if(res.ok)await cache.put(req,res.clone());return res}catch(e){const cached=await cache.match(req)||await cache.match(new URL('./index.html',scope).href);if(cached)return cached;throw e}}const cached=await cache.match(req);if(cached)return cached;const res=await fetch(req);if(res.ok)await cache.put(req,res.clone());return res})())});
