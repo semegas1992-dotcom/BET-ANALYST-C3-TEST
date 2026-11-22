@@ -1,0 +1,14 @@
+'use strict';
+const assert=require('node:assert/strict');
+const C=require('../c3-metadata.js');
+const base={id:'M01',label:'Total de buts',period:'90 minutes',threshold:'2,5',evidence:'P01',status:'CONDITIONNEL'};
+const extended={...base,c3_metadata:{category:'COLLECTIF',verified_evidence:['P01'],hypotheses:['P02'],missing_information:[],review_status:'A_VERIFIER'}};
+assert.equal(C.metadata(base).category,'NON_RENSEIGNE');
+assert.deepEqual(C.cloneMarket(base),base);
+assert.deepEqual(C.cloneMarket(extended),extended);
+const copy=C.cloneMarket(extended);copy.c3_metadata.verified_evidence.push('P03');assert.equal(extended.c3_metadata.verified_evidence.length,1);
+assert.throws(()=>C.cloneMarket({...base,c3_metadata:{category:'COLLECTIF'}}),/invalides/);
+assert.throws(()=>C.cloneMarkets([base,base]),/dupliqué/);
+assert.throws(()=>C.cloneMarket({...base,status:'APPROUVE'}),/incomplet/);
+assert.equal(C.cloneMarkets([base,{...extended,id:'M02'}]).length,2);
+console.log('8 assertions C3.2 réussies');
