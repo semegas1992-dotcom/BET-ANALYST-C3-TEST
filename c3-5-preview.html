@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BET ANALYST — C3.5-O (expérimental)</title>
+<style>body{font:16px system-ui,sans-serif;max-width:760px;margin:auto;padding:18px;background:#f5f7fa;color:#17263a}header{background:#17324d;color:white;border-radius:12px;padding:18px}h1{font-size:1.35rem}section{background:white;padding:16px;border:1px solid #dae1e9;border-radius:12px;margin-top:14px}button,input{font:inherit;margin:8px 0;padding:10px}button{background:#17324d;color:white;border:0;border-radius:8px}.warning{color:#8a4300}.match{border-top:1px solid #ddd;padding:12px 0}small{display:block;color:#536172}</style>
+</head><body><header><h1>BET ANALYST — Rencontres C3.5-O</h1><p>Prototype expérimental · Lecture seule · Aucune collecte en direct</p></header>
+<section><h2>Charger un instantané JSON</h2><p>Fichier local uniquement. Aucune clé API et aucun envoi au fournisseur.</p><input id="file" type="file" accept=".json,application/json"><button id="demo" type="button">Afficher un exemple fictif</button><p id="status" role="status">Aucun instantané chargé.</p></section>
+<section><h2>Rencontres</h2><p id="meta"></p><div id="matches"></div></section>
+<script type="module">
+import {buildMatchesView} from './c3-5-matches-view.js';
+const status=document.querySelector('#status'),meta=document.querySelector('#meta'),list=document.querySelector('#matches');
+function render(snapshot){
+ const view=buildMatchesView(snapshot);
+ status.textContent=view.message;
+ status.className=view.state==='READY'?'':'warning';
+ meta.textContent=[view.competition?'Compétition : '+view.competition:'',view.retrieved_at?'Collecté : '+view.retrieved_at:'',view.warnings?.length?'Avertissements : '+view.warnings.join(', '):'','Statut : données non vérifiées'].filter(Boolean).join(' | ');
+ list.replaceChildren();
+ for(const m of view.matches){
+  const item=document.createElement('div');item.className='match';
+  const title=document.createElement('strong');title.textContent=(m.home||'Équipe inconnue')+' — '+(m.away||'Équipe inconnue');
+  const info=document.createElement('small');info.textContent=(m.date_utc||'Date manquante')+' · '+(m.status||'Statut manquant')+' · non vérifié';
+  item.append(title,info);list.append(item);
+ }
+ if(!view.matches.length)list.textContent='Aucune rencontre affichable.';
+}
+document.querySelector('#file').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ if(file.size>1000000){status.textContent='Fichier trop volumineux (maximum 1 Mo).';return}
+ try{render(JSON.parse(await file.text()))}catch{status.textContent='Fichier JSON illisible.';list.replaceChildren();meta.textContent=''}
+});
+document.querySelector('#demo').addEventListener('click',()=>render({status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',competition:'PL',retrieved_at:new Date().toISOString(),coverage:'BASIC_MATCHES_ONLY',truncated:false,matches:[{id:1,utcDate:'2027-01-01T12:00:00Z',homeTeam:'Équipe fictive A',awayTeam:'Équipe fictive B',status:'DEMO'}]}));
+</script></body></html>
