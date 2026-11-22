@@ -1,0 +1,34 @@
+name: C3.2 candidate tests
+on:
+  push:
+    branches: [c3-2-candidate]
+  workflow_dispatch:
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check c3-metadata.js
+          node --check c3-reader.js
+          node --check tests/test-c3-metadata.js
+      - name: Run C3.2 metadata tests
+        run: node tests/test-c3-metadata.js
+      - name: Verify candidate integration hooks
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const html=fs.readFileSync('index.html','utf8');
+          const sw=fs.readFileSync('sw.js','utf8');
+          assert.match(html,/<script src="\.\/c3-metadata\.js"><\/script>/);
+          assert.match(html,/BET_ANALYST_C3_2_CANDIDATE_HISTORY/);
+          assert.match(html,/BET_ANALYST_C3_2_CANDIDATE_DRAFT/);
+          assert.doesNotMatch(html,/BET_ANALYST_C3_1_HISTORY|BET_ANALYST_C3_1_DRAFT/);
+          assert.match(sw,/\.\/c3-metadata\.js/);
+          assert.match(html,/C3Metadata\.cloneMarkets\(d\.markets\)/);
+          console.log('Candidate integration hooks present');
+          NODE
