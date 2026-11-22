@@ -12,3 +12,7 @@ test('unsupported HTTP method rejected',async()=>{const r=await run(url,{}, {met
 test('unknown route rejected',async()=>{const r=await run('https://worker.example/other');assert.equal(r.code,404)});
 test('competition allowlist blocks unapproved competition',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'BL1'});assert.equal(r.code,403)});
 test('malformed competition rejected',async()=>{const r=await run('https://worker.example/v1/football/matches?competition=../../secret',{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true'});assert.equal(r.code,400)});
+
+test('no limiter binding fails closed before external provider call',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL'});assert.equal(r.code,503);assert.equal(r.body.status,'RATE_LIMIT_NOT_CONFIGURED')});
+test('exhausted provider quota returns 429',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',RATE_LIMITER:{limit:async()=>({success:false})}});assert.equal(r.code,429);assert.equal(r.body.status,'RATE_LIMITED')});
+test('limiter failure fails closed',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',RATE_LIMITER:{limit:async()=>{throw Error('unavailable')}}});assert.equal(r.code,503);assert.equal(r.body.status,'RATE_LIMIT_UNAVAILABLE')});
