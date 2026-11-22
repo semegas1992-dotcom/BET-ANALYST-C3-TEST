@@ -11,6 +11,7 @@ export function validateSnapshot(input,{now=Date.now(),maxAgeMs=MAX_AGE_MS}={}){
  if(input.coverage!=='BASIC_MATCHES_ONLY')errors.push('INVALID_COVERAGE');
  if(typeof input.truncated!=='boolean')errors.push('MISSING_TRUNCATION_FLAG');
  if(!Array.isArray(input.matches)||input.matches.length>100)errors.push('INVALID_MATCHES');
+ else if(input.matches.some(m=>!m||typeof m!=='object'||Array.isArray(m)||!Number.isSafeInteger(m.id)||m.id<=0||typeof m.utcDate!=='string'||!Number.isFinite(Date.parse(m.utcDate))||typeof m.homeTeam!=='string'||!m.homeTeam.trim()||typeof m.awayTeam!=='string'||!m.awayTeam.trim()))errors.push('INVALID_MATCH_FIELDS');
  const retrieved=typeof input.retrieved_at==='string'?Date.parse(input.retrieved_at):NaN;
  if(!Number.isFinite(retrieved))errors.push('INVALID_TIMESTAMP');
  const age=now-retrieved;
