@@ -10,8 +10,8 @@ test('unapproved browser origin rejected',async()=>{const r=await run(url,{ALLOW
 test('allowed browser preflight does not fetch provider',async()=>{const r=await run(url,{ALLOWED_ORIGIN:'https://app.example'},{method:'OPTIONS',origin:'https://app.example'});assert.equal(r.code,204);assert.equal(r.headers.get('access-control-allow-origin'),'https://app.example')});
 test('unsupported HTTP method rejected',async()=>{const r=await run(url,{}, {method:'POST'});assert.equal(r.code,405)});
 test('unknown route rejected',async()=>{const r=await run('https://worker.example/other');assert.equal(r.code,404)});
-test('competition allowlist blocks unapproved competition',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'BL1'});assert.equal(r.code,403)});
-test('malformed competition rejected',async()=>{const r=await run('https://worker.example/v1/football/matches?competition=../../secret',{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true'});assert.equal(r.code,400)});
+test('competition allowlist blocks unapproved competition',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'BL1',RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,403)});
+test('malformed competition rejected',async()=>{const r=await run('https://worker.example/v1/football/matches?competition=../../secret',{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,400)});
 
 test('no limiter binding fails closed before external provider call',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL'});assert.equal(r.code,503);assert.equal(r.body.status,'RATE_LIMIT_NOT_CONFIGURED')});
 test('exhausted provider quota returns 429',async()=>{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:{get:async()=>null,put:async()=>{}},RATE_LIMITER:{limit:async()=>({success:false})}});assert.equal(r.code,429);assert.equal(r.body.status,'RATE_LIMITED')});
