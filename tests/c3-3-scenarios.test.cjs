@@ -10,7 +10,7 @@ const elements = Object.create(null);
 const fields = ['sport','event','date','cutoff','sources','force','matchup','scenarios','summary','decision','reason','scenario-a','scenario-b','scenario-c'];
 for(const k of fields)elements[k]={value:''};
 const context = {
- document:{getElementById:id=>elements[id]||(elements[id]={value:'',textContent:'',className:''})},
+ document:{getElementById:id=>elements[id]||(elements[id]={value:'',textContent:'',className:'',replaceChildren:()=>{}})},
  C3Metadata:{cloneMarkets:x=>JSON.parse(JSON.stringify(x))},
  localStorage:{getItem:()=>null,setItem:()=>{}},
  console,Date,JSON,Array,Object,Set,Error,
