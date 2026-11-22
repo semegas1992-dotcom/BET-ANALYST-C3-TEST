@@ -47,3 +47,14 @@ test('malformed cache entry is never treated as verified',async()=>{
  const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:cache,RATE_LIMITER:{limit:async()=>({success:false})}});
  assert.equal(r.code,429);
 });
+
+test('invalid upstream payload is rejected rather than reported as empty schedule',async()=>{
+ const original=globalThis.fetch;globalThis.fetch=async()=>new Response(JSON.stringify({error:'bad payload'}),{status:200});
+ try{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:{get:async()=>null,put:async()=>{throw Error('must not cache invalid data')}},RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,502);assert.equal(r.body.status,'INVALID_PROVIDER_PAYLOAD')}
+ finally{globalThis.fetch=original}
+});
+test('overlong upstream schedule is explicitly marked truncated',async()=>{
+ const original=globalThis.fetch;globalThis.fetch=async()=>new Response(JSON.stringify({matches:Array.from({length:101},(_,i)=>({id:i+1}))}),{status:200});
+ try{const r=await run(url,{FOOTBALL_DATA_TOKEN:'dummy',PROVIDER_ENABLED:'true',ALLOWED_COMPETITIONS:'PL',MATCH_CACHE:{get:async()=>null,put:async()=>{}},RATE_LIMITER:{limit:async()=>({success:true})}});assert.equal(r.code,200);assert.equal(r.body.matches.length,100);assert.equal(r.body.truncated,true)}
+ finally{globalThis.fetch=original}
+});
