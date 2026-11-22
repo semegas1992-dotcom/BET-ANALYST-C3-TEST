@@ -4,7 +4,9 @@ export function createMatchSnapshot(raw,{competition,retrievedAt=new Date().toIS
  if(typeof competition!=='string'||!/^[A-Z0-9]{2,8}$/.test(competition))throw new Error('INVALID_COMPETITION');
  if(!raw||!Array.isArray(raw.matches))throw new Error('INVALID_PROVIDER_RESPONSE');
  if(!Number.isFinite(Date.parse(retrievedAt)))throw new Error('INVALID_RETRIEVAL_DATE');
- const matches=raw.matches.slice(0,100).map(m=>({
+ const selected=raw.matches.slice(0,100);
+ if(selected.some(m=>!Number.isSafeInteger(m?.id)||m.id<=0||typeof m.utcDate!=='string'||!Number.isFinite(Date.parse(m.utcDate))||typeof m.homeTeam?.name!=='string'||!m.homeTeam.name.trim()||typeof m.awayTeam?.name!=='string'||!m.awayTeam.name.trim()))throw new Error('INCOMPLETE_MATCH_DATA');
+ const matches=selected.map(m=>({
   id:Number.isSafeInteger(m?.id)?m.id:null,
   utcDate:typeof m?.utcDate==='string'?m.utcDate:null,
   status:typeof m?.status==='string'?m.status:null,
