@@ -1,0 +1,6 @@
+const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');
+const root=path.join(__dirname,'..');const html=fs.readFileSync(path.join(root,'c3-5-preview.html'),'utf8');
+test('preview loads read-only local view module',()=>{assert.match(html,/import \{buildMatchesView\} from '\.\/c3-5-matches-view\.js'/);assert.ok(fs.existsSync(path.join(root,'c3-5-matches-view.js')));assert.ok(fs.existsSync(path.join(root,'c3-5-snapshot.js')))});
+test('preview does not expose tokens or request provider directly',()=>{assert.doesNotMatch(html,/X-Auth-Token|FOOTBALL_DATA_TOKEN|fetch\s*\(|api\.football-data\.org\/v4\/competitions\/\$\{/);assert.match(html,/type="file"/)});
+test('preview renders user-controlled strings as text, not HTML',()=>{assert.match(html,/title\.textContent=/);assert.match(html,/info\.textContent=/);assert.doesNotMatch(html,/innerHTML\s*=/)});
+test('preview marks demo as fictitious and has no real-data claim',()=>{assert.match(html,/exemple fictif/i);assert.match(html,/Aucune collecte en direct/);assert.match(html,/non vérifiées|non vérifié/)});
