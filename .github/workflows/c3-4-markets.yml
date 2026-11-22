@@ -1,0 +1,14 @@
+name: C3.4 market comparison tests
+on:
+  push:
+    branches: [c3-4-market-comparison-candidate]
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/c3-3-scenarios.test.cjs tests/c3-3-coherence.test.cjs tests/c3-4-market-comparison.test.cjs
