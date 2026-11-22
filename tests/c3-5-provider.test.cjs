@@ -1,0 +1,10 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict');
+const {collect}=require('../c3-5-provider.js');
+const provider={id:'MOCK_ONLY',sports:['FOOTBALL','TENNIS','NBA'],authorization_confirmed:true,fetchMatch:async()=>({facts:[{key:'sample',value:1,state:'DECLARED'}]})};
+test('mock source delivers unverified facts, not sporting analysis',async()=>{const r=await collect(provider,{sport:'NBA',event:'A vs B'});assert.equal(r.status,'RECEIVED_UNVERIFIED');assert.equal(r.match.facts[0].state,'DECLARED')});
+test('unsupported sport does not query provider',async()=>{let calls=0;const r=await collect({...provider,sports:['TENNIS'],fetchMatch:()=>{calls++}},{sport:'FOOTBALL',event:'A vs B'});assert.equal(r.status,'UNSUPPORTED');assert.equal(calls,0)});
+test('provider requires confirmed authorization',async()=>{await assert.rejects(collect({...provider,authorization_confirmed:false},{sport:'NBA',event:'A vs B'}),/Autorisation/)});
+test('invalid payload yields controlled error',async()=>{const r=await collect({...provider,fetchMatch:async()=>({other:1})},{sport:'NBA',event:'A vs B'});assert.equal(r.status,'ERROR');assert.equal(r.error,'PROVIDER_ERROR')});
+test('provider exception yields controlled error',async()=>{const r=await collect({...provider,fetchMatch:async()=>{throw Error('quota')}} ,{sport:'NBA',event:'A vs B'});assert.equal(r.status,'ERROR')});
+test('timeout aborts a slow provider',async()=>{const r=await collect({...provider,fetchMatch:()=>new Promise(()=>{})},{sport:'NBA',event:'A vs B'},{timeout_ms:10});assert.equal(r.error,'TIMEOUT')});
