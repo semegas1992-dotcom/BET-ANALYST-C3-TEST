@@ -1,0 +1,22 @@
+name: C3.10 offline regression tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/c3-10-data-quality.test.cjs'
+      - 'preview-c3-7/**'
+      - '.github/workflows/c3-10-offline-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run C3.10 offline tests
+        run: node --test tests/c3-10-data-quality.test.cjs
