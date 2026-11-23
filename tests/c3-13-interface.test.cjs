@@ -1,0 +1,11 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const html=fs.readFileSync(path.join(__dirname,'../preview-c3-7/c3-12-link.html'),'utf8');
+test('C3.13-B: mobile provenance section is present',()=>{assert.match(html,/id="provenance-summary"/);assert.match(html,/id="provenance"/)});
+test('C3.13-B: calls audited provenance module only after exact match',()=>{assert.match(html,/result\.match\.id!==id[\s\S]*?return[\s\S]*?auditEvidenceProvenance\(dossier\)/)});
+test('C3.13-B: displays source, date and independent status',()=>{assert.match(html,/Source déclarée/);assert.match(html,/Date déclarée/);assert.match(html,/Contrôle indépendant : non réalisé/)});
+test('C3.13-B: provenance reset clears stale match evidence',()=>{assert.match(html,/function resetDetail\(\)\{[\s\S]*?\$\('provenance'\)\.replaceChildren\(\)/)});
+test('C3.13-B: missing documentation alerts and blocked KRAFT',()=>{assert.match(html,/SOURCE_NOT_DOCUMENTED/);assert.match(html,/OBSERVATION_AFTER_DOSSIER_CREATION/);assert.match(html,/KRAFT bloqué/);assert.match(html,/Analyse KRAFT bloquée/)});
+test('C3.13-B: no dynamic HTML or network calls',()=>{assert.doesNotMatch(html,/innerHTML|outerHTML|insertAdjacentHTML|\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/)});
