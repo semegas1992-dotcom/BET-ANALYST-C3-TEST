@@ -7,3 +7,4 @@ test('preview marks demo as fictitious and has no real-data claim',()=>{assert.m
 
 test('C3.6 mobile preview offers status filters and counts without provider calls',()=>{assert.match(html,/id="category"/);assert.match(html,/value="UPCOMING"/);assert.match(html,/value="FINISHED"/);assert.match(html,/value="ALL"/);assert.match(html,/renderMatches\(\)/);assert.match(html,/rencontre\(s\) affichée\(s\)/)});
 test('C3.6 formats fixture dates in Paris timezone without changing source timestamps',()=>{assert.match(html,/Intl\.DateTimeFormat\('fr-FR'/);assert.match(html,/timeZone:'Europe\/Paris'/);assert.match(html,/Date manquante/)});
+test('C3.7 supports offline team search and category filters',()=>{assert.match(html,/id="search" type="search"/);assert.match(html,/search\.addEventListener\('input',renderMatches\)/);assert.match(html,/grouped\.filter\(/);assert.doesNotMatch(html,/innerHTML\s*=/)});
