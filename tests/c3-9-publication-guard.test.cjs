@@ -10,9 +10,9 @@ test('C3.9 manual-only collector cannot silently run on a schedule or push',()=>
  assert.match(workflow,/inputs\.confirmation == 'COLLECTER'/);
  assert.match(collector,/MANUAL_CONFIRMATION_REQUIRED/);
 });
-test('C3.9 collected data is not deployed and artifact export is opt-in',()=>{
- assert.match(workflow,/default: 'non'/);
- assert.match(workflow,/inputs\.private_snapshot == 'oui'/);
+test('C3.9 collected data is not deployed and artifact export is disabled until license review',()=>{
+ assert.match(workflow,/PROVIDER_LICENSE_APPROVED == 'true'/);
+ assert.doesNotMatch(workflow,/upload-artifact/);
  assert.match(workflow,/permissions:\s*\n\s*contents: read/);
  assert.doesNotMatch(workflow,/pages: write|deploy-pages|git push|gh-pages/);
  assert.doesNotMatch(collector,/console\.log\([^\n]*(token|raw|snapshot\.matches)/i);
