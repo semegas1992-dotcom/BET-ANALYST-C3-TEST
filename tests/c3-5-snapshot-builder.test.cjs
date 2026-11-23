@@ -18,3 +18,10 @@ test('C3.6 prioritizes future fixtures when provider returns over 100 matches',a
  assert.equal(r.truncated,true);
  assert.equal(r.matches.length,100);
 });
+
+test('C3.7 rejects malformed provider records even beyond the 100-match display limit',async()=>{
+ const {createMatchSnapshot}=await import(url);
+ const good=Array.from({length:100},(_,i)=>({id:i+1,utcDate:'2026-11-24T20:00:00Z',homeTeam:{name:'A'},awayTeam:{name:'B'}}));
+ const invalid={id:101,utcDate:'2026-11-24T20:00:00Z',homeTeam:{name:''},awayTeam:{name:'B'}};
+ assert.throws(()=>createMatchSnapshot({matches:[...good,invalid]},{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'}),/INCOMPLETE_MATCH_DATA/);
+});
