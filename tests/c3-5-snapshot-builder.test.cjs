@@ -25,3 +25,16 @@ test('C3.7 rejects malformed provider records even beyond the 100-match display 
  const invalid={id:101,utcDate:'2026-11-24T20:00:00Z',homeTeam:{name:''},awayTeam:{name:'B'}};
  assert.throws(()=>createMatchSnapshot({matches:[...good,invalid]},{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'}),/INCOMPLETE_MATCH_DATA/);
 });
+
+test('C3.7 prefers the nearest future fixtures and latest finished fixtures',async()=>{
+ const {createMatchSnapshot}=await import(url);
+ const m=(id,status,date)=>({id,status,utcDate:date,homeTeam:{name:'A'},awayTeam:{name:'B'}});
+ const matches=[
+  m(1,'FINISHED','2026-10-01T20:00:00Z'),
+  m(2,'SCHEDULED','2026-12-01T20:00:00Z'),
+  m(3,'FINISHED','2026-11-20T20:00:00Z'),
+  m(4,'SCHEDULED','2026-11-24T20:00:00Z')
+ ];
+ const r=createMatchSnapshot({matches},{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'});
+ assert.deepEqual(r.matches.map(x=>x.id),[4,2,3,1]);
+});
