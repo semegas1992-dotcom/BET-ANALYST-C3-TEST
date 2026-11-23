@@ -4,3 +4,5 @@ test('preview loads read-only local view module',()=>{assert.match(html,/import 
 test('preview does not expose tokens or request provider directly',()=>{assert.doesNotMatch(html,/X-Auth-Token|FOOTBALL_DATA_TOKEN|fetch\s*\(|api\.football-data\.org\/v4\/competitions\/\$\{/);assert.match(html,/type="file"/)});
 test('preview renders user-controlled strings as text, not HTML',()=>{assert.match(html,/title\.textContent=/);assert.match(html,/info\.textContent=/);assert.doesNotMatch(html,/innerHTML\s*=/)});
 test('preview marks demo as fictitious and has no real-data claim',()=>{assert.match(html,/exemple fictif/i);assert.match(html,/Aucune collecte en direct/);assert.match(html,/non vérifiées|non vérifié/)});
+
+test('C3.6 mobile preview offers status filters and counts without provider calls',()=>{assert.match(html,/id="category"/);assert.match(html,/value="UPCOMING"/);assert.match(html,/value="FINISHED"/);assert.match(html,/value="ALL"/);assert.match(html,/renderMatches\(\)/);assert.match(html,/rencontre\(s\) affichée\(s\)/)});
