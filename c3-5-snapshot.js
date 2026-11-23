@@ -3,6 +3,7 @@ const MAX_AGE_MS=15*60*1000;
 export function validateSnapshot(input,{now=Date.now(),maxAgeMs=MAX_AGE_MS}={}){
  const errors=[];
  if(!input||typeof input!=='object'||Array.isArray(input))return {usable:false,freshness:'INVALID',errors:['INVALID_OBJECT'],matches:[]};
+ if(input.schema!==undefined&&input.schema!=='BET_ANALYST_MATCH_SNAPSHOT_V1')errors.push('INVALID_SCHEMA');
  if(input.status!=='RECEIVED_UNVERIFIED')errors.push('INVALID_STATUS');
  if(input.provider!=='football-data.org')errors.push('UNKNOWN_PROVIDER');
  if(typeof input.source_endpoint!=='string'||!/^https:\/\/api\.football-data\.org\/v4\/competitions\/[A-Z0-9]{2,8}\/matches$/.test(input.source_endpoint))errors.push('INVALID_SOURCE');
