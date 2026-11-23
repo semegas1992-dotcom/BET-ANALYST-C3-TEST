@@ -15,6 +15,7 @@ export function createMatchSnapshot(raw,{competition,retrievedAt=new Date().toIS
   return 3;
  };
  if(raw.matches.some(m=>!Number.isSafeInteger(m?.id)||m.id<=0||typeof m.utcDate!=='string'||!Number.isFinite(Date.parse(m.utcDate))||typeof m.homeTeam?.name!=='string'||!m.homeTeam.name.trim()||typeof m.awayTeam?.name!=='string'||!m.awayTeam.name.trim()))throw new Error('INCOMPLETE_MATCH_DATA');
+ if(new Set(raw.matches.map(m=>m.id)).size!==raw.matches.length)throw new Error('DUPLICATE_MATCH_IDS');
  const selected=[...raw.matches].sort((a,b)=>{
   const group=rank(a)-rank(b);
   if(group!==0)return group;
