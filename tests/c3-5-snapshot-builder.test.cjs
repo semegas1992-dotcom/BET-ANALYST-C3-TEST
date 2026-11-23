@@ -7,3 +7,14 @@ test('truncation is explicitly flagged',async()=>{const {createMatchSnapshot}=aw
 test('competition is validated',async()=>{const {createMatchSnapshot}=await import(url);assert.throws(()=>createMatchSnapshot({matches:[]},{competition:'../'}),/INVALID_COMPETITION/)});
 
 test('incomplete match data is rejected before snapshot creation',async()=>{const {createMatchSnapshot}=await import(url);assert.throws(()=>createMatchSnapshot({matches:[{id:1,homeTeam:{name:'A'}}]},{competition:'PL'}),/INCOMPLETE_MATCH_DATA/)});
+
+test('C3.6 prioritizes future fixtures when provider returns over 100 matches',async()=>{
+ const {createMatchSnapshot}=await import(url);
+ const match=(id,status,date)=>({id,status,utcDate:date,homeTeam:{name:'A'},awayTeam:{name:'B'}});
+ const old=Array.from({length:100},(_,i)=>match(i+1,'FINISHED','2026-11-01T20:00:00Z'));
+ const next=match(101,'SCHEDULED','2026-11-25T20:00:00Z');
+ const r=createMatchSnapshot({matches:[...old,next]},{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'});
+ assert.equal(r.matches[0].id,101);
+ assert.equal(r.truncated,true);
+ assert.equal(r.matches.length,100);
+});
