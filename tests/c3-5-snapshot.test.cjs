@@ -25,3 +25,11 @@ test('C3.7 accepts current snapshot schema',async()=>{
  const r=validateSnapshot({...valid,schema:'BET_ANALYST_MATCH_SNAPSHOT_V1'},{now:Date.parse('2026-11-22T10:05:00Z')});
  assert.equal(r.usable,true);
 });
+
+test('duplicate fixture IDs are rejected rather than shown twice',async()=>{
+ const {validateSnapshot}=await import(dataUrl);
+ const r=validateSnapshot({...valid,matches:[valid.matches[0],{...valid.matches[0],homeTeam:'C'}]},{now:Date.parse('2026-11-22T10:05:00Z')});
+ assert.equal(r.usable,false);
+ assert.ok(r.errors.includes('DUPLICATE_MATCH_IDS'));
+ assert.deepEqual(r.matches,[]);
+});
