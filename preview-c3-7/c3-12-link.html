@@ -6,17 +6,19 @@
 <section><h2>1. Charger les données</h2><label for="snapshot">Instantané des rencontres (JSON)</label><input id="snapshot" type="file" accept=".json,application/json"><label for="dossier">Dossier de preuves (JSON)</label><input id="dossier" type="file" accept=".json,application/json"><button id="demo" type="button">Tester avec des données fictives</button><p id="load-status" role="status">Aucune donnée chargée.</p></section>
 <section><h2>2. Choisir une rencontre</h2><label for="match">Rencontre disponible</label><select id="match"><option value="">Aucune rencontre disponible</option></select><p id="match-info"></p></section>
 <section aria-live="polite"><h2>3. Liaison et disponibilité KRAFT</h2><p id="link-status">Liaison non évaluée.</p><p id="readiness" class="warning">Analyse KRAFT bloquée.</p><p id="missing"></p><p id="errors"></p></section>
-<section><h2>4. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
+<section><h2>4. Traçabilité documentaire — C3.13-B</h2><p id="provenance-summary">Aucun audit de provenance disponible.</p><div id="provenance"></div></section>
+<section><h2>5. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
 <script type="module">
 import {validateSnapshot} from './c3-5-snapshot.js';
 import {validateKraftEvidence,KRAFT_EVIDENCE_SCHEMA} from './c3-11-kraft-evidence.js';
 import {linkMatchEvidence} from './c3-12-evidence-link.js';
+import {auditEvidenceProvenance} from './c3-13-provenance.js';
 const $=id=>document.getElementById(id);
 const domains={TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles'};
 let snapshot=null,dossier=null;
 const importSequence={snapshot:0,dossier:0};
 function add(parent,tag,value){const el=document.createElement(tag);el.textContent=value;parent.append(el);return el}
-function resetDetail(){ $('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
+function resetDetail(){ $('provenance-summary').textContent='Aucun audit de provenance disponible.';$('provenance').replaceChildren();$('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
 function updateMatches(){
  const previous=$('match').value;
  $('match').replaceChildren();
@@ -45,6 +47,17 @@ function updateLink(){
  if(result.match.id!==id){$('link-status').textContent='Aucun dossier associé à cette rencontre.';return}
  $('link-status').textContent='Correspondance exacte des identifiants — liaison locale non vérifiée.';
  $('missing').textContent='Domaines sans preuve déclarée vérifiée : '+(result.missing_domains.map(k=>domains[k]||k).join(' · ')||'Aucun, mais analyse toujours bloquée.');
+ const provenance=auditEvidenceProvenance(dossier);
+ $('provenance-summary').textContent='Documentation complète : '+provenance.documented_count+'/'+provenance.entries.length+' · Vérifications indépendantes : 0 · KRAFT bloqué.';
+ const flagLabels={SOURCE_NOT_DOCUMENTED:'Source non documentée',OBSERVATION_DATE_NOT_DOCUMENTED:'Date d’observation non documentée',VERIFICATION_NOTE_NOT_DOCUMENTED:'Note de vérification non documentée',OBSERVATION_AFTER_DOSSIER_CREATION:'Observation postérieure à la création du dossier'};
+ for(const entry of provenance.entries){
+  const item=add($('provenance'),'div','');item.className='entry';
+  add(item,'strong',(domains[entry.domain]||entry.domain||'Domaine inconnu')+' — '+entry.declared_state);
+  add(item,'p','Source déclarée : '+(entry.declared_source||'Non documentée'));
+  add(item,'p','Date déclarée : '+(entry.declared_observed_at||'Non documentée'));
+  add(item,'p','Contrôle indépendant : non réalisé');
+  add(item,'small','Alertes : '+(entry.flags.map(flag=>flagLabels[flag]||flag).join(' · ')||'Aucune anomalie documentaire détectée (sans certification)'));
+ }
  $('dossier-info').textContent='Dossier '+dossier.match_id+' · '+result.evidence_count+' élément(s) · déclaration de provenance non contrôlée indépendamment.';
  for(const e of dossier.evidence){
   const item=add($('evidence'),'div','');item.className='entry';
