@@ -1,0 +1,47 @@
+{
+  "schema": "BET_ANALYST_MATCH_SNAPSHOT_V1",
+  "status": "RECEIVED_UNVERIFIED",
+  "provider": "football-data.org",
+  "source_endpoint": "https://api.football-data.org/v4/competitions/PL/matches",
+  "competition": "PL",
+  "retrieved_at": "2026-11-23T06:00:00Z",
+  "coverage": "BASIC_MATCHES_ONLY",
+  "truncated": false,
+  "matches": [
+    {
+      "id": 900001,
+      "status": "SCHEDULED",
+      "utcDate": "2026-12-01T20:00:00Z",
+      "homeTeam": "Club fictif Alpha",
+      "awayTeam": "Club fictif Beta"
+    },
+    {
+      "id": 900002,
+      "status": "TIMED",
+      "utcDate": "2026-12-02T19:30:00Z",
+      "homeTeam": "Club fictif Gamma",
+      "awayTeam": "Club fictif Delta"
+    },
+    {
+      "id": 900003,
+      "status": "IN_PLAY",
+      "utcDate": "2026-11-23T14:00:00Z",
+      "homeTeam": "Club fictif Epsilon",
+      "awayTeam": "Club fictif Zeta"
+    },
+    {
+      "id": 900004,
+      "status": "FINISHED",
+      "utcDate": "2026-11-22T17:00:00Z",
+      "homeTeam": "Club fictif Eta",
+      "awayTeam": "Club fictif Theta"
+    },
+    {
+      "id": 900005,
+      "status": "POSTPONED",
+      "utcDate": "2026-11-21T15:00:00Z",
+      "homeTeam": "Club fictif Iota",
+      "awayTeam": "Club fictif Kappa"
+    }
+  ]
+}
