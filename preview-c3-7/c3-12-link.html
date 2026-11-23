@@ -8,9 +8,10 @@
 <section aria-live="polite"><h2>3. Liaison et disponibilité KRAFT</h2><p id="link-status">Liaison non évaluée.</p><p id="readiness" class="warning">Analyse KRAFT bloquée.</p><p id="missing"></p><p id="errors"></p></section>
 <section><h2>4. Diagnostic global — C3.14</h2><p id="diagnostic-summary">Aucun diagnostic disponible.</p><div id="diagnostic"></div><small>Ce diagnostic documentaire ne remplace pas l'analyse KRAFT ni les contrôles méthodologiques C1/C2/C3.</small></section>
 <section><h2>5. Actions prioritaires — C3.15</h2><p id="remediation-summary">Aucune action calculée.</p><div id="remediation"></div></section>
-<section><h2>6. Traçabilité documentaire — C3.13-B</h2><p id="provenance-summary">Aucun audit de provenance disponible.</p><div id="provenance"></div></section>
-<section><h2>7. Classification documentaire — C3.13-C</h2><p id="classification-summary">Aucune classification disponible.</p><div id="classification"></div></section>
-<section><h2>8. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
+<section><h2>6. Préparation KRAFT — C3.16</h2><p id="kraft-prep-summary">Aucune préparation disponible.</p><div id="kraft-prep"></div><small>Préparation documentaire uniquement. Aucun rapport de force, scénario ou marché calculé.</small></section>
+<section><h2>7. Traçabilité documentaire — C3.13-B</h2><p id="provenance-summary">Aucun audit de provenance disponible.</p><div id="provenance"></div></section>
+<section><h2>8. Classification documentaire — C3.13-C</h2><p id="classification-summary">Aucune classification disponible.</p><div id="classification"></div></section>
+<section><h2>9. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
 <script type="module">
 import {validateSnapshot} from './c3-5-snapshot.js';
 import {validateKraftEvidence,KRAFT_EVIDENCE_SCHEMA} from './c3-11-kraft-evidence.js';
@@ -19,12 +20,13 @@ import {auditEvidenceProvenance} from './c3-13-provenance.js';
 import {classifyEvidence} from './c3-13-classification.js';
 import {diagnoseMatch} from './c3-14-diagnostic.js';
 import {planRemediation} from './c3-15-remediation.js';
+import {prepareKraftInput} from './c3-16-kraft-preparation.js';
 const $=id=>document.getElementById(id);
 const domains={TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles'};
 let snapshot=null,dossier=null;
 const importSequence={snapshot:0,dossier:0};
 function add(parent,tag,value){const el=document.createElement(tag);el.textContent=value;parent.append(el);return el}
-function resetDetail(){ $('remediation-summary').textContent='Aucune action calculée.';$('remediation').replaceChildren();$('diagnostic-summary').textContent='Aucun diagnostic disponible.';$('diagnostic').replaceChildren();$('classification-summary').textContent='Aucune classification disponible.';$('classification').replaceChildren();$('provenance-summary').textContent='Aucun audit de provenance disponible.';$('provenance').replaceChildren();$('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
+function resetDetail(){ $('kraft-prep-summary').textContent='Aucune préparation disponible.';$('kraft-prep').replaceChildren();$('remediation-summary').textContent='Aucune action calculée.';$('remediation').replaceChildren();$('diagnostic-summary').textContent='Aucun diagnostic disponible.';$('diagnostic').replaceChildren();$('classification-summary').textContent='Aucune classification disponible.';$('classification').replaceChildren();$('provenance-summary').textContent='Aucun audit de provenance disponible.';$('provenance').replaceChildren();$('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
 function updateMatches(){
  const previous=$('match').value;
  $('match').replaceChildren();
@@ -60,6 +62,14 @@ function updateLink(){
  if(result.match.id!==id){$('link-status').textContent='Aucun dossier associé à cette rencontre.';return}
  $('link-status').textContent='Correspondance exacte des identifiants — liaison locale non vérifiée.';
  $('missing').textContent='Domaines sans preuve déclarée vérifiée : '+(result.missing_domains.map(k=>domains[k]||k).join(' · ')||'Aucun, mais analyse toujours bloquée.');
+ const preparation=prepareKraftInput(dossier);
+ $('kraft-prep-summary').textContent='Dossier '+preparation.match_id+' · '+preparation.sections.reduce((sum,section)=>sum+section.item_ids.length,0)+' élément(s) classé(s) · Analyse KRAFT bloquée.';
+ for(const section of preparation.sections){
+  const item=add($('kraft-prep'),'div','');item.className='entry';
+  add(item,'strong',section.label);
+  add(item,'p',section.item_ids.length+' élément(s) · Identifiants : '+(section.item_ids.join(', ')||'aucun'));
+ }
+ add($('kraft-prep'),'p','Rapport de force : non calculé · Scénarios A/B/C : non calculés · Marchés : non évalués.');
  const classification=classifyEvidence(dossier);
  $('classification-summary').textContent='Divergences documentaires détectées : '+classification.contradictions.length+' · Vérification indépendante : non · KRAFT bloqué.';
  for(const domain of classification.domains){
