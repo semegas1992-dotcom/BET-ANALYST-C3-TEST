@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BET ANALYST — C3.11 Fiche de preuves</title>
+<style>body{font:16px system-ui,sans-serif;max-width:760px;margin:auto;padding:18px;background:#f5f7fa;color:#17263a}header{background:#17324d;color:#fff;padding:18px;border-radius:12px}h1{font-size:1.4rem}section{background:#fff;border:1px solid #dae1e9;border-radius:12px;padding:16px;margin-top:14px}button,input{font:inherit;padding:10px;max-width:100%}button{background:#17324d;color:#fff;border:0;border-radius:8px}li{margin:8px 0;overflow-wrap:anywhere}.warning{color:#8a4300}.entry{border-top:1px solid #ddd;padding:12px 0}.muted{color:#536172}small{display:block}code{overflow-wrap:anywhere}</style>
+</head><body><header><h1>BET ANALYST — Fiche de preuves C3.11</h1><p>Prototype expérimental · Lecture seule · Sans collecte réseau · Aucun conseil de pari</p></header>
+<section><h2>Importer un dossier JSON local</h2><p>Le fichier est lu dans ce navigateur uniquement. Aucun envoi au serveur.</p><input id="file" type="file" accept=".json,application/json" aria-label="Choisir un dossier de preuves JSON"><button id="demo" type="button">Voir un dossier fictif</button><p id="status" role="status">Aucun dossier chargé.</p></section>
+<section aria-live="polite"><h2>Contrôle de validité</h2><p id="validity">En attente d'un dossier.</p><p id="readiness" class="warning">Analyse KRAFT indisponible.</p><p id="missing"></p><ul id="errors"></ul></section>
+<section><h2>Éléments du dossier</h2><p id="meta"></p><div id="entries"></div></section>
+<script type="module">
+import {validateKraftEvidence,REQUIRED_DOMAINS,KRAFT_EVIDENCE_SCHEMA} from './c3-11-kraft-evidence.js';
+const $=id=>document.getElementById(id);
+const domains={TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles'};
+const states={VERIFIED:'Déclaré vérifié (provenance renseignée, sans contrôle indépendant)',UNVERIFIED:'Non vérifié',HYPOTHESIS:'Hypothèse',MISSING:'Manquant'};
+function clear(message){$('status').textContent=message;$('validity').textContent='Aucun dossier exploitable.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').replaceChildren();$('meta').textContent='';$('entries').replaceChildren()}
+function line(parent,tag,text){const el=document.createElement(tag);el.textContent=text;parent.append(el);return el}
+function render(data){
+ const audit=validateKraftEvidence(data);
+ $('status').textContent='Dossier local chargé.';
+ $('validity').textContent=audit.valid?'Structure valide — les déclarations ne sont pas vérifiées indépendamment.':'Structure invalide — données non exploitables.';
+ $('readiness').textContent='Analyse KRAFT bloquée : aucune validation sportive automatique.';
+ $('missing').textContent='Domaines sans preuve déclarée vérifiée : '+(audit.missing_domains.map(k=>domains[k]||k).join(' · ')||'Aucun (cela ne suffit pas à autoriser une analyse).');
+ $('errors').replaceChildren();
+ for(const err of audit.errors)line($('errors'),'li',err);
+ $('meta').textContent='Match : '+(typeof data.match_id==='string'?data.match_id:'inconnu')+' · Créé : '+(typeof data.created_at==='string'?data.created_at:'inconnu')+' · Preuves déclarées vérifiées : '+audit.verified_count;
+ $('entries').replaceChildren();
+ if(!audit.valid)return;
+ for(const e of data.evidence){
+  const item=line($('entries'),'div','');item.className='entry';
+  line(item,'strong',(domains[e.domain]||e.domain)+' — '+(states[e.state]||e.state));
+  line(item,'small','Identifiant : '+e.id);
+  line(item,'p','Valeur : '+(e.value===null?'non renseignée':String(e.value)));
+  if(e.source)line(item,'small','Source déclarée : '+e.source);
+  if(e.observed_at)line(item,'small','Date d’observation : '+e.observed_at);
+  if(e.verification_note)line(item,'small','Note de vérification déclarée : '+e.verification_note);
+  if(e.rationale)line(item,'small','Justification : '+e.rationale);
+ }
+ if(!data.evidence.length)line($('entries'),'p','Aucun élément de preuve dans ce dossier.');
+}
+$('file').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ if(file.size>1000000){clear('Fichier trop volumineux : maximum 1 Mo.');return}
+ try{render(JSON.parse(await file.text()))}catch{clear('Fichier illisible ou JSON invalide.')}
+});
+$('demo').addEventListener('click',()=>render({schema:KRAFT_EVIDENCE_SCHEMA,match_id:'DEMO-FICTIF-001',created_at:'2026-11-23T10:00:00Z',evidence:[{id:'exemple-1',domain:'TEAM_FORM',state:'UNVERIFIED',value:'3 victoires fictives'},{id:'exemple-2',domain:'TACTICAL_CONTEXT',state:'HYPOTHESIS',value:'Bloc bas fictif',rationale:'Illustration de la différence entre hypothèse et fait'},{id:'exemple-3',domain:'SQUAD_AVAILABILITY',state:'MISSING',value:null}]}));
+</script></body></html>
