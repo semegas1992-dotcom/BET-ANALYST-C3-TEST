@@ -60,7 +60,7 @@ async function load(file,kind){
  if(!file)return;
  const sequence=++importSequence[kind];
  // Invalider immédiatement l'ancien contenu pour empêcher toute association périmée.
- if(kind==='snapshot')snapshot=null;else dossier=null;
+ if(kind==='snapshot'){snapshot=null;dossier=null;++importSequence.dossier;}else dossier=null;
  $('load-status').textContent='Vérification du fichier en cours…';
  updateMatches();
  if(file.size>1000000){
