@@ -15,7 +15,7 @@ permissions:
   contents: read
 jobs:
   collect:
-    if: ${{ vars.PROVIDER_LICENSE_APPROVED == 'true' && inputs.confirmation == 'COLLECTER' }}
+    if: ${{ inputs.confirmation == 'COLLECTER' }}
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -40,7 +40,7 @@ jobs:
       - name: Collect one provider response (never scheduled)
         env:
           COMPETITION: ${{ inputs.competition }}
-          PROVIDER_LICENSE_APPROVED: ${{ vars.PROVIDER_LICENSE_APPROVED }}
+          COLLECTION_CONFIRMATION: ${{ inputs.confirmation }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node c3-5-collect-once.mjs
       # No artifact publication, commit, or deployment.
