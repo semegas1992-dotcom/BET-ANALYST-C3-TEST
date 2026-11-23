@@ -12,4 +12,13 @@ if(!response.ok)throw new Error('PROVIDER_HTTP_'+response.status);
 const raw=await response.json();
 const snapshot=createMatchSnapshot(raw,{competition});
 await writeFile('c3-5-collected-matches.json',JSON.stringify(snapshot,null,2)+'\n',{flag:'wx',mode:0o600});
+const statuses={upcoming:0,live:0,finished:0,other:0,unknown:0};
+for(const m of snapshot.matches){
+ if(['SCHEDULED','TIMED'].includes(m.status))statuses.upcoming++;
+ else if(['IN_PLAY','PAUSED','LIVE'].includes(m.status))statuses.live++;
+ else if(['FINISHED','AWARDED'].includes(m.status))statuses.finished++;
+ else if(['POSTPONED','SUSPENDED','CANCELLED'].includes(m.status))statuses.other++;
+ else statuses.unknown++;
+}
 console.log('Snapshot created: competition='+competition+', count='+snapshot.matches.length+', truncated='+snapshot.truncated+', status='+snapshot.status);
+console.log('Snapshot summary (unverified): '+JSON.stringify(statuses));
