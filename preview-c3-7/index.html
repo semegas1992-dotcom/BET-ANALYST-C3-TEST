@@ -5,10 +5,17 @@
 </head><body><header><h1>BET ANALYST — Rencontres C3.7</h1><p>Prototype expérimental · Lecture seule · Aucune collecte en direct · Données importées non vérifiées</p></header>
 <section><h2>Charger un instantané JSON</h2><p>Fichier local uniquement. Aucune clé API et aucun envoi au fournisseur.</p><input id="file" type="file" accept=".json,application/json"><button id="demo" type="button">Afficher un exemple fictif</button><p id="status" role="status">Aucun instantané chargé.</p></section>
 <section><small>Source prévue pour les données réelles : Football data provided by the Football-Data.org API. L'exemple ci-dessous est fictif et ne provient pas du fournisseur. Les données importées restent dans ce navigateur et ne sont pas publiées par cette page.</small></section>
+<section id="kraft-audit" aria-live="polite"><h2>Disponibilité de l'analyse KRAFT</h2><p id="kraft-state">Aucun fichier chargé : analyse indisponible.</p><p id="kraft-missing"></p></section>
 <section><h2>Rencontres</h2><p id="meta"></p><label for="search" class="field-label">Rechercher une équipe :</label><input id="search" type="search" placeholder="Nom de l’équipe" autocomplete="off"><label for="category" class="field-label">Afficher :</label><select id="category" aria-label="Filtrer les rencontres"><option value="UPCOMING">À venir</option><option value="LIVE">En cours</option><option value="FINISHED">Terminées</option><option value="OTHER">Autres statuts</option><option value="UNKNOWN">Statut inconnu</option><option value="ALL">Toutes</option></select><p id="count" role="status"></p><div id="matches"></div></section>
 <script type="module">
 import {buildMatchesView} from './c3-5-matches-view.js';
 const status=document.querySelector('#status'),meta=document.querySelector('#meta'),list=document.querySelector('#matches'),category=document.querySelector('#category'),count=document.querySelector('#count'),search=document.querySelector('#search');
+const kraftState=document.querySelector('#kraft-state'),kraftMissing=document.querySelector('#kraft-missing');
+const kraftLabels={MATCH_DATA_INVALID:'Fichier de rencontres invalide',TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles',SOURCE_VERIFICATION:'Vérification des sources'};
+function renderKraft(view){
+ kraftState.textContent=view?.analysis_readiness==='BLOCKED'?'Analyse KRAFT bloquée : les données importées ne suffisent pas pour une analyse sportive complète.':'Aucun fichier chargé : analyse indisponible.';
+ kraftMissing.textContent=view?.missing_for_kraft?.length?'Informations manquantes : '+view.missing_for_kraft.map(k=>kraftLabels[k]||k).join(' · '):'';
+}
 let currentView=null;
 function renderMatches(){
  list.replaceChildren();
@@ -38,11 +45,12 @@ function render(snapshot){
  status.className=view.state==='READY'?'':'warning';
  meta.textContent=[view.competition?'Compétition : '+view.competition:'',view.retrieved_at?'Collecté : '+view.retrieved_at:'',view.warnings?.length?'Avertissements : '+view.warnings.join(', '):'','Statut : données non vérifiées'].filter(Boolean).join(' | ');
  currentView=view;
+ renderKraft(view);
  renderMatches();
 }
 document.querySelector('#file').addEventListener('change',async e=>{
  const file=e.target.files?.[0];if(!file)return;
- if(file.size>1000000){currentView=null;renderMatches();status.textContent='Fichier trop volumineux (maximum 1 Mo).';status.className='warning';meta.textContent='';return}
+ if(file.size>1000000){currentView=null;renderKraft(null);renderMatches();status.textContent='Fichier trop volumineux (maximum 1 Mo).';status.className='warning';meta.textContent='';return}
  let parsed;
  try{parsed=JSON.parse(await file.text())}
  catch{currentView=null;renderMatches();status.textContent='Fichier JSON illisible.';status.className='warning';meta.textContent='';return}
