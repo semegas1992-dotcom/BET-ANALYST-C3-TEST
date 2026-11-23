@@ -3,7 +3,7 @@ import {validateSnapshot} from './c3-5-snapshot.js';
 import {groupMatchesByStatus} from './c3-6-match-status.js';
 export function buildMatchesView(snapshot,options={}){
  const audit=validateSnapshot(snapshot,options);
- if(!audit.usable)return {state:'UNAVAILABLE',message:'Données indisponibles ou invalides',matches:[],warnings:audit.errors,verified:false};
+ if(!audit.usable)return {state:'UNAVAILABLE',message:'Données indisponibles ou invalides',matches:[],warnings:audit.errors,verified:false,analysis_readiness:'BLOCKED',missing_for_kraft:['MATCH_DATA_INVALID']};
  const warnings=[];
  if(audit.freshness==='STALE')warnings.push('DONNEES_ANCIENNES');
  if(audit.truncated)warnings.push('LISTE_INCOMPLETE');
@@ -15,5 +15,5 @@ export function buildMatchesView(snapshot,options={}){
   status:typeof m?.status==='string'?m.status:null,
   verified:false
  }));
- return {state:audit.freshness==='STALE'?'STALE':'READY',message:audit.freshness==='STALE'?'Instantané ancien — actualisation nécessaire':'Rencontres issues d’un instantané non vérifié',competition:audit.competition,retrieved_at:audit.retrieved_at,matches,groups:groupMatchesByStatus(matches),warnings,verified:false};
+ return {state:audit.freshness==='STALE'?'STALE':'READY',message:audit.freshness==='STALE'?'Instantané ancien — actualisation nécessaire':'Rencontres issues d’un instantané non vérifié',competition:audit.competition,retrieved_at:audit.retrieved_at,matches,groups:groupMatchesByStatus(matches),warnings,verified:false,analysis_readiness:'BLOCKED',missing_for_kraft:['TEAM_FORM','TEAM_STATISTICS','SQUAD_AVAILABILITY','TACTICAL_CONTEXT','PLAYER_STATISTICS','SOURCE_VERIFICATION']};
 }
