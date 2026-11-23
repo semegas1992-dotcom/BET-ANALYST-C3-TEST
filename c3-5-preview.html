@@ -17,7 +17,7 @@ function renderMatches(){
  const query=search.value.trim().toLocaleLowerCase('fr-FR');
  const selected=query?grouped.filter(m=>(m.home||'').toLocaleLowerCase('fr-FR').includes(query)||(m.away||'').toLocaleLowerCase('fr-FR').includes(query)):grouped;
  const categories=currentView?.groups||{};
- const summary=['UPCOMING','LIVE','FINISHED','OTHER','UNKNOWN'].map(k=>k+': '+(categories[k]?.length||0)).join(' · ');
+ const summary=[['UPCOMING','À venir'],['LIVE','En cours'],['FINISHED','Terminés'],['OTHER','Autres'],['UNKNOWN','Inconnus']].map(([k,label])=>label+': '+(categories[k]?.length||0)).join(' · ');
  count.textContent=selected.length+' rencontre(s) affichée(s) sur '+all.length+'. '+(currentView?summary:'');
  for(const m of selected){
   const item=document.createElement('div');item.className='match';
