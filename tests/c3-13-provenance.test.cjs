@@ -1,0 +1,16 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const dir=path.join(__dirname,'../preview-c3-7');
+const dependency=fs.readFileSync(path.join(dir,'c3-11-kraft-evidence.js'),'utf8');
+const depUrl='data:text/javascript;base64,'+Buffer.from(dependency).toString('base64');
+const source=fs.readFileSync(path.join(dir,'c3-13-provenance.js'),'utf8').replace("'./c3-11-kraft-evidence.js'","'"+depUrl+"'");
+const url='data:text/javascript;base64,'+Buffer.from(source).toString('base64');
+const base=()=>({schema:'BET_ANALYST_KRAFT_EVIDENCE_V1',match_id:'101',created_at:'2026-11-23T12:00:00Z',evidence:[]});
+const run=async d=>(await import(url)).auditEvidenceProvenance(d);
+test('C3.13: empty dossier cannot unblock KRAFT',async()=>{const r=await run(base());assert.equal(r.dossier_valid,true);assert.equal(r.analysis_readiness,'BLOCKED');assert.equal(r.independent_verification_count,0)});
+test('C3.13: documented verified state is not independent verification',async()=>{const d=base();d.evidence=[{id:'a',domain:'TEAM_FORM',state:'VERIFIED',value:1,source:'fictive',observed_at:'2026-11-23T11:00:00Z',verification_note:'declaration'}];const r=await run(d);assert.equal(r.documented_count,1);assert.equal(r.entries[0].independently_verified,false)});
+test('C3.13: missing source and date are explicit',async()=>{const d=base();d.evidence=[{id:'a',domain:'TEAM_FORM',state:'UNVERIFIED',value:1}];const r=await run(d);assert.ok(r.entries[0].flags.includes('SOURCE_NOT_DOCUMENTED'));assert.ok(r.entries[0].flags.includes('OBSERVATION_DATE_NOT_DOCUMENTED'))});
+test('C3.13: future observation relative to dossier creation is flagged',async()=>{const d=base();d.evidence=[{id:'a',domain:'TEAM_FORM',state:'VERIFIED',value:1,source:'fictive',observed_at:'2026-11-23T13:00:00Z',verification_note:'declaration'}];const r=await run(d);assert.ok(r.entries[0].flags.includes('OBSERVATION_AFTER_DOSSIER_CREATION'))});
+test('C3.13: invalid dossier is never marked valid',async()=>{const r=await run({schema:'bad',evidence:[]});assert.equal(r.dossier_valid,false);assert.equal(r.analysis_readiness,'BLOCKED')});
