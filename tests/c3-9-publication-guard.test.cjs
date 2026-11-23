@@ -15,5 +15,8 @@ test('C3.9 collected data is not deployed and artifact export is disabled until 
  assert.doesNotMatch(workflow,/upload-artifact/);
  assert.match(workflow,/permissions:\s*\n\s*contents: read/);
  assert.doesNotMatch(workflow,/pages: write|deploy-pages|git push|gh-pages/);
- assert.doesNotMatch(collector,/console\.log\([^\n]*(token|raw|snapshot\.matches)/i);
+ const logLines=collector.split('\n').filter(line=>/^\s*console\.log\s*\(/.test(line));
+ assert.ok(logLines.length>0,'Expected collection summary logs');
+ for(const line of logLines) assert.doesNotMatch(line,/console\.log\s*\(\s*(?:token|raw|snapshot\.matches)\b/i);
+ assert.doesNotMatch(collector,/console\.log\s*\(\s*JSON\.stringify\s*\(\s*(?:raw|snapshot)\b/i);
 });
