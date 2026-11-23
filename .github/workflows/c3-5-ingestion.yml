@@ -11,14 +11,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --check backend/c3-5-worker.mjs && node --check c3-5-provider.js && node --check c3-5-ingestion.js && node --check c3-5-snapshot.js && node --check c3-5-matches-view.js && node --check c3-5-snapshot-builder.js
-      - run: node --test tests/c3-5-collect-once.test.cjs tests/c3-5-end-to-end-offline.test.cjs tests/c3-5-snapshot-builder.test.cjs tests/c3-5-preview.test.cjs tests/c3-5-matches-view.test.cjs tests/c3-5-snapshot.test.cjs tests/c3-5-worker.test.cjs tests/c3-5-provider.test.cjs tests/c3-5-ingestion.test.cjs tests/c3-4-market-comparison.test.cjs tests/c3-3-scenarios.test.cjs tests/c3-3-coherence.test.cjs
+      - run: node --check backend/c3-5-worker.mjs && node --check c3-5-provider.js && node --check c3-5-ingestion.js && node --check c3-5-snapshot.js && node --check c3-5-matches-view.js && node --check c3-6-match-status.js && node --check c3-5-snapshot-builder.js
+      - run: node --test tests/c3-6-match-status.test.cjs tests/c3-5-collect-once.test.cjs tests/c3-5-end-to-end-offline.test.cjs tests/c3-5-snapshot-builder.test.cjs tests/c3-5-preview.test.cjs tests/c3-5-matches-view.test.cjs tests/c3-5-snapshot.test.cjs tests/c3-5-worker.test.cjs tests/c3-5-provider.test.cjs tests/c3-5-ingestion.test.cjs tests/c3-4-market-comparison.test.cjs tests/c3-3-scenarios.test.cjs tests/c3-3-coherence.test.cjs
       - name: Prepare isolated C3.5 preview artifact
         if: success()
         run: |
           mkdir -p c3-5-preview-package
           cp c3-5-preview.html c3-5-preview-package/index.html
-          cp c3-5-matches-view.js c3-5-snapshot.js c3-5-preview-package/
+          cp c3-5-matches-view.js c3-5-snapshot.js c3-6-match-status.js c3-5-preview-package/
       - name: Upload isolated preview package
         if: success()
         uses: actions/upload-artifact@v4
