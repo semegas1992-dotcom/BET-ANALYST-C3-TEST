@@ -6,3 +6,4 @@ test('preview renders user-controlled strings as text, not HTML',()=>{assert.mat
 test('preview marks demo as fictitious and has no real-data claim',()=>{assert.match(html,/exemple fictif/i);assert.match(html,/Aucune collecte en direct/);assert.match(html,/non vérifiées|non vérifié/)});
 
 test('C3.6 mobile preview offers status filters and counts without provider calls',()=>{assert.match(html,/id="category"/);assert.match(html,/value="UPCOMING"/);assert.match(html,/value="FINISHED"/);assert.match(html,/value="ALL"/);assert.match(html,/renderMatches\(\)/);assert.match(html,/rencontre\(s\) affichée\(s\)/)});
+test('C3.6 formats fixture dates in Paris timezone without changing source timestamps',()=>{assert.match(html,/Intl\.DateTimeFormat\('fr-FR'/);assert.match(html,/timeZone:'Europe\/Paris'/);assert.match(html,/Date manquante/)});
