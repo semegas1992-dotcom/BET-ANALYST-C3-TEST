@@ -14,6 +14,7 @@ on:
       - 'tests/c3-14-diagnostic.test.cjs'
       - 'tests/c3-15-remediation.test.cjs'
       - 'tests/c3-16-preparation.test.cjs'
+      - 'tests/c3-17-controlled-measures.test.cjs'
       - 'preview-c3-7/**'
       - '.github/workflows/c3-10-offline-tests.yml'
   workflow_dispatch:
@@ -29,4 +30,4 @@ jobs:
         with:
           node-version: '22'
       - name: Run C3.10 offline tests
-        run: node --test tests/c3-10-data-quality.test.cjs tests/c3-11-evidence.test.cjs tests/c3-11-interface.test.cjs tests/c3-12-evidence-link.test.cjs tests/c3-12-interface.test.cjs tests/c3-13-provenance.test.cjs tests/c3-13-interface.test.cjs tests/c3-13-classification.test.cjs tests/c3-14-diagnostic.test.cjs tests/c3-15-remediation.test.cjs tests/c3-16-preparation.test.cjs
+        run: node --test tests/c3-10-data-quality.test.cjs tests/c3-11-evidence.test.cjs tests/c3-11-interface.test.cjs tests/c3-12-evidence-link.test.cjs tests/c3-12-interface.test.cjs tests/c3-13-provenance.test.cjs tests/c3-13-interface.test.cjs tests/c3-13-classification.test.cjs tests/c3-14-diagnostic.test.cjs tests/c3-15-remediation.test.cjs tests/c3-16-preparation.test.cjs tests/c3-17-controlled-measures.test.cjs
