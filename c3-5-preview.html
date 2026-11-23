@@ -18,10 +18,13 @@ function renderMatches(){
  for(const m of selected){
   const item=document.createElement('div');item.className='match';
   const title=document.createElement('strong');title.textContent=(m.home||'Équipe inconnue')+' — '+(m.away||'Équipe inconnue');
-  const info=document.createElement('small');info.textContent=(m.date_utc||'Date manquante')+' · '+(m.status||'Statut manquant')+' · non vérifié';
+  const info=document.createElement('small');
+  const timestamp=Date.parse(m.date_utc||'');
+  const dateLabel=Number.isFinite(timestamp)?new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Paris'}).format(new Date(timestamp))+' (Paris)':'Date manquante';
+  info.textContent=dateLabel+' · '+(m.status||'Statut manquant')+' · non vérifié';
   item.append(title,info);list.append(item);
  }
- if(!selected.length)list.textContent='Aucune rencontre dans cette catégorie.';
+ if(!selected.length)list.textContent=currentView?.state==='UNAVAILABLE'?'Données indisponibles : aucun match affichable.':'Aucune rencontre dans cette catégorie.';
 }
 category.addEventListener('change',renderMatches);
 function render(snapshot){
