@@ -42,3 +42,17 @@ test('C3.8 serialized snapshot imported after 15 minutes visibly warns of age',a
  assert.equal(view.state,'STALE');
  assert.ok(view.warnings.includes('DONNEES_ANCIENNES'));
 });
+
+test('C3.8 fictional five-match fixture groups all statuses without claiming verification',async()=>{
+ const {buildMatchesView}=await import(viewUrl);
+ const fixture=JSON.parse(read('tests/fixtures/c3-8-fictional-multi-match.json'));
+ const view=buildMatchesView(fixture,{now:Date.parse('2026-11-23T06:05:00Z')});
+ assert.equal(view.state,'READY');
+ assert.equal(view.matches.length,5);
+ assert.equal(view.groups.UPCOMING.length,2);
+ assert.equal(view.groups.LIVE.length,1);
+ assert.equal(view.groups.FINISHED.length,1);
+ assert.equal(view.groups.OTHER.length,1);
+ assert.equal(view.verified,false);
+ assert.ok(view.matches.every(m=>m.verified===false));
+});
