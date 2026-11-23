@@ -3,7 +3,7 @@ import {writeFile} from 'node:fs/promises';
 import {createMatchSnapshot} from './c3-5-snapshot-builder.js';
 const competition=process.env.COMPETITION||'PL';
 const token=process.env.FOOTBALL_DATA_TOKEN;
-if(process.env.PROVIDER_LICENSE_APPROVED!=='true')throw new Error('LICENSE_NOT_APPROVED');
+if(process.env.COLLECTION_CONFIRMATION!=='COLLECTER')throw new Error('MANUAL_CONFIRMATION_REQUIRED');
 if(!token)throw new Error('MISSING_PRIVATE_TOKEN');
 if(!/^[A-Z0-9]{2,8}$/.test(competition))throw new Error('INVALID_COMPETITION');
 const endpoint='https://api.football-data.org/v4/competitions/'+competition+'/matches';
