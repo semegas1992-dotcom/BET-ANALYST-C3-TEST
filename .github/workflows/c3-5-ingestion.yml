@@ -7,7 +7,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -28,7 +28,7 @@ jobs:
           echo '✅ Suite de tests terminée avec code de sortie 0. Résultats détaillés dans les logs (aucune donnée fournisseur).' >> "$GITHUB_STEP_SUMMARY"
       - name: Upload test report (even on failure)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: c3-complete-offline-test-report
           path: c3-offline-test-results.txt
@@ -42,7 +42,7 @@ jobs:
           cp c3-5-matches-view.js c3-5-snapshot.js c3-6-match-status.js c3-5-preview-package/
       - name: Upload isolated preview package
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: c3-5-preview-experimental
           path: c3-5-preview-package/
