@@ -3,7 +3,6 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {pathToFileURL} = require('node:url');
 const source = fs.readFileSync(path.join(__dirname,'../preview-c3-7/c3-5-snapshot.js'),'utf8');
 const moduleUrl = 'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
 const now = Date.parse('2026-11-23T08:00:00.000Z');
@@ -78,4 +77,10 @@ test('C3.10-D: interface affiche le statut KRAFT et conserve la recherche',()=>{
  assert.match(html,/renderKraft\(view\)/);
  assert.match(html,/id="search"/);
  assert.match(html,/selected\.length\+' rencontre\(s\) affichée\(s\) sur '\+all\.length/);
+});
+
+test('C3.10-D: erreur JSON efface également le statut KRAFT précédent',()=>{
+ const html=fs.readFileSync(path.join(__dirname,'../preview-c3-7/index.html'),'utf8');
+ assert.match(html,/catch\{currentView=null;renderKraft\(null\);renderMatches\(\);status\.textContent='Fichier JSON illisible\.'/);
+ assert.match(html,/catch\{currentView=null;renderKraft\(null\);renderMatches\(\);status\.textContent='Erreur pendant la validation du fichier\.'/);
 });
