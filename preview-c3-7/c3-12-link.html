@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BET ANALYST — C3.12 Liaison des preuves</title>
+<style>body{font:16px system-ui,sans-serif;max-width:760px;margin:auto;padding:18px;background:#f5f7fa;color:#17263a}header{background:#17324d;color:#fff;padding:18px;border-radius:12px}h1{font-size:1.35rem}section{background:#fff;border:1px solid #dae1e9;border-radius:12px;padding:16px;margin-top:14px}input,button,select{font:inherit;box-sizing:border-box;max-width:100%;padding:10px}input,select{display:block;width:100%;margin:8px 0 14px}button{background:#17324d;color:#fff;border:0;border-radius:8px;margin:6px 0}small{display:block;color:#536172}.warning{color:#8a4300}.entry{border-top:1px solid #ddd;padding:10px 0;overflow-wrap:anywhere}p{overflow-wrap:anywhere}</style>
+</head><body><header><h1>BET ANALYST — Liaison C3.12</h1><p>Prototype expérimental · Lecture seule · Données fictives ou locales · Sans requête réseau</p></header>
+<section><h2>1. Charger les données</h2><label for="snapshot">Instantané des rencontres (JSON)</label><input id="snapshot" type="file" accept=".json,application/json"><label for="dossier">Dossier de preuves (JSON)</label><input id="dossier" type="file" accept=".json,application/json"><button id="demo" type="button">Tester avec des données fictives</button><p id="load-status" role="status">Aucune donnée chargée.</p></section>
+<section><h2>2. Choisir une rencontre</h2><label for="match">Rencontre disponible</label><select id="match"><option value="">Aucune rencontre disponible</option></select><p id="match-info"></p></section>
+<section aria-live="polite"><h2>3. Liaison et disponibilité KRAFT</h2><p id="link-status">Liaison non évaluée.</p><p id="readiness" class="warning">Analyse KRAFT bloquée.</p><p id="missing"></p><p id="errors"></p></section>
+<section><h2>4. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
+<script type="module">
+import {validateSnapshot} from './c3-5-snapshot.js';
+import {validateKraftEvidence,KRAFT_EVIDENCE_SCHEMA} from './c3-11-kraft-evidence.js';
+import {linkMatchEvidence} from './c3-12-evidence-link.js';
+const $=id=>document.getElementById(id);
+const domains={TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles'};
+let snapshot=null,dossier=null;
+function add(parent,tag,value){const el=document.createElement(tag);el.textContent=value;parent.append(el);return el}
+function resetDetail(){ $('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
+function updateMatches(){
+ const previous=$('match').value;
+ $('match').replaceChildren();
+ add($('match'),'option','Sélectionner une rencontre').value='';
+ const audit=validateSnapshot(snapshot);
+ if(audit.usable){
+  for(const m of audit.matches){const option=add($('match'),'option',m.homeTeam+' — '+m.awayTeam+' (#'+m.id+')');option.value=String(m.id)}
+ }
+ if(audit.usable&&audit.matches.some(m=>String(m.id)===previous))$('match').value=previous;
+ resetDetail();updateLink();
+}
+function updateLink(){
+ resetDetail();
+ const id=$('match').value;
+ if(!id){$('match-info').textContent='Sélectionne une rencontre pour examiner sa liaison.';return}
+ const audit=validateSnapshot(snapshot);
+ const selected=audit.usable?audit.matches.find(m=>String(m.id)===id):null;
+ $('match-info').textContent=selected?selected.homeTeam+' — '+selected.awayTeam+' · '+selected.utcDate+' · Données non vérifiées':'Rencontre indisponible.';
+ if(!dossier){$('link-status').textContent='Aucun dossier de preuves chargé.';return}
+ const result=linkMatchEvidence(snapshot,dossier);
+ if(!result.linked){
+  $('link-status').textContent='Liaison refusée : dossier invalide ou identifiant non correspondant.';
+  $('errors').textContent='Contrôles : '+result.errors.join(' · ');
+  return;
+ }
+ if(result.match.id!==id){$('link-status').textContent='Aucun dossier associé à cette rencontre.';return}
+ $('link-status').textContent='Correspondance exacte des identifiants — liaison locale non vérifiée.';
+ $('missing').textContent='Domaines sans preuve déclarée vérifiée : '+(result.missing_domains.map(k=>domains[k]||k).join(' · ')||'Aucun, mais analyse toujours bloquée.');
+ $('dossier-info').textContent='Dossier '+dossier.match_id+' · '+result.evidence_count+' élément(s) · déclaration de provenance non contrôlée indépendamment.';
+ for(const e of dossier.evidence){
+  const item=add($('evidence'),'div','');item.className='entry';
+  add(item,'strong',(domains[e.domain]||e.domain)+' — '+e.state);
+  add(item,'p','Valeur : '+(e.value===null?'manquante':String(e.value)));
+  if(e.source)add(item,'small','Source déclarée : '+e.source);
+  if(e.observed_at)add(item,'small','Observation : '+e.observed_at);
+  if(e.verification_note)add(item,'small','Note déclarée : '+e.verification_note);
+  if(e.rationale)add(item,'small','Justification : '+e.rationale);
+ }
+}
+async function load(file,kind){
+ if(!file)return;
+ if(file.size>1000000){if(kind==='snapshot')snapshot=null;else dossier=null;$('load-status').textContent='Fichier refusé : limite 1 Mo.';updateMatches();return}
+ try{
+  const data=JSON.parse(await file.text());
+  if(kind==='snapshot')snapshot=data;else dossier=data;
+  $('load-status').textContent='Fichier '+kind+' chargé localement. Aucun transfert réseau.';
+ }catch{
+  if(kind==='snapshot')snapshot=null;else dossier=null;
+  $('load-status').textContent='Fichier JSON illisible.';
+ }
+ updateMatches();
+}
+$('snapshot').addEventListener('change',e=>load(e.target.files?.[0],'snapshot'));
+$('dossier').addEventListener('change',e=>load(e.target.files?.[0],'dossier'));
+$('match').addEventListener('change',updateLink);
+$('demo').addEventListener('click',()=>{
+ snapshot={schema:'BET_ANALYST_MATCH_SNAPSHOT_V1',status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',competition:'PL',retrieved_at:new Date().toISOString(),coverage:'BASIC_MATCHES_ONLY',truncated:false,matches:[{id:101,utcDate:new Date(Date.now()+86400000).toISOString(),homeTeam:'Club fictif A',awayTeam:'Club fictif B',status:'SCHEDULED'},{id:102,utcDate:new Date(Date.now()+172800000).toISOString(),homeTeam:'Club fictif C',awayTeam:'Club fictif D',status:'SCHEDULED'}]};
+ dossier={schema:KRAFT_EVIDENCE_SCHEMA,match_id:'101',created_at:new Date().toISOString(),evidence:[{id:'f1',domain:'TEAM_FORM',state:'UNVERIFIED',value:'Série fictive de 3 matchs'},{id:'f2',domain:'TACTICAL_CONTEXT',state:'HYPOTHESIS',value:'Bloc fictif',rationale:'Démonstration seulement'},{id:'f3',domain:'SQUAD_AVAILABILITY',state:'MISSING',value:null}]};
+ $('load-status').textContent='Deux rencontres et un dossier fictifs chargés localement.';
+ updateMatches();$('match').value='101';updateLink();
+});
+</script></body></html>
