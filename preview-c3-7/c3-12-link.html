@@ -7,18 +7,20 @@
 <section><h2>2. Choisir une rencontre</h2><label for="match">Rencontre disponible</label><select id="match"><option value="">Aucune rencontre disponible</option></select><p id="match-info"></p></section>
 <section aria-live="polite"><h2>3. Liaison et disponibilité KRAFT</h2><p id="link-status">Liaison non évaluée.</p><p id="readiness" class="warning">Analyse KRAFT bloquée.</p><p id="missing"></p><p id="errors"></p></section>
 <section><h2>4. Traçabilité documentaire — C3.13-B</h2><p id="provenance-summary">Aucun audit de provenance disponible.</p><div id="provenance"></div></section>
-<section><h2>5. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
+<section><h2>5. Classification documentaire — C3.13-C</h2><p id="classification-summary">Aucune classification disponible.</p><div id="classification"></div></section>
+<section><h2>6. Dossier associé</h2><p id="dossier-info">Aucun dossier associé à la rencontre sélectionnée.</p><div id="evidence"></div></section>
 <script type="module">
 import {validateSnapshot} from './c3-5-snapshot.js';
 import {validateKraftEvidence,KRAFT_EVIDENCE_SCHEMA} from './c3-11-kraft-evidence.js';
 import {linkMatchEvidence} from './c3-12-evidence-link.js';
 import {auditEvidenceProvenance} from './c3-13-provenance.js';
+import {classifyEvidence} from './c3-13-classification.js';
 const $=id=>document.getElementById(id);
 const domains={TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles'};
 let snapshot=null,dossier=null;
 const importSequence={snapshot:0,dossier:0};
 function add(parent,tag,value){const el=document.createElement(tag);el.textContent=value;parent.append(el);return el}
-function resetDetail(){ $('provenance-summary').textContent='Aucun audit de provenance disponible.';$('provenance').replaceChildren();$('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
+function resetDetail(){ $('classification-summary').textContent='Aucune classification disponible.';$('classification').replaceChildren();$('provenance-summary').textContent='Aucun audit de provenance disponible.';$('provenance').replaceChildren();$('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
 function updateMatches(){
  const previous=$('match').value;
  $('match').replaceChildren();
@@ -47,6 +49,15 @@ function updateLink(){
  if(result.match.id!==id){$('link-status').textContent='Aucun dossier associé à cette rencontre.';return}
  $('link-status').textContent='Correspondance exacte des identifiants — liaison locale non vérifiée.';
  $('missing').textContent='Domaines sans preuve déclarée vérifiée : '+(result.missing_domains.map(k=>domains[k]||k).join(' · ')||'Aucun, mais analyse toujours bloquée.');
+ const classification=classifyEvidence(dossier);
+ $('classification-summary').textContent='Divergences documentaires détectées : '+classification.contradictions.length+' · Vérification indépendante : non · KRAFT bloqué.';
+ for(const domain of classification.domains){
+  const item=add($('classification'),'div','');item.className='entry';
+  add(item,'strong',domains[domain.domain]||domain.domain);
+  add(item,'p','Déclarées vérifiées : '+domain.counts.VERIFIED+' · Non vérifiées : '+domain.counts.UNVERIFIED+' · Hypothèses : '+domain.counts.HYPOTHESIS+' · Manquantes : '+domain.counts.MISSING);
+  add(item,'small','Documentation complète : '+domain.documented+'/'+domain.total+(domain.has_conflict?' · Divergence de valeurs déclarées, à examiner':''));
+ }
+ if(classification.contradictions.length)add($('classification'),'p','Attention : divergences textuelles entre valeurs déclarées vérifiées. Elles ne prouvent pas une contradiction sportive.');
  const provenance=auditEvidenceProvenance(dossier);
  $('provenance-summary').textContent='Documentation complète : '+provenance.documented_count+'/'+provenance.entries.length+' · Vérifications indépendantes : 0 · KRAFT bloqué.';
  const flagLabels={SOURCE_NOT_DOCUMENTED:'Source non documentée',OBSERVATION_DATE_NOT_DOCUMENTED:'Date d’observation non documentée',VERIFICATION_NOTE_NOT_DOCUMENTED:'Note de vérification non documentée',OBSERVATION_AFTER_DOSSIER_CREATION:'Observation postérieure à la création du dossier'};
