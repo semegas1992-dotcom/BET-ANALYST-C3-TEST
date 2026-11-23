@@ -14,8 +14,8 @@ export function createMatchSnapshot(raw,{competition,retrievedAt=new Date().toIS
   if(m?.status==='SCHEDULED'||m?.status==='TIMED')return 2;
   return 3;
  };
+ if(raw.matches.some(m=>!Number.isSafeInteger(m?.id)||m.id<=0||typeof m.utcDate!=='string'||!Number.isFinite(Date.parse(m.utcDate))||typeof m.homeTeam?.name!=='string'||!m.homeTeam.name.trim()||typeof m.awayTeam?.name!=='string'||!m.awayTeam.name.trim()))throw new Error('INCOMPLETE_MATCH_DATA');
  const selected=[...raw.matches].sort((a,b)=>rank(a)-rank(b)||((Date.parse(a?.utcDate)||0)-(Date.parse(b?.utcDate)||0))).slice(0,100);
- if(selected.some(m=>!Number.isSafeInteger(m?.id)||m.id<=0||typeof m.utcDate!=='string'||!Number.isFinite(Date.parse(m.utcDate))||typeof m.homeTeam?.name!=='string'||!m.homeTeam.name.trim()||typeof m.awayTeam?.name!=='string'||!m.awayTeam.name.trim()))throw new Error('INCOMPLETE_MATCH_DATA');
  const matches=selected.map(m=>({
   id:Number.isSafeInteger(m?.id)?m.id:null,
   utcDate:typeof m?.utcDate==='string'?m.utcDate:null,
