@@ -14,3 +14,14 @@ test('source and competition mismatch is rejected',async()=>{const {validateSnap
 test('truncation remains explicit',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot({...valid,truncated:true},{now:Date.parse('2026-11-22T10:05:00Z')});assert.equal(r.usable,true);assert.equal(r.truncated,true)});
 
 test('missing team or date rejects entire snapshot rather than showing fake match',async()=>{const {validateSnapshot}=await import(dataUrl);const r=validateSnapshot({...valid,matches:[{id:1,homeTeam:'A',awayTeam:null}]},{now:Date.parse('2026-11-22T10:05:00Z')});assert.equal(r.usable,false);assert.ok(r.errors.includes('INVALID_MATCH_FIELDS'));assert.deepEqual(r.matches,[])});
+
+test('C3.7 rejects explicitly incompatible snapshot schema without inventing matches',async()=>{
+ const {validateSnapshot}=await import(dataUrl);
+ const r=validateSnapshot({...valid,schema:'BET_ANALYST_MATCH_SNAPSHOT_V999'},{now:Date.parse('2026-11-22T10:05:00Z')});
+ assert.equal(r.usable,false);assert.ok(r.errors.includes('INVALID_SCHEMA'));assert.deepEqual(r.matches,[]);
+});
+test('C3.7 accepts current snapshot schema',async()=>{
+ const {validateSnapshot}=await import(dataUrl);
+ const r=validateSnapshot({...valid,schema:'BET_ANALYST_MATCH_SNAPSHOT_V1'},{now:Date.parse('2026-11-22T10:05:00Z')});
+ assert.equal(r.usable,true);
+});
