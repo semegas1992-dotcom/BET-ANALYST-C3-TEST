@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-      - run: node --check backend/c3-5-worker.mjs && node --check c3-5-provider.js && node --check c3-5-ingestion.js && node --check c3-5-snapshot.js && node --check c3-5-matches-view.js && node --check c3-6-match-status.js && node --check c3-5-snapshot-builder.js
+      - run: node --check backend/c3-5-worker.mjs && node --check c3-5-provider.js && node --check c3-5-ingestion.js && node --check c3-5-snapshot.js && node --check c3-5-matches-view.js && node --check c3-6-match-status.js && node --check c3-5-snapshot-builder.js && node --check c3-5-collect-once.mjs
       - name: Execute complete offline test suite with visible summary
         shell: bash
         run: |
