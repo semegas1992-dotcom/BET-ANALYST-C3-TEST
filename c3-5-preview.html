@@ -40,8 +40,8 @@ function render(snapshot){
 }
 document.querySelector('#file').addEventListener('change',async e=>{
  const file=e.target.files?.[0];if(!file)return;
- if(file.size>1000000){status.textContent='Fichier trop volumineux (maximum 1 Mo).';return}
- try{render(JSON.parse(await file.text()))}catch{status.textContent='Fichier JSON illisible.';list.replaceChildren();meta.textContent=''}
+ if(file.size>1000000){currentView=null;renderMatches();status.textContent='Fichier trop volumineux (maximum 1 Mo).';meta.textContent='';return}
+ try{render(JSON.parse(await file.text()))}catch{currentView=null;renderMatches();status.textContent='Fichier JSON illisible.';meta.textContent=''}
 });
 document.querySelector('#demo').addEventListener('click',()=>render({status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',competition:'PL',retrieved_at:new Date().toISOString(),coverage:'BASIC_MATCHES_ONLY',truncated:false,matches:[{id:1,utcDate:new Date(Date.now()+86400000).toISOString(),homeTeam:'Équipe fictive A',awayTeam:'Équipe fictive B',status:'SCHEDULED'}]}));
 </script></body></html>
