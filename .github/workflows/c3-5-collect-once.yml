@@ -7,14 +7,6 @@ on:
         required: true
         default: 'PL'
         type: string
-      private_snapshot:
-        description: 'Conserver le JSON 1 jour dans Actions (acces selon droits GitHub, oui/non)'
-        required: true
-        default: 'non'
-        type: choice
-        options:
-          - 'non'
-          - 'oui'
       confirmation:
         description: 'Type COLLECTER to explicitly authorize this single request'
         required: true
@@ -23,7 +15,7 @@ permissions:
   contents: read
 jobs:
   collect:
-    if: ${{ inputs.confirmation == 'COLLECTER' }}
+    if: ${{ vars.PROVIDER_LICENSE_APPROVED == 'true' && inputs.confirmation == 'COLLECTER' }}
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -49,15 +41,8 @@ jobs:
         env:
           COMPETITION: ${{ inputs.competition }}
           COLLECTION_CONFIRMATION: ${{ inputs.confirmation }}
+          PROVIDER_LICENSE_APPROVED: ${{ vars.PROVIDER_LICENSE_APPROVED }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node c3-5-collect-once.mjs
-      - name: Store snapshot as short-lived Actions artifact (explicit opt-in only)
-        if: ${{ inputs.private_snapshot == 'oui' }}
-        uses: actions/upload-artifact@v5
-        with:
-          name: c3-private-matches-${{ github.run_id }}
-          path: c3-5-collected-matches.json
-          if-no-files-found: error
-          retention-days: 1
+      # No artifact upload until provider redistribution rights and access are reviewed.
       # No repository commit, Pages deployment, or public data publication.
-      # Artifact access follows GitHub repository permissions; this public repository is not a private vault.
