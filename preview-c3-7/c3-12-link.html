@@ -14,6 +14,7 @@ import {linkMatchEvidence} from './c3-12-evidence-link.js';
 const $=id=>document.getElementById(id);
 const domains={TEAM_FORM:'Forme des équipes',TEAM_STATISTICS:'Statistiques collectives',SQUAD_AVAILABILITY:'Effectifs et disponibilités',TACTICAL_CONTEXT:'Contexte tactique',PLAYER_STATISTICS:'Statistiques individuelles'};
 let snapshot=null,dossier=null;
+let importSequence=0;
 function add(parent,tag,value){const el=document.createElement(tag);el.textContent=value;parent.append(el);return el}
 function resetDetail(){ $('link-status').textContent='Liaison non évaluée.';$('readiness').textContent='Analyse KRAFT bloquée.';$('missing').textContent='';$('errors').textContent='';$('dossier-info').textContent='Aucun dossier associé à la rencontre sélectionnée.';$('evidence').replaceChildren()}
 function updateMatches(){
@@ -57,21 +58,38 @@ function updateLink(){
 }
 async function load(file,kind){
  if(!file)return;
- if(file.size>1000000){if(kind==='snapshot')snapshot=null;else dossier=null;$('load-status').textContent='Fichier refusé : limite 1 Mo.';updateMatches();return}
- try{
-  const data=JSON.parse(await file.text());
-  if(kind==='snapshot')snapshot=data;else dossier=data;
-  $('load-status').textContent='Fichier '+kind+' chargé localement. Aucun transfert réseau.';
- }catch{
-  if(kind==='snapshot')snapshot=null;else dossier=null;
-  $('load-status').textContent='Fichier JSON illisible.';
+ const sequence=++importSequence;
+ // Invalider immédiatement l'ancien contenu pour empêcher toute association périmée.
+ if(kind==='snapshot')snapshot=null;else dossier=null;
+ $('load-status').textContent='Vérification du fichier en cours…';
+ updateMatches();
+ if(file.size>1000000){
+  $('load-status').textContent='Fichier refusé : limite 1 Mo.';
+  return;
  }
+ let data;
+ try{data=JSON.parse(await file.text())}
+ catch{
+  if(sequence!==importSequence)return;
+  $('load-status').textContent='Fichier JSON illisible.';
+  return;
+ }
+ if(sequence!==importSequence)return;
+ const audit=kind==='snapshot'?validateSnapshot(data):validateKraftEvidence(data);
+ if(kind==='snapshot'?!audit.usable:!audit.valid){
+  $('load-status').textContent='Fichier refusé : structure invalide ('+audit.errors.join(' · ')+').';
+  return;
+ }
+ if(kind==='snapshot')snapshot=data;else dossier=data;
+ $('load-status').textContent='Fichier '+kind+' validé structurellement et chargé localement. Données sportives non vérifiées.';
  updateMatches();
 }
+
 $('snapshot').addEventListener('change',e=>load(e.target.files?.[0],'snapshot'));
 $('dossier').addEventListener('change',e=>load(e.target.files?.[0],'dossier'));
 $('match').addEventListener('change',updateLink);
 $('demo').addEventListener('click',()=>{
+ ++importSequence;
  snapshot={schema:'BET_ANALYST_MATCH_SNAPSHOT_V1',status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',competition:'PL',retrieved_at:new Date().toISOString(),coverage:'BASIC_MATCHES_ONLY',truncated:false,matches:[{id:101,utcDate:new Date(Date.now()+86400000).toISOString(),homeTeam:'Club fictif A',awayTeam:'Club fictif B',status:'SCHEDULED'},{id:102,utcDate:new Date(Date.now()+172800000).toISOString(),homeTeam:'Club fictif C',awayTeam:'Club fictif D',status:'SCHEDULED'}]};
  dossier={schema:KRAFT_EVIDENCE_SCHEMA,match_id:'101',created_at:new Date().toISOString(),evidence:[{id:'f1',domain:'TEAM_FORM',state:'UNVERIFIED',value:'Série fictive de 3 matchs'},{id:'f2',domain:'TACTICAL_CONTEXT',state:'HYPOTHESIS',value:'Bloc fictif',rationale:'Démonstration seulement'},{id:'f3',domain:'SQUAD_AVAILABILITY',state:'MISSING',value:null}]};
  $('load-status').textContent='Deux rencontres et un dossier fictifs chargés localement.';
