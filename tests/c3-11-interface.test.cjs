@@ -1,0 +1,10 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const html=fs.readFileSync(path.join(__dirname,'../preview-c3-7/c3-11-evidence.html'),'utf8');
+test('C3.11-B: page mobile et chargement local',()=>{assert.match(html,/name="viewport"/);assert.match(html,/type="file"/);assert.match(html,/JSON\.parse\(await file\.text\(\)\)/)});
+test('C3.11-B: aucune collecte réseau dans la page',()=>{assert.doesNotMatch(html,/\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/);assert.match(html,/Aucun envoi au serveur/)});
+test('C3.11-B: validation utilisée et analyse toujours bloquée',()=>{assert.match(html,/validateKraftEvidence\(data\)/);assert.match(html,/Analyse KRAFT bloquée/)});
+test('C3.11-B: contenu dynamique rendu comme texte',()=>{assert.doesNotMatch(html,/innerHTML|outerHTML|insertAdjacentHTML/);assert.match(html,/\.textContent=text/)});
+test('C3.11-B: exemple fictif, erreurs et domaines manquants',()=>{assert.match(html,/DEMO-FICTIF-001/);assert.match(html,/audit\.missing_domains/);assert.match(html,/audit\.errors/)});
