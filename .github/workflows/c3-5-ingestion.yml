@@ -17,12 +17,15 @@ jobs:
         run: |
           set -o pipefail
           echo '### BET ANALYST C3 — Offline validation' >> "$GITHUB_STEP_SUMMARY"
+          set +e
           node --test --test-reporter=spec tests/c3-7-preview-safety.test.cjs tests/c3-6-match-status.test.cjs tests/c3-5-collect-once.test.cjs tests/c3-5-end-to-end-offline.test.cjs tests/c3-5-snapshot-builder.test.cjs tests/c3-5-preview.test.cjs tests/c3-5-matches-view.test.cjs tests/c3-5-snapshot.test.cjs tests/c3-5-worker.test.cjs tests/c3-5-provider.test.cjs tests/c3-5-ingestion.test.cjs tests/c3-4-market-comparison.test.cjs tests/c3-3-scenarios.test.cjs tests/c3-3-coherence.test.cjs 2>&1 | tee c3-offline-test-results.txt
-          if grep -Eq '^ℹ fail [1-9]|^✖ ' c3-offline-test-results.txt; then
+          test_exit=${PIPESTATUS[0]}
+          set -e
+          if [ "$test_exit" -ne 0 ]; then
             echo '❌ Tests échoués — voir les logs' >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
-          echo 'Résultats détaillés disponibles dans les logs du job (aucune donnée fournisseur).' >> "$GITHUB_STEP_SUMMARY"
+          echo '✅ Suite de tests terminée avec code de sortie 0. Résultats détaillés dans les logs (aucune donnée fournisseur).' >> "$GITHUB_STEP_SUMMARY"
       - name: Prepare isolated C3.5 preview artifact
         if: success()
         run: |
