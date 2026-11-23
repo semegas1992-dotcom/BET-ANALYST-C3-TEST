@@ -17,3 +17,9 @@ test('C3.7 experimental title and source transparency',()=>{
  assert.match(html,/Aucune collecte en direct/);
  assert.match(html,/non vérifié/);
 });
+
+test('C3.7 distinguishes JSON parse failure from validation processing failure',()=>{
+ assert.match(html,/Fichier JSON illisible/);
+ assert.match(html,/Erreur pendant la validation du fichier/);
+ assert.match(html,/try\{render\(parsed\)\}/);
+});
