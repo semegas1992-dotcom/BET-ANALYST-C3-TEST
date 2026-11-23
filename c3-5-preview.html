@@ -16,7 +16,9 @@ function renderMatches(){
  const grouped=category.value==='ALL'?all:(currentView?.groups?.[category.value]||[]);
  const query=search.value.trim().toLocaleLowerCase('fr-FR');
  const selected=query?grouped.filter(m=>(m.home||'').toLocaleLowerCase('fr-FR').includes(query)||(m.away||'').toLocaleLowerCase('fr-FR').includes(query)):grouped;
- count.textContent=selected.length+' rencontre(s) affichée(s) sur '+all.length+'.';
+ const categories=currentView?.groups||{};
+ const summary=['UPCOMING','LIVE','FINISHED','OTHER','UNKNOWN'].map(k=>k+': '+(categories[k]?.length||0)).join(' · ');
+ count.textContent=selected.length+' rencontre(s) affichée(s) sur '+all.length+'. '+(currentView?summary:'');
  for(const m of selected){
   const item=document.createElement('div');item.className='match';
   const title=document.createElement('strong');title.textContent=(m.home||'Équipe inconnue')+' — '+(m.away||'Équipe inconnue');
