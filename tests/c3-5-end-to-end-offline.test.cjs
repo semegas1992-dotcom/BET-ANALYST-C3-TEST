@@ -21,3 +21,24 @@ test('offline pipeline never masks an expired snapshot',async()=>{
  const view=buildMatchesView(snapshot,{now:Date.parse('2026-11-22T22:00:00Z')});
  assert.equal(view.state,'STALE');assert.ok(view.warnings.includes('DONNEES_ANCIENNES'));
 });
+
+test('C3.8 actual JSON serialization round-trip remains readable in Android preview model',async()=>{
+ const {createMatchSnapshot}=await import(builderUrl);
+ const {buildMatchesView}=await import(viewUrl);
+ const generated=createMatchSnapshot(raw,{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'});
+ const downloaded=JSON.parse(JSON.stringify(generated));
+ const view=buildMatchesView(downloaded,{now:Date.parse('2026-11-23T06:05:00Z')});
+ assert.equal(downloaded.schema,'BET_ANALYST_MATCH_SNAPSHOT_V1');
+ assert.equal(view.state,'READY');
+ assert.equal(view.groups.UPCOMING.length,1);
+ assert.equal(view.matches[0].id,'42');
+ assert.equal(view.verified,false);
+});
+test('C3.8 serialized snapshot imported after 15 minutes visibly warns of age',async()=>{
+ const {createMatchSnapshot}=await import(builderUrl);
+ const {buildMatchesView}=await import(viewUrl);
+ const file=JSON.stringify(createMatchSnapshot(raw,{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'}));
+ const view=buildMatchesView(JSON.parse(file),{now:Date.parse('2026-11-23T06:16:00Z')});
+ assert.equal(view.state,'STALE');
+ assert.ok(view.warnings.includes('DONNEES_ANCIENNES'));
+});
