@@ -14,3 +14,5 @@ test('C3.12-C: rejects structurally invalid JSON files',()=>{assert.match(html,/
 test('C3.12-C: immediately removes old data before reading replacement',()=>{assert.match(html,/if\(kind==='snapshot'\)snapshot=null;else dossier=null;[\s\S]*?updateMatches\(\);[\s\S]*?await file\.text\(\)/)});
 test('C3.12-C: ignores out-of-order file reads independently by type',()=>{assert.match(html,/importSequence=\{snapshot:0,dossier:0\}/);assert.match(html,/sequence!==importSequence\[kind\]/)});
 test('C3.12-C: demo invalidates pending imports',()=>{assert.match(html,/\+\+importSequence\.snapshot;\+\+importSequence\.dossier/);assert.match(html,/Analyse KRAFT bloquée/)});
+
+test('C3.12-C: replacing a snapshot clears previous dossier',()=>{assert.match(html,/snapshot=null;dossier=null;\+\+importSequence\.dossier/)});
