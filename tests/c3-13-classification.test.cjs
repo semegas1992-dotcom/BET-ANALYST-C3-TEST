@@ -1,0 +1,18 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const dir=path.join(__dirname,'../preview-c3-7');
+const urlFor=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
+const ev=urlFor(fs.readFileSync(path.join(dir,'c3-11-kraft-evidence.js'),'utf8'));
+const prov=urlFor(fs.readFileSync(path.join(dir,'c3-13-provenance.js'),'utf8').replace("'./c3-11-kraft-evidence.js'","'"+ev+"'"));
+const cls=urlFor(fs.readFileSync(path.join(dir,'c3-13-classification.js'),'utf8').replace("'./c3-11-kraft-evidence.js'","'"+ev+"'").replace("'./c3-13-provenance.js'","'"+prov+"'"));
+const run=async d=>(await import(cls)).classifyEvidence(d);
+const base=()=>({schema:'BET_ANALYST_KRAFT_EVIDENCE_V1',match_id:'101',created_at:'2026-11-23T12:00:00Z',evidence:[]});
+const item=(id,state,value,domain='TEAM_FORM')=>({id,domain,state,value,...(state==='VERIFIED'?{source:'fiction',observed_at:'2026-11-23T11:00:00Z',verification_note:'declaration'}:{})});
+test('C3.13-C: empty valid dossier remains blocked',async()=>{const r=await run(base());assert.equal(r.valid,true);assert.equal(r.domains.length,5);assert.equal(r.analysis_readiness,'BLOCKED')});
+test('C3.13-C: invalid dossier rejected',async()=>{const r=await run({schema:'bad',evidence:[]});assert.equal(r.valid,false);assert.equal(r.domains.length,0)});
+test('C3.13-C: counts unverified and missing separately',async()=>{const d=base();d.evidence=[item('a','UNVERIFIED','fictif'),item('b','MISSING',null)];const r=await run(d);assert.equal(r.domains[0].counts.UNVERIFIED,1);assert.equal(r.domains[0].counts.MISSING,1)});
+test('C3.13-C: divergent declared verified values are flagged only as documentary',async()=>{const d=base();d.evidence=[item('a','VERIFIED',1),item('b','VERIFIED',2)];const r=await run(d);assert.equal(r.contradictions.length,1);assert.equal(r.contradictions[0].kind,'DIVERGENT_DECLARED_VERIFIED_VALUES');assert.equal(r.analysis_readiness,'BLOCKED')});
+test('C3.13-C: same declared values are not flagged',async()=>{const d=base();d.evidence=[item('a','VERIFIED',1),item('b','VERIFIED',1)];assert.equal((await run(d)).contradictions.length,0)});
+test('C3.13-C: hypotheses do not create false verified divergence',async()=>{const d=base();d.evidence=[item('a','VERIFIED',1),{...item('b','HYPOTHESIS',2),rationale:'fiction'}];assert.equal((await run(d)).contradictions.length,0)});
