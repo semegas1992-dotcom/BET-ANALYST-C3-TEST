@@ -38,3 +38,9 @@ test('C3.7 prefers the nearest future fixtures and latest finished fixtures',asy
  const r=createMatchSnapshot({matches},{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'});
  assert.deepEqual(r.matches.map(x=>x.id),[4,2,3,1]);
 });
+
+test('C3.7 rejects duplicate provider fixture IDs before the 100-item cap',async()=>{
+ const {createMatchSnapshot}=await import(url);
+ const m=id=>({id,utcDate:'2026-11-24T20:00:00Z',homeTeam:{name:'A'},awayTeam:{name:'B'}});
+ assert.throws(()=>createMatchSnapshot({matches:[m(42),m(42)]},{competition:'PL',retrievedAt:'2026-11-23T06:00:00Z'}),/DUPLICATE_MATCH_IDS/);
+});
