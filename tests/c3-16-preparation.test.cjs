@@ -1,0 +1,17 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const dir=path.join(__dirname,'../preview-c3-7');
+const read=p=>fs.readFileSync(path.join(dir,p),'utf8');
+const data=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
+const dependency=data(read('c3-11-kraft-evidence.js'));
+const moduleUrl=data(read('c3-16-kraft-preparation.js').replace("'./c3-11-kraft-evidence.js'","'"+dependency+"'"));
+const run=async d=>(await import(moduleUrl)).prepareKraftInput(d);
+const base=()=>({schema:'BET_ANALYST_KRAFT_EVIDENCE_V1',match_id:'101',created_at:'2026-11-23T12:00:00Z',evidence:[]});
+test('C3.16: valid empty dossier produces five domains and no projections',async()=>{const r=await run(base());assert.equal(r.valid,true);assert.equal(r.domains.length,5);assert.equal(r.rapport_de_force.status,'NOT_COMPUTED');assert.equal(r.analysis_readiness,'BLOCKED')});
+test('C3.16: invalid dossier cannot create evidence',async()=>{const r=await run({schema:'invalid',evidence:[]});assert.equal(r.valid,false);assert.equal(r.sections.every(s=>s.item_ids.length===0),true)});
+test('C3.16: hypothesis is kept separate from verified declarations',async()=>{const d=base();d.evidence=[{id:'h1',domain:'TACTICAL_CONTEXT',state:'HYPOTHESIS',value:'bloc fictif',rationale:'test'}];const r=await run(d);assert.deepEqual(r.sections.find(s=>s.key==='HYPOTHESES').item_ids,['h1']);assert.equal(r.sections.find(s=>s.key==='FACTS').item_ids.length,0)});
+test('C3.16: even declared verified evidence does not produce a forecast',async()=>{const d=base();d.evidence=[{id:'v1',domain:'TEAM_FORM',state:'VERIFIED',value:3,source:'fiction',observed_at:'2026-11-23T11:00:00Z',verification_note:'declared'}];const r=await run(d);assert.equal(r.sections.find(s=>s.key==='FACTS').item_ids.length,1);assert.equal(r.independently_verified,false);assert.equal(r.probabilities.status,'NOT_COMPUTED')});
+test('C3.16: scenarios and markets never inferred',async()=>{const r=await run(base());assert.deepEqual(r.scenarios.map(s=>s.status),['NOT_COMPUTED','NOT_COMPUTED','NOT_COMPUTED']);assert.deepEqual(r.markets.candidates,[])});
+test('C3.16: Android only renders preparation after exact match',()=>{const h=read('c3-12-link.html');assert.match(h,/result\.match\.id!==id[\s\S]*?return[\s\S]*?prepareKraftInput\(dossier\)/);assert.match(h,/\$\('kraft-prep'\)\.replaceChildren\(\)/);assert.match(h,/Rapport de force : non calculé/);assert.doesNotMatch(h,/innerHTML|outerHTML/)});
