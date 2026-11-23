@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BET ANALYST — C3.7 (expérimental)</title>
+<style>body{font:16px system-ui,sans-serif;max-width:760px;margin:auto;padding:18px;background:#f5f7fa;color:#17263a}header{background:#17324d;color:white;border-radius:12px;padding:18px}h1{font-size:1.35rem}section{background:white;padding:16px;border:1px solid #dae1e9;border-radius:12px;margin-top:14px}button,input,select{font:inherit;margin:8px 0;padding:10px;max-width:100%}button{background:#17324d;color:white;border:0;border-radius:8px}.warning{color:#8a4300}.match{border-top:1px solid #ddd;padding:12px 0}small{display:block;color:#536172}</style>
+</head><body><header><h1>BET ANALYST — Rencontres C3.7</h1><p>Prototype expérimental · Lecture seule · Aucune collecte en direct</p></header>
+<section><h2>Charger un instantané JSON</h2><p>Fichier local uniquement. Aucune clé API et aucun envoi au fournisseur.</p><input id="file" type="file" accept=".json,application/json"><button id="demo" type="button">Afficher un exemple fictif</button><p id="status" role="status">Aucun instantané chargé.</p></section>
+<section><small>Source prévue pour les données réelles : Football data provided by the Football-Data.org API. L'exemple ci-dessous est fictif et ne provient pas du fournisseur.</small></section>
+<section><h2>Rencontres</h2><p id="meta"></p><label for="search">Rechercher une équipe : </label><input id="search" type="search" placeholder="Nom de l’équipe" autocomplete="off"><label for="category">Afficher : </label><select id="category" aria-label="Filtrer les rencontres"><option value="UPCOMING">À venir</option><option value="LIVE">En cours</option><option value="FINISHED">Terminées</option><option value="OTHER">Autres statuts</option><option value="UNKNOWN">Statut inconnu</option><option value="ALL">Toutes</option></select><p id="count" role="status"></p><div id="matches"></div></section>
+<script type="module">
+import {buildMatchesView} from './c3-5-matches-view.js';
+const status=document.querySelector('#status'),meta=document.querySelector('#meta'),list=document.querySelector('#matches'),category=document.querySelector('#category'),count=document.querySelector('#count'),search=document.querySelector('#search');
+let currentView=null;
+function renderMatches(){
+ list.replaceChildren();
+ const all=currentView?.matches||[];
+ const grouped=category.value==='ALL'?all:(currentView?.groups?.[category.value]||[]);
+ const query=search.value.trim().toLocaleLowerCase('fr-FR');
+ const selected=query?grouped.filter(m=>(m.home||'').toLocaleLowerCase('fr-FR').includes(query)||(m.away||'').toLocaleLowerCase('fr-FR').includes(query)):grouped;
+ const categories=currentView?.groups||{};
+ const summary=[['UPCOMING','À venir'],['LIVE','En cours'],['FINISHED','Terminés'],['OTHER','Autres'],['UNKNOWN','Inconnus']].map(([k,label])=>label+': '+(categories[k]?.length||0)).join(' · ');
+ count.textContent=selected.length+' rencontre(s) affichée(s) sur '+all.length+'. '+(currentView?summary:'');
+ for(const m of selected){
+  const item=document.createElement('div');item.className='match';
+  const title=document.createElement('strong');title.textContent=(m.home||'Équipe inconnue')+' — '+(m.away||'Équipe inconnue');
+  const info=document.createElement('small');
+  const timestamp=Date.parse(m.date_utc||'');
+  const dateLabel=Number.isFinite(timestamp)?new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Paris'}).format(new Date(timestamp))+' (Paris)':'Date manquante';
+  info.textContent=dateLabel+' · '+(m.status||'Statut manquant')+' · non vérifié';
+  item.append(title,info);list.append(item);
+ }
+ if(!selected.length)list.textContent=currentView?.state==='UNAVAILABLE'?'Données indisponibles : aucun match affichable.':'Aucune rencontre dans cette catégorie.';
+}
+category.addEventListener('change',renderMatches);
+search.addEventListener('input',renderMatches);
+function render(snapshot){
+ const view=buildMatchesView(snapshot);
+ status.textContent=view.message;
+ status.className=view.state==='READY'?'':'warning';
+ meta.textContent=[view.competition?'Compétition : '+view.competition:'',view.retrieved_at?'Collecté : '+view.retrieved_at:'',view.warnings?.length?'Avertissements : '+view.warnings.join(', '):'','Statut : données non vérifiées'].filter(Boolean).join(' | ');
+ currentView=view;
+ renderMatches();
+}
+document.querySelector('#file').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ if(file.size>1000000){currentView=null;renderMatches();status.textContent='Fichier trop volumineux (maximum 1 Mo).';status.className='warning';meta.textContent='';return}
+ let parsed;
+ try{parsed=JSON.parse(await file.text())}
+ catch{currentView=null;renderMatches();status.textContent='Fichier JSON illisible.';status.className='warning';meta.textContent='';return}
+ try{render(parsed)}
+ catch{currentView=null;renderMatches();status.textContent='Erreur pendant la validation du fichier.';status.className='warning';meta.textContent=''}
+});
+document.querySelector('#demo').addEventListener('click',()=>render({status:'RECEIVED_UNVERIFIED',provider:'football-data.org',source_endpoint:'https://api.football-data.org/v4/competitions/PL/matches',competition:'PL',retrieved_at:new Date().toISOString(),coverage:'BASIC_MATCHES_ONLY',truncated:false,matches:[{id:1,utcDate:new Date(Date.now()+86400000).toISOString(),homeTeam:'Équipe fictive A',awayTeam:'Équipe fictive B',status:'SCHEDULED'}]}));
+</script></body></html>
