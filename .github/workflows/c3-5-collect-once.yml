@@ -7,6 +7,14 @@ on:
         required: true
         default: 'PL'
         type: string
+      private_snapshot:
+        description: 'Conserver le JSON dans un artefact GitHub prive pendant 1 jour (oui/non)'
+        required: true
+        default: 'non'
+        type: choice
+        options:
+          - 'non'
+          - 'oui'
       confirmation:
         description: 'Type COLLECTER to explicitly authorize this single request'
         required: true
@@ -43,4 +51,13 @@ jobs:
           COLLECTION_CONFIRMATION: ${{ inputs.confirmation }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node c3-5-collect-once.mjs
-      # No artifact publication, commit, or deployment.
+      - name: Store snapshot as short-lived private workflow artifact (explicit opt-in only)
+        if: ${{ inputs.private_snapshot == 'oui' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: c3-private-matches-${{ github.run_id }}
+          path: c3-5-collected-matches.json
+          if-no-files-found: error
+          retention-days: 1
+      # No repository commit, Pages deployment, or public data publication.
+      # Private artifact access follows repository Actions permissions and retention.
