@@ -8,7 +8,7 @@ on:
         default: 'PL'
         type: string
       private_snapshot:
-        description: 'Conserver le JSON dans un artefact GitHub prive pendant 1 jour (oui/non)'
+        description: 'Conserver le JSON 1 jour dans Actions (acces selon droits GitHub, oui/non)'
         required: true
         default: 'non'
         type: choice
@@ -28,11 +28,11 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: Checkout isolated experimental branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: c3-5-data-ingestion-candidate
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
       - name: Validate requested competition and required secret
@@ -51,13 +51,13 @@ jobs:
           COLLECTION_CONFIRMATION: ${{ inputs.confirmation }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node c3-5-collect-once.mjs
-      - name: Store snapshot as short-lived private workflow artifact (explicit opt-in only)
+      - name: Store snapshot as short-lived Actions artifact (explicit opt-in only)
         if: ${{ inputs.private_snapshot == 'oui' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: c3-private-matches-${{ github.run_id }}
           path: c3-5-collected-matches.json
           if-no-files-found: error
           retention-days: 1
       # No repository commit, Pages deployment, or public data publication.
-      # Private artifact access follows repository Actions permissions and retention.
+      # Artifact access follows GitHub repository permissions; this public repository is not a private vault.
