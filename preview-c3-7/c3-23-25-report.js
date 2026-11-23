@@ -1,5 +1,6 @@
 // C3.23–C3.25 — provenance déclarative, typologie des réserves et synthèse fictive.
 import {inspectSyntheticEvidence} from './c3-20-22-controls.js';
+import {auditControlledMeasures} from './c3-18-measure-quality.js';
 const OWN=Object.prototype.hasOwnProperty;
 const nonempty=x=>typeof x==='string'&&x.trim().length>0;
 const categories={
@@ -28,15 +29,7 @@ export function summarizeSyntheticEvidence(input){
    issues,independently_verified:false};
  });
  const conflicts=core.conflicts.map(x=>({...x,category:categories[x.issue]||'OTHER'}));
- const directions=core.sensitivity.length?core.sensitivity[0]:null;
- const cmp=input.measures.map(m=>m.direction);
- // Directional disagreement is explicitly distinct from a contradiction of documentary facts.
- const original=core.sensitivity.map(x=>x.removed_id);
- const preferred=core.sensitivity.map(x=>({id:x.removed_id,otherSignalsOppose:x.has_opposing_signals}));
- const all=core.checks.map(x=>x.id);
- const measures=core.sensitivity.length;
- const hasMixed=core.sensitivity.some(x=>x.has_opposing_signals)||core.balance_status==='INDETERMINATE_WITH_ALERTS'&&
-  core.checks.length>1&&core.sensitivity.some(x=>x.remaining_home>0&&x.remaining_away>0);
+ const hasMixed=auditControlledMeasures(input).signals.includes('MIXED_DIRECTIONS');
  if(hasMixed)conflicts.push({id:null,issue:'MIXED_DIRECTIONS',category:'INDICATOR_DISAGREEMENT'});
  for(const t of trace)for(const issue of t.issues)conflicts.push({id:t.id,issue,category:issue==='EVIDENCE_NOT_DECLARED'||issue.endsWith('_MISSING')?'MISSING':issue==='EVIDENCE_INVALID'||issue==='EVIDENCE_STATUS_INVALID'?'INCONSISTENCY':'OTHER'});
  const count={MISSING:0,UNVERIFIED:0,INCONSISTENCY:0,INDICATOR_DISAGREEMENT:0,OTHER:0};
