@@ -16,7 +16,7 @@ def stamp(s):
 def fetch(path,params,key,trace):
     if not key:raise ValueError("missing token")
     url=BASE+path+"?"+urlencode(params)
-    if trace:time.sleep(7)
+    time.sleep(7)
     for attempt in range(3):
         try:
             with urlopen(Request(url,headers={"X-Auth-Token":key}),timeout=30) as response:
@@ -38,11 +38,11 @@ def matches(data):
 def upcoming(rows,now,end):
     return [m for m in rows if m["status"]=="TIMED" and now<stamp(m["utcDate"])<=end and m["competition"]["code"] in LEAGUES and m["homeTeam"]["id"]!=m["awayTeam"]["id"]]
 
-def history(rows,event,team,cutoff):
+def history(rows,event,team,cutoff,multi=False):
     out=[]
     for m in rows:
         if m["status"]!="FINISHED" or m["id"]==event["id"]:continue
-        if m["competition"]["id"]!=event["competition"]["id"] or m["season"]["id"]!=event["season"]["id"]:continue
+        if m["competition"]["id"]!=event["competition"]["id"] or (not multi and m["season"]["id"]!=event["season"]["id"]):continue
         if stamp(m["utcDate"]).date()>=cutoff.date():continue
         if not m.get("lastUpdated") or stamp(m["lastUpdated"])>cutoff:continue
         h,a=m["homeTeam"]["id"],m["awayTeam"]["id"]
@@ -93,13 +93,26 @@ def main():
         report["deferred_count"]=max(0,len(events)-8)
         if not events:report["status"]="NO_ELIGIBLE_FIXTURES"
         cache={}
+        previous={}
+        report["historical_access"]={}
+        report["cutoff"]=now.isoformat()
         for e in sorted(events,key=lambda m:stamp(m["utcDate"]))[:8]:
             code=e["competition"]["code"];season=int(e["season"]["startDate"][:4]);k=(code,season)
             if k not in cache:cache[k]=matches(fetch("competitions/"+code+"/matches",{"season":season,"status":"FINISHED"},key,report["trace"]))
+            if k not in previous:
+                try:
+                    previous[k]=matches(fetch("competitions/"+code+"/matches",{"season":season-1,"status":"FINISHED"},key,report["trace"]))
+                    report["historical_access"][code]="AVAILABLE"
+                except HTTPError as exc:
+                    if exc.code not in (403,404):raise
+                    previous[k]=[]
+                    report["historical_access"][code]="UNAVAILABLE"
             sides={}
             for side in ("home","away"):
                 hist=history(cache[k],e,e[side+"Team"]["id"],now)
-                sides[side]={"enrichment":enrich(hist,e[("away" if side=="home" else "home")+"Team"]["id"]),"history":hist,"season":stats(hist),"last5":stats(hist[:5]),"last10":stats(hist[:10]),"home":stats([r for r in hist if r["home"]]),"away":stats([r for r in hist if not r["home"]])}
+                opponent=e[("away" if side=="home" else "home")+"Team"]["id"]
+                older=history(previous[k],e,e[side+"Team"]["id"],now,multi=True)
+                sides[side]={"previous_h2h":[r for r in older if r["opponent"]==opponent],"enrichment":enrich(hist,e[("away" if side=="home" else "home")+"Team"]["id"]),"history":hist,"season":stats(hist),"last5":stats(hist[:5]),"last10":stats(hist[:10]),"home":stats([r for r in hist if r["home"]]),"away":stats([r for r in hist if not r["home"]])}
             if datetime.now(timezone.utc)>=stamp(e["utcDate"]):continue
             report["dossiers"].append({"id":e["id"],"competition":code,"kickoff":e["utcDate"],"teams":[e["homeTeam"]["id"],e["awayTeam"]["id"]],"stats":sides,"engine_access":False})
         report["audit"]=audit(report)
