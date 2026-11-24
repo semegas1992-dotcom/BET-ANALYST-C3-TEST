@@ -1,4 +1,5 @@
 import os,json,time,hashlib
+from collections import Counter
 from datetime import datetime,timezone,timedelta
 from urllib.request import Request,urlopen
 from urllib.parse import urlencode
@@ -49,14 +50,34 @@ def stats(rows):
     n=len(rows)
     return {"n":n,"wins":sum(r["gf"]>r["ga"] for r in rows),"draws":sum(r["gf"]==r["ga"] for r in rows),"losses":sum(r["gf"]<r["ga"] for r in rows),"gf_mean":sum(r["gf"] for r in rows)/n if n else None,"ga_mean":sum(r["ga"] for r in rows)/n if n else None}
 
+def audit(report):
+    issues=[]
+    seen=set()
+    for d in report["dossiers"]:
+        if d["id"] in seen:issues.append("duplicate dossier")
+        seen.add(d["id"])
+        if d["engine_access"] is not False:issues.append("engine lock")
+        for s in d["stats"].values():
+            h=s["history"]
+            if not h:issues.append("empty history")
+            if len({r["id"] for r in h})!=len(h):issues.append("duplicate history")
+            if any(stamp(r["date"])>=stamp(d["kickoff"]) for r in h):issues.append("future history")
+            for k,rows in (("season",h),("last5",h[:5]),("last10",h[:10]),("home",[r for r in h if r["home"]]),("away",[r for r in h if not r["home"]])):
+                if s[k]!=stats(rows):issues.append("statistics mismatch:"+k)
+    return {"status":"PASS" if not issues and seen else "FAIL","issues":issues,"external_verification":"NOT_VERIFIED"}
+
 def main():
-    now=datetime.now(timezone.utc);end=now+timedelta(hours=72)
+    now=datetime.now(timezone.utc);end=now+timedelta(days=7)
     report={"source":"football-data.org","engine_access":False,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","status":"PARTIAL","trace":[],"dossiers":[]}
     try:
         key=os.environ.get("FOOTBALL_DATA_TOKEN")
         rows=matches(fetch("matches",{"dateFrom":now.date().isoformat(),"dateTo":end.date().isoformat()},key,report["trace"]))
+        report["calendar_diagnostic"]={"raw_count":len(rows),"statuses":dict(Counter(m["status"] for m in rows)),"competitions":dict(Counter(m["competition"]["code"] for m in rows))}
         events=upcoming(rows,now,end)
         report["calendar_count"]=len(events)
+        report["selected_limit"]=8
+        report["deferred_count"]=max(0,len(events)-8)
+        if not events:report["status"]="NO_ELIGIBLE_FIXTURES"
         cache={}
         for e in sorted(events,key=lambda m:stamp(m["utcDate"]))[:8]:
             code=e["competition"]["code"];season=int(e["season"]["startDate"][:4]);k=(code,season)
@@ -64,10 +85,11 @@ def main():
             sides={}
             for side in ("home","away"):
                 hist=history(cache[k],e,e[side+"Team"]["id"],now)
-                sides[side]={"season":stats(hist),"last5":stats(hist[:5]),"last10":stats(hist[:10]),"home":stats([r for r in hist if r["home"]]),"away":stats([r for r in hist if not r["home"]])}
+                sides[side]={"history":hist,"season":stats(hist),"last5":stats(hist[:5]),"last10":stats(hist[:10]),"home":stats([r for r in hist if r["home"]]),"away":stats([r for r in hist if not r["home"]])}
             if datetime.now(timezone.utc)>=stamp(e["utcDate"]):continue
             report["dossiers"].append({"id":e["id"],"competition":code,"kickoff":e["utcDate"],"teams":[e["homeTeam"]["id"],e["awayTeam"]["id"]],"stats":sides,"engine_access":False})
-        if report["dossiers"] and all(s["season"]["n"] for d in report["dossiers"] for s in d["stats"].values()):report["status"]="QUARANTINE_UNVERIFIED"
+        report["audit"]=audit(report)
+        if report["dossiers"] and report["audit"]["status"]=="PASS":report["status"]="QUARANTINE_UNVERIFIED"
     except Exception as e:report.update(error_type=type(e).__name__,http_code=getattr(e,"code",None))
     with open("football-quarantine.json","w") as f:json.dump(report,f,indent=2)
     print(json.dumps({k:v for k,v in report.items() if k!="dossiers"}));print("Dossiers:",len(report["dossiers"]))
