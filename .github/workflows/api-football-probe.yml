@@ -1,0 +1,24 @@
+name: API Football qualification
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['.github/workflows/api-football-probe.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - run: python experimental/api_football_probe.py
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-football-probe
+          path: api-football-probe.json
+          retention-days: 1
