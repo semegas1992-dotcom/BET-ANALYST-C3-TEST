@@ -51,6 +51,7 @@ def audit_dossier(d):
     if d.get("engine_access") is not False:issues.append("engine lock")
     if set(d["sides"])!={"home","away"}:issues.append("sides")
     for side,s in d["sides"].items():
+        if s.get("independent_check",{}).get("checks")!=32 or s.get("independent_check",{}).get("issues")!=[]:issues.append("observation audit")
         for period in ("advanced_season","advanced_last5"):
             for k,v in s[period].items():
                 n=v["n"];eligible=v["eligible"]
@@ -59,6 +60,26 @@ def audit_dossier(d):
                 if v["mean"]!=(v["sum"]/n if n else None):issues.append("mean")
                 if n==0 and v["sum"]!=0:issues.append("empty sum")
     return {"pass":not issues,"issues":issues,"scope":"aggregate arithmetic only; source observations not independently verified"}
+def independent_check(hist,accepted,aggregates):
+    from statistics import mean
+    issues=[];checks=0;bias={}
+    for period,rows in (("advanced_season",hist),("advanced_last5",hist[:5])):
+        for field,v in aggregates[period].items():
+            stat,direction=field.rsplit("_",1)
+            observations=[]
+            for row in rows:
+                side=("home" if row["home"] else "away") if direction=="for" else ("away" if row["home"] else "home")
+                entry=accepted.get(row["id"],{}).get(side+"_"+stat,{})
+                if entry.get("status")=="INTERNAL_ONLY":observations.append(entry["value"])
+            checks+=1
+            if (len(observations),len(rows),sum(observations),mean(observations) if observations else None)!=(v["n"],v["eligible"],v["sum"],v["mean"]):issues.append(period+":"+field)
+        covered=[r for r in rows if accepted.get(r["id"],{}).get(("home" if r["home"] else "away")+"_shots",{}).get("status")=="INTERNAL_ONLY"]
+        ids={r["id"] for r in covered}
+        absent=[r for r in rows if r["id"] not in ids]
+        def profile(rs):
+            return {"n":len(rs),"home_share":mean([int(r["home"]) for r in rs]) if rs else None,"gf_mean":mean([r["gf"] for r in rs]) if rs else None,"ga_mean":mean([r["ga"] for r in rs]) if rs else None,"win_share":mean([int(r["gf"]>r["ga"]) for r in rs]) if rs else None}
+        bias[period]={"covered":profile(covered),"missing":profile(absent),"representativeness":"NOT_ESTABLISHED"}
+    return {"checks":checks,"issues":issues,"bias":bias,"scope":"in-memory observation recomputation; no raw export"}
 def main():
     now=datetime.now(timezone.utc);trace=[];key=os.environ["FOOTBALL_DATA_TOKEN"]
     report={"schema":"D0_ENRICHED_EXPERIMENTAL_V1","engine_access":False,"publication":"BLOCKED_UPSTREAM_RIGHTS_NOT_CONFIRMED","cutoff":now.isoformat(),"leagues":{},"dossier":None}
@@ -78,6 +99,9 @@ def main():
                 for side in ("home","away"):
                     h=history(primary,e,e[side+"Team"]["id"],now)
                     sides[side]={"team_id":e[side+"Team"]["id"],"basic":stats(h),"advanced_season":aggregate(h,accepted),"advanced_last5":aggregate(h[:5],accepted)}
+                for side in ("home","away"):
+                    h=history(primary,e,e[side+"Team"]["id"],now)
+                    sides[side]["independent_check"]=independent_check(h,accepted,sides[side])
                 if all(s["advanced_season"]["shots_for"]["n"]>=5 for s in sides.values()):
                     report["dossier"]={"id":e["id"],"kickoff":e["utcDate"],"competition":code,"sides":sides,"source_hash":report["leagues"][code]["sha256"],"engine_access":False,"limitations":["advanced statistics not externally verified","historical publication timestamps unknown","no injuries or lineups","goal minutes excluded","descriptive means not probabilities"]}
                     break
