@@ -6,6 +6,7 @@ from football_collect import fetch,matches,upcoming,history,stats,stamp
 from football_d0_preview import qualify
 from football_crosscheck import name
 from open_matchday_audit import FOLDERS,integer
+from football_qualification_v5 import rejection_reasons,select_diverse,diversity_audit
 
 def join(primary,secondary,cutoff):
     idx={}
@@ -94,7 +95,7 @@ def sample_gate(side):
     return result
 def main():
     now=datetime.now(timezone.utc);trace=[];key=os.environ["FOOTBALL_DATA_TOKEN"]
-    report={"schema":"D0_ENRICHED_EXPERIMENTAL_V1","engine_access":False,"publication":"BLOCKED_UPSTREAM_RIGHTS_NOT_CONFIRMED","cutoff":now.isoformat(),"leagues":{},"dossier":None,"dossiers":[],"rejected_candidates":0}
+    report={"schema":"D0_ENRICHED_EXPERIMENTAL_V1","engine_access":False,"publication":"BLOCKED_UPSTREAM_RIGHTS_NOT_CONFIRMED","cutoff":now.isoformat(),"leagues":{},"dossier":None,"dossiers":[],"rejected_candidates":0,"rejection_reasons":{},"rejections":[]}
     try:
         events=upcoming(matches(fetch("matches",{"dateFrom":now.date().isoformat(),"dateTo":(now+timedelta(days=7)).date().isoformat()},key,trace)),now,now+timedelta(days=7))
         for code,folder in FOLDERS.items():
@@ -106,7 +107,7 @@ def main():
             accepted,counts,missing=join(primary,secondary,now)
             report["leagues"][code]={"counts":counts,"missing":missing,"accounting_ok":sum(counts.values())==len(primary),"source":url,"sha256":hashlib.sha256(raw).hexdigest()}
             for e in sorted(events,key=lambda m:stamp(m["utcDate"])):
-                if len(report["dossiers"])>=10 or e["competition"]["code"]!=code or stamp(e["utcDate"])<=datetime.now(timezone.utc):continue
+                if e["competition"]["code"]!=code or stamp(e["utcDate"])<=datetime.now(timezone.utc):continue
                 sides={}
                 for side in ("home","away"):
                     h=history(primary,e,e[side+"Team"]["id"],now)
@@ -115,18 +116,24 @@ def main():
                     h=history(primary,e,e[side+"Team"]["id"],now)
                     sides[side]["independent_check"]=independent_check(h,accepted,sides[side])
                     sides[side]["sample_gate"]=sample_gate(sides[side])
-                if all(s["advanced_season"]["shots_for"]["n"]>=5 for s in sides.values()):
+                reasons=rejection_reasons(sides)
+                if not reasons:
                     dossier={"id":e["id"],"kickoff":e["utcDate"],"competition":code,"sides":sides,"source_hash":report["leagues"][code]["sha256"],"engine_access":False,"limitations":["advanced statistics not externally verified","historical publication timestamps unknown","no injuries or lineups","goal minutes excluded","descriptive means not probabilities"]}
                     report["dossiers"].append(dossier)
-                else:report["rejected_candidates"]+=1
+                else:
+                    report["rejected_candidates"]+=1
+                    report["rejections"].append({"id":e["id"],"competition":code,"reasons":reasons})
     except Exception as e:report["error"]=type(e).__name__
     report["trace"]=trace
     report["dossiers"]=[d for d in report["dossiers"] if stamp(d["kickoff"])>datetime.now(timezone.utc)]
-    report["dossiers"].sort(key=lambda d:stamp(d["kickoff"]))
+    candidates=report["dossiers"]
+    report["dossiers"]=select_diverse(candidates)
+    report["diversity"]=diversity_audit(candidates,report["dossiers"])
+    report["rejection_reasons"]=dict(Counter(reason for r in report["rejections"] for reason in r["reasons"]))
     report["dossier"]=report["dossiers"][0] if report["dossiers"] else None
     audits=[audit_dossier(d) for d in report["dossiers"]]
     report["audit"]={"pass":bool(audits) and all(a["pass"] for a in audits),"dossiers":len(audits),"issues":[i for a in audits for i in a["issues"]]}
     with open("football-d0-enriched.json","w") as f:json.dump(report,f,indent=2)
     print(json.dumps({**report,"leagues":{k:{a:b for a,b in v.items() if a!="missing"} for k,v in report["leagues"].items()}}))
-    return int("error" in report or not report["audit"]["pass"] or not report["dossier"] or not all(v["accounting_ok"] for v in report["leagues"].values()))
+    return int("error" in report or not report["audit"]["pass"] or not report["diversity"]["pass"] or not report["dossier"] or not all(v["accounting_ok"] for v in report["leagues"].values()))
 if __name__=="__main__":raise SystemExit(main())
