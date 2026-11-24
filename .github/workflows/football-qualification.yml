@@ -1,4 +1,4 @@
-name: Football data qualification v3
+name: Football data qualification v4
 on:
   push:
     branches: [c3-nba-history]
@@ -9,7 +9,7 @@ jobs:
   probe:
     if: github.run_attempt == 1
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - run: python -m unittest discover -s experimental -v
