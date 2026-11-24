@@ -1,4 +1,4 @@
-name: Football data qualification
+name: Football data qualification v2
 on:
   push:
     branches: [c3-nba-history]
