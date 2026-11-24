@@ -17,3 +17,16 @@ class FootballTests(unittest.TestCase):
         with self.assertRaises(ValueError):matches({"matches":[H,H],"resultSet":{"count":2}})
     def test_count(self):
         with self.assertRaises(ValueError):matches({"matches":[H],"resultSet":{"count":2}})
+
+    def test_audit(self):
+        from football_collect import audit
+        h=history([H],E,3,NOW)
+        s={"history":h,"season":stats(h),"last5":stats(h),"last10":stats(h),"home":stats(h),"away":stats([])}
+        d={"id":1,"kickoff":E["utcDate"],"engine_access":False,"stats":{"home":s}}
+        self.assertEqual(audit({"dossiers":[d]})["status"],"PASS")
+        s["last5"]=stats([])
+        self.assertEqual(audit({"dossiers":[d]})["status"],"FAIL")
+    def test_empty_audit(self):
+        from football_collect import audit
+        self.assertEqual(audit({"dossiers":[]})["status"],"FAIL")
+    def test_same_day(self):self.assertEqual(history([dict(H,utcDate="2026-11-24T10:00:00Z")],E,3,NOW),[])
