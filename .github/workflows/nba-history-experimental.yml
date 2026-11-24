@@ -46,3 +46,17 @@ jobs:
           path: nba-history-quarantine.json
           retention-days: 1
           if-no-files-found: warn
+      - name: Collect historical data in quarantine
+        env:
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY || secrets.BDL_KEY || secrets.BDL_API_KEY }}
+          EVENT_ID: '21718183'
+          SEASON: '2026'
+          CUTOFF: '2026-11-25T03:00:00Z'
+        run: python experimental/nba_history.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-history-quarantine
+          path: nba-history-quarantine.json
+          retention-days: 1
+          if-no-files-found: warn
