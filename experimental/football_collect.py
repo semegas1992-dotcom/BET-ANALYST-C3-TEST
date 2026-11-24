@@ -1,5 +1,6 @@
 import os,json,time,hashlib
 from collections import Counter
+from football_enrichment import enrich
 from datetime import datetime,timezone,timedelta
 from urllib.request import Request,urlopen
 from urllib.parse import urlencode
@@ -43,7 +44,10 @@ def history(rows,event,team,cutoff):
         if s["duration"]!="REGULAR":continue
         x,y=s["fullTime"]["home"],s["fullTime"]["away"]
         if any(type(v) is not int or v<0 for v in (x,y)):continue
-        out.append({"id":m["id"],"date":m["utcDate"],"home":team==h,"gf":x if team==h else y,"ga":y if team==h else x})
+        ht=s.get("halfTime") or {}
+        hx,hy=ht.get("home"),ht.get("away")
+        valid=type(hx) is int and type(hy) is int and 0<=hx<=x and 0<=hy<=y
+        out.append({"id":m["id"],"date":m["utcDate"],"home":team==h,"opponent":a if team==h else h,"gf":x if team==h else y,"ga":y if team==h else x,"ht_gf":(hx if team==h else hy) if valid else None,"ht_ga":(hy if team==h else hx) if valid else None})
     return sorted(out,key=lambda x:stamp(x["date"]),reverse=True)
 
 def stats(rows):
@@ -57,8 +61,9 @@ def audit(report):
         if d["id"] in seen:issues.append("duplicate dossier")
         seen.add(d["id"])
         if d["engine_access"] is not False:issues.append("engine lock")
-        for s in d["stats"].values():
+        for side,s in d["stats"].items():
             h=s["history"]
+            if "enrichment" in s and s["enrichment"]!=enrich(h,d["teams"][1 if side=="home" else 0]):issues.append("enrichment mismatch")
             if not h:issues.append("empty history")
             if len({r["id"] for r in h})!=len(h):issues.append("duplicate history")
             if any(stamp(r["date"])>=stamp(d["kickoff"]) for r in h):issues.append("future history")
@@ -85,7 +90,7 @@ def main():
             sides={}
             for side in ("home","away"):
                 hist=history(cache[k],e,e[side+"Team"]["id"],now)
-                sides[side]={"history":hist,"season":stats(hist),"last5":stats(hist[:5]),"last10":stats(hist[:10]),"home":stats([r for r in hist if r["home"]]),"away":stats([r for r in hist if not r["home"]])}
+                sides[side]={"enrichment":enrich(hist,e[("away" if side=="home" else "home")+"Team"]["id"]),"history":hist,"season":stats(hist),"last5":stats(hist[:5]),"last10":stats(hist[:10]),"home":stats([r for r in hist if r["home"]]),"away":stats([r for r in hist if not r["home"]])}
             if datetime.now(timezone.utc)>=stamp(e["utcDate"]):continue
             report["dossiers"].append({"id":e["id"],"competition":code,"kickoff":e["utcDate"],"teams":[e["homeTeam"]["id"],e["awayTeam"]["id"]],"stats":sides,"engine_access":False})
         report["audit"]=audit(report)
