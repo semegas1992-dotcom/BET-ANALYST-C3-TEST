@@ -1,4 +1,4 @@
-name: NBA player identity qualification
+name: NBA player identity qualification v2
 on:
   push:
     branches: [c3-nba-history]
