@@ -11,7 +11,7 @@ def join(primary,secondary,cutoff):
     idx={}
     for row in secondary:
         idx.setdefault((row.get("date"),name(row.get("home")),name(row.get("away"))),[]).append(row)
-    accepted={};missing=[];counts=Counter()
+    accepted={};missing=[];counts=Counter();used=set()
     for m in primary:
         day=m["utcDate"][:10]
         if day>=cutoff.date().isoformat():counts["cutoff"]+=1;continue
@@ -28,6 +28,8 @@ def join(primary,secondary,cutoff):
         except ValueError:s=[]
         ft=m["score"]["fullTime"]
         if s!=[ft["home"],ft["away"]]:counts["conflict"]+=1;continue
+        if id(row) in used:counts["ambiguous"]+=1;continue
+        used.add(id(row))
         accepted[m["id"]]=qualify(row);counts["anchored"]+=1
     return accepted,dict(counts),missing
 
@@ -40,9 +42,23 @@ def aggregate(hist,accepted):
                 side="home" if h["home"]==(direction=="for") else "away"
                 v=accepted.get(h["id"],{}).get(side+"_"+stat,{})
                 if v.get("status")=="INTERNAL_ONLY":values.append(v["value"])
-            out[stat+"_"+direction]={"n":len(values),"eligible":len(hist),"mean":sum(values)/len(values) if values else None,"status":"INTERNAL_ONLY" if values else "UNAVAILABLE"}
+            out[stat+"_"+direction]={"n":len(values),"eligible":len(hist),"sum":sum(values),"mean":sum(values)/len(values) if values else None,"status":"INTERNAL_ONLY" if values else "UNAVAILABLE"}
     return out
 
+def audit_dossier(d):
+    issues=[]
+    if not d:return {"pass":False,"issues":["no dossier"]}
+    if d.get("engine_access") is not False:issues.append("engine lock")
+    if set(d["sides"])!={"home","away"}:issues.append("sides")
+    for side,s in d["sides"].items():
+        for period in ("advanced_season","advanced_last5"):
+            for k,v in s[period].items():
+                n=v["n"];eligible=v["eligible"]
+                if not 0<=n<=eligible:issues.append(side+":"+period+":"+k+":count")
+                if eligible!=(s["basic"]["n"] if period=="advanced_season" else min(5,s["basic"]["n"])):issues.append("denominator")
+                if v["mean"]!=(v["sum"]/n if n else None):issues.append("mean")
+                if n==0 and v["sum"]!=0:issues.append("empty sum")
+    return {"pass":not issues,"issues":issues,"scope":"aggregate arithmetic only; source observations not independently verified"}
 def main():
     now=datetime.now(timezone.utc);trace=[];key=os.environ["FOOTBALL_DATA_TOKEN"]
     report={"schema":"D0_ENRICHED_EXPERIMENTAL_V1","engine_access":False,"publication":"BLOCKED_UPSTREAM_RIGHTS_NOT_CONFIRMED","cutoff":now.isoformat(),"leagues":{},"dossier":None}
@@ -67,8 +83,9 @@ def main():
                     break
     except Exception as e:report["error"]=type(e).__name__
     report["trace"]=trace
+    report["audit"]=audit_dossier(report["dossier"])
     if report["dossier"] and stamp(report["dossier"]["kickoff"])<=datetime.now(timezone.utc):report["dossier"]=None
     with open("football-d0-enriched.json","w") as f:json.dump(report,f,indent=2)
     print(json.dumps({**report,"leagues":{k:{a:b for a,b in v.items() if a!="missing"} for k,v in report["leagues"].items()}}))
-    return int("error" in report or not report["dossier"] or not all(v["accounting_ok"] for v in report["leagues"].values()))
+    return int("error" in report or not report["audit"]["pass"] or not report["dossier"] or not all(v["accounting_ok"] for v in report["leagues"].values()))
 if __name__=="__main__":raise SystemExit(main())
