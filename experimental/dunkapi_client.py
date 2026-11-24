@@ -42,7 +42,7 @@ def validate(endpoint,params,data):
     # Player and reference schemas need authenticated qualification.
     return {"schema_status":"PENDING_AUTHENTICATED_QUALIFICATION"}
 
-def call(endpoint,params,key,budget,transport=urllib.request.urlopen,now=None):
+def call(endpoint,params,key,budget,transport=urllib.request.urlopen,now=None,inspect=None):
     if endpoint not in COST: raise ValueError("endpoint not allowed")
     if not key: raise ValueError("missing key")
     now=now or datetime.now(timezone.utc)
@@ -61,4 +61,5 @@ def call(endpoint,params,key,budget,transport=urllib.request.urlopen,now=None):
     with transport(req,timeout=30) as res:
         envelope=json.load(res)
     summary=validate(endpoint,params,envelope["data"])
+    if inspect is not None:summary.update(inspect(envelope["data"]))
     return {"source":"DunkAPI","endpoint":endpoint,"retrieved_at":now.isoformat(),"credits_reserved":COST[endpoint],"summary":summary,"engine_access":False,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","status":"QUARANTINE_UNVERIFIED"}
