@@ -14,41 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python -m unittest discover -s experimental -v
-      - name: Verify target and collect history
-        env:
-          BDL_KEY: ${{ secrets.BDL_KEY }}
-          SEASON: '2026'
-        run: |
-          python - <<'PY'
-          import os,json,urllib.request,time,sys
-          sys.path.insert(0,'experimental')
-          import nba_history as n
-          from datetime import datetime,timezone
-          key=os.environ['BDL_KEY']
-          if not key: raise SystemExit('Missing BDL_KEY')
-          req=urllib.request.Request(n.BASE+'/21718183',headers={'Authorization':key,'Accept':'application/json'})
-          with urllib.request.urlopen(req,timeout=30) as res: g=json.load(res)['data']
-          if g['id']!=21718183 or g['home_team']['full_name']!='Denver Nuggets' or g['visitor_team']['full_name']!='Dallas Mavericks': raise SystemExit('Target identity mismatch')
-          if g['season']!=2026 or n.stamp(g['datetime'])!=n.stamp('2026-11-25T03:00:00Z'): raise SystemExit('Target date or season mismatch')
-          if n.stamp(g['datetime'])<=datetime.now(timezone.utc): raise SystemExit('Target no longer upcoming')
-          os.environ['TEAM_IDS']=str(g['visitor_team']['id'])+','+str(g['home_team']['id'])
-          os.environ['CUTOFF']=g['datetime']
-          time.sleep(13)
-          n.main()
-          with open('nba-history-quarantine.json') as f: report=json.load(f)
-          report['target']={'id':g['id'],'datetime':g['datetime'],'home':g['home_team']['full_name'],'away':g['visitor_team']['full_name'],'home_id':g['home_team']['id'],'away_id':g['visitor_team']['id']}
-          with open('nba-history-quarantine.json','w') as f: json.dump(report,f,indent=2)
-          PY
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: nba-history-quarantine
-          path: nba-history-quarantine.json
-          retention-days: 1
-          if-no-files-found: warn
       - name: Collect historical data in quarantine
         env:
-          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY || secrets.BDL_KEY || secrets.BDL_API_KEY }}
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
           EVENT_ID: '21718183'
           SEASON: '2026'
           CUTOFF: '2026-11-25T03:00:00Z'
