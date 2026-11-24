@@ -1,0 +1,52 @@
+name: C3.90-99 alternative source probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/c3-90-99-alternative-probe.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Test documented free endpoints
+        run: |
+          python - <<'PY'
+          import urllib.request, urllib.error, json, datetime, urllib.parse
+          day=datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+          base='https://www.thesportsdb.com/api/v1/json/123/'
+          reports=[]
+          for sport in ['Basketball','Soccer','Tennis']:
+              url=base+'eventsday.php?'+urllib.parse.urlencode({'d':day,'s':sport})
+              r={'sport':sport,'source':url,'attempted_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'engine_access':False,'verification':'NOT_PERFORMED','events':[],'coverage':'UNKNOWN_LIMITED_FREE_TIER'}
+              try:
+                  with urllib.request.urlopen(url,timeout=15) as response:
+                      r['http_status']=response.status
+                      raw=response.read(2000001)
+                      if len(raw)>2000000: raise ValueError('Payload too large')
+                      payload=json.loads(raw)
+                      events=payload['events']
+                      if events is None: events=[]
+                      if not isinstance(events,list) or len(events)>100: raise ValueError('Invalid events')
+                      for e in events:
+                          if not isinstance(e,dict) or not e.get('idEvent') or not e.get('strEvent'): raise ValueError('Invalid event')
+                          r['events'].append({k:e.get(k) for k in ['idEvent','strEvent','strSport','strLeague','dateEvent','strTime','strHomeTeam','strAwayTeam']})
+                      r['collected_at']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+                      r['status']='QUARANTINE_UNVERIFIED' if events else 'EMPTY_RESPONSE'
+              except urllib.error.HTTPError as e:
+                  r.update(status='HTTP_ERROR',http_status=e.code,events=[])
+              except urllib.error.URLError as e:
+                  r.update(status='NETWORK_ERROR',error=str(e.reason),events=[])
+              except Exception as e:
+                  r.update(status='PARSE_OR_VALIDATION_ERROR',error=str(e),events=[])
+              reports.append(r)
+              print(sport, r['status'], 'HTTP',r.get('http_status'),'events',len(r['events']))
+          with open('alternative-probe.json','w') as f: json.dump(reports,f,indent=2)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alternative-probe-quarantine
+          path: alternative-probe.json
+          retention-days: 7
