@@ -6,7 +6,23 @@ from dunk_enrichment import namekey,player_summary
 from nba_history import request_json
 from dunk_join import mapping
 
+def jersey(v):
+    if type(v) is int and 0<=v<=99:return str(v)
+    if isinstance(v,str) and v.strip().isascii() and v.strip().isdigit() and len(v.strip())<=2:return v.strip()
+    return None
+
+def normalize_profile(p):
+    p=dict(p)
+    a=jersey(p.get("jersey"))
+    b=jersey(p.get("jersey_number"))
+    if a is not None and b is not None and a!=b:raise ValueError("CONFLICTING_JERSEY_FIELDS")
+    p["jersey_number"]=a if a is not None else b
+    return p
+
 def candidate(b,p,mapped):
+    b=dict(b)
+    b["jersey_number"]=jersey(b.get("jersey_number"))
+    p=normalize_profile(p)
     if namekey(b["first_name"]+" "+b["last_name"])!=namekey(p["name"]):return False
     t=mapped.get(str(b["team"]["id"]))
     if not t or str(t["team_id"])!=str(p.get("team_id")):return False
@@ -36,8 +52,8 @@ def main():
         if b["meta"].get("next_cursor") or len(rows)!=1:raise ValueError("BDL_SEARCH_NOT_UNIQUE")
         report["stage"]="dunk_profile"
         def profile(d):
-            p=d["player"]
-            report["field_names"]={"bdl":sorted(rows[0]),"dunk":sorted(p)}
+            p=normalize_profile(d["player"])
+            report["field_names"]={"bdl":sorted(rows[0]),"dunk":sorted(d["player"])}
             report["evidence_available"]={k:{"bdl":rows[0].get(k) not in (None,""),"dunk":p.get(k) not in (None,"")} for k in ("birth_date","jersey_number","team_id","name")}
             ok=candidate(rows[0],p,mapped)
             report["identity_status"]="CANDIDATE_MATCH" if ok else "UNRESOLVED"
