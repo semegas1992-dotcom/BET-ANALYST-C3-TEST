@@ -45,7 +45,8 @@ class EnrichmentTests(unittest.TestCase):
         self.assertEqual(len(r["histories"]),2)
         self.assertEqual(r["dossiers"][0]["context"]["home"]["h2h"]["n"],1)
     @patch("nba_batch.grouped",side_effect=ValueError("failure"))
-    def test_group_failure(self,fetch):
+    @patch("nba_batch.collect",side_effect=ValueError("fallback failure"))
+    def test_group_failure(self,collect,fetch):
         events,_=select([event()],NOW,NOW+timedelta(days=1))
         r=report();r["calendar_pages"]=[]
         build_grouped(events,NOW,"test",r,lambda:NOW)
