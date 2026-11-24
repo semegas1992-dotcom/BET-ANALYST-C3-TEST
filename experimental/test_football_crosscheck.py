@@ -29,3 +29,6 @@ class CrosscheckTests(unittest.TestCase):
         d=[]
         compare([P],[dict(S,score={"ft":[0,1]})],d)
         self.assertEqual(d[0]["reason"],"SCORE_CONFLICT")
+
+    def test_bare_score(self):self.assertEqual(compare([P],[dict(S,score=[2,1])])["matched"],1)
+    def test_bare_conflict(self):self.assertEqual(compare([P],[dict(S,score=[0,1])])["conflicting"],1)
