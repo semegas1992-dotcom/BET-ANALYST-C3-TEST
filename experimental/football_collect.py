@@ -17,8 +17,15 @@ def fetch(path,params,key,trace):
     if not key:raise ValueError("missing token")
     url=BASE+path+"?"+urlencode(params)
     if trace:time.sleep(7)
-    with urlopen(Request(url,headers={"X-Auth-Token":key}),timeout=30) as response:
-        data=json.load(response)
+    for attempt in range(3):
+        try:
+            with urlopen(Request(url,headers={"X-Auth-Token":key}),timeout=30) as response:
+                data=json.load(response)
+            break
+        except HTTPError as e:
+            code=e.code;e.close()
+            if code not in (429,500,502,503,504) or attempt==2:raise
+            time.sleep(60 if code==429 else 10*(attempt+1))
     trace.append({"path":path,"params":params,"observed":datetime.now(timezone.utc).isoformat(),"sha256":hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()})
     return data
 
@@ -61,9 +68,11 @@ def audit(report):
         if d["id"] in seen:issues.append("duplicate dossier")
         seen.add(d["id"])
         if d["engine_access"] is not False:issues.append("engine lock")
+        if set(d["stats"])!={"home","away"}:issues.append("missing side")
+        if len(d.get("teams",[]))!=2 or len(set(d["teams"]))!=2:issues.append("invalid teams");continue
         for side,s in d["stats"].items():
             h=s["history"]
-            if "enrichment" in s and s["enrichment"]!=enrich(h,d["teams"][1 if side=="home" else 0]):issues.append("enrichment mismatch")
+            if s.get("enrichment")!=enrich(h,d["teams"][1 if side=="home" else 0]):issues.append("enrichment mismatch")
             if not h:issues.append("empty history")
             if len({r["id"] for r in h})!=len(h):issues.append("duplicate history")
             if any(stamp(r["date"])>=stamp(d["kickoff"]) for r in h):issues.append("future history")
