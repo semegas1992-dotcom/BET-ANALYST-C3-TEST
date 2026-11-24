@@ -27,12 +27,18 @@ def main():
             mapped.update(mapping(bdl,d["teams"]))
             return {"mapped":len(mapped)}
         report["teams"]=call("list_teams",{"season":now.year+int(now.month>=7)},key,budget,inspect=teams)
-        b=request_json("https://api.balldontlie.io/v1/players?"+urlencode({"search":"Jayson Tatum","per_page":100}),bkey)
+        report["stage"]="bdl_player_search"
+        b=request_json("https://api.balldontlie.io/v1/players?"+urlencode({"first_name":"Jayson","last_name":"Tatum","per_page":100}),bkey)
         rows=b["data"]
-        if b["meta"].get("next_cursor") or len(rows)!=1:raise ValueError("ambiguous BDL search")
+        report["search_diagnostic"]={"returned":len(rows),"next_cursor_present":bool(b["meta"].get("next_cursor"))}
+        rows=[p for p in rows if namekey(p["first_name"])=="jayson" and namekey(p["last_name"])=="tatum"]
+        report["search_diagnostic"]["exact_matches"]=len(rows)
+        if b["meta"].get("next_cursor") or len(rows)!=1:raise ValueError("BDL_SEARCH_NOT_UNIQUE")
+        report["stage"]="dunk_profile"
         def profile(d):
             p=d["player"]
             report["field_names"]={"bdl":sorted(rows[0]),"dunk":sorted(p)}
+            report["evidence_available"]={k:{"bdl":rows[0].get(k) not in (None,""),"dunk":p.get(k) not in (None,"")} for k in ("birth_date","jersey_number","team_id","name")}
             ok=candidate(rows[0],p,mapped)
             report["identity_status"]="CANDIDATE_MATCH" if ok else "UNRESOLVED"
             s=player_summary(d,"4065648",now,now.year+int(now.month>=7))
@@ -40,7 +46,7 @@ def main():
         report["profile"]=call("get_player",{"player_id":"4065648"},key,budget,inspect=profile)
         if report["identity_status"]=="CANDIDATE_MATCH" and report["profile"]["summary"]["accepted_games"]>0 and len(mapped)==30:report["status"]="QUARANTINE_UNVERIFIED"
     except Exception as e:
-        report.update(error_type=type(e).__name__,http_code=getattr(e,"code",None))
+        report.update(error_type=type(e).__name__,http_code=getattr(e,"code",None),diagnostic="BDL_SEARCH_NOT_UNIQUE" if str(e)=="BDL_SEARCH_NOT_UNIQUE" else "CHECK_STAGE_AND_SCHEMA")
     with open("player-probe.json","w") as f:json.dump(report,f,indent=2)
     print(json.dumps(report))
     return int(report["status"]!="QUARANTINE_UNVERIFIED")
