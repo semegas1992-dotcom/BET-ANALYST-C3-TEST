@@ -1,6 +1,8 @@
 import os, json, time, hashlib, urllib.request, urllib.parse
 from datetime import datetime, timezone
 from statistics import mean
+from urllib.error import HTTPError, URLError
+from email.utils import parsedate_to_datetime
 
 BASE = "https://api.balldontlie.io/v1/games"
 
@@ -10,15 +12,36 @@ def stamp(s):
         raise ValueError("timezone required")
     return d.astimezone(timezone.utc)
 
-def collect(team, season, cutoff, key, trace=None):
+def request_json(url, key, events=None):
+    for attempt in range(1, 4):
+        try:
+            req=urllib.request.Request(url, headers={"Authorization":key,"Accept":"application/json"})
+            with urllib.request.urlopen(req, timeout=30) as res:
+                return json.load(res)
+        except (HTTPError, URLError, TimeoutError) as exc:
+            code=exc.code if isinstance(exc, HTTPError) else None
+            retryable=code is None or code in (429,500,502,503,504)
+            delay=(60 if code==429 else 15)*2**(attempt-1)
+            header=exc.headers.get("Retry-After") if isinstance(exc,HTTPError) and exc.headers else None
+            if header:
+                try:
+                    delay=max(delay,float(header))
+                except ValueError:
+                    try: delay=max(delay,(parsedate_to_datetime(header)-datetime.now(timezone.utc)).total_seconds())
+                    except (ValueError,TypeError,OverflowError): pass
+            retry=retryable and attempt<3 and delay<=120
+            if events is not None:
+                events.append({"attempt":attempt,"http_code":code,"error_type":type(exc).__name__,"retry":retry,"delay_seconds":delay if retry else None,"at":datetime.now(timezone.utc).isoformat()})
+            if not retry: raise
+            time.sleep(delay)
+
+def collect(team, season, cutoff, key, trace=None, events=None):
     rows, cursors, cursor = [], set(), None
     for _ in range(30):
         q = {"team_ids[]": team, "seasons[]": season, "end_date": cutoff.date().isoformat(), "per_page": 100}
         if cursor is not None: q["cursor"] = cursor
         url = BASE + "?" + urllib.parse.urlencode(q)
-        req = urllib.request.Request(url, headers={"Authorization": key, "Accept": "application/json"})
-        with urllib.request.urlopen(req, timeout=30) as res:
-            payload = json.load(res)
+        payload = request_json(url,key,events)
         if not isinstance(payload.get("data"), list) or not isinstance(payload.get("meta"), dict): raise ValueError("invalid page structure")
         if trace is not None:
             trace.append({"query":q.copy(),"received_at":datetime.now(timezone.utc).isoformat(),"count":len(payload["data"]),"next_cursor":payload["meta"].get("next_cursor"),"sha256":hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
@@ -77,15 +100,14 @@ def main():
     now=datetime.now(timezone.utc)
     if cutoff > now: cutoff=now
     report={"schema":"BET_ANALYST_NBA_PREMATCH_V2","source":BASE,"cutoff":cutoff.isoformat(),"collected_at":now.isoformat(),
-            "status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"teams":{},
+            "status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"teams":{},"request_errors":[],
             "limitations":["Same UTC day excluded conservatively","No independent verification","No injuries or individual statistics","Historical completeness not independently verified"]}
     try:
         key=os.environ["BDL_KEY"]
         if not key: raise ValueError("missing secret")
         event_id=int(os.environ["EVENT_ID"])
-        req=urllib.request.Request(BASE+"/"+str(event_id),headers={"Authorization":key,"Accept":"application/json"})
-        with urllib.request.urlopen(req,timeout=30) as res:
-            event=json.load(res)["data"]
+        report["stage"]="event"
+        event=request_json(BASE+"/"+str(event_id),key,report["request_errors"])["data"]
         if event["id"]!=event_id or event["home_team"]["full_name"]!="Denver Nuggets" or event["visitor_team"]["full_name"]!="Dallas Mavericks": raise ValueError("event mismatch")
         tip=stamp(event["datetime"])
         if tip!=stamp(os.environ["CUTOFF"]) or now>=tip: raise ValueError("event time mismatch or expired")
@@ -93,13 +115,15 @@ def main():
         report["event"]={"id":event_id,"tipoff":tip.isoformat(),"home":event["home_team"]["full_name"],"away":event["visitor_team"]["full_name"]}
         time.sleep(13)
         for team in (event["home_team"]["id"],event["visitor_team"]["id"]):
+            report["stage"]="team:"+str(team)
             trace, exclusions = [], []
-            raw=collect(team,int(os.environ["SEASON"]),cutoff,key,trace)
+            raw=collect(team,int(os.environ["SEASON"]),cutoff,key,trace,report["request_errors"])
             rows,issues=normalize(raw,team,cutoff,exclusions,int(os.environ["SEASON"]))
             report["teams"][str(team)]={"games":rows,"issues":issues,"exclusions":exclusions,"stats":summarize(rows),"pages":trace,"received":len(raw),"pagination_complete":True,"external_completeness":"NOT_VERIFIED","accounting_ok":len(raw)==len(rows)+len(issues)+len(exclusions)}
     except Exception as e:
         report["status"]="COLLECTION_ERROR"
         report["error_type"]=type(e).__name__
+        report["http_code"]=e.code if isinstance(e,HTTPError) else None
     with open("nba-history-quarantine.json","w") as f: json.dump(report,f,indent=2)
     print("Status:",report["status"],"Teams:",len(report["teams"]))
     for team, data in report["teams"].items():
