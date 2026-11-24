@@ -10,21 +10,19 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - run: python -m unittest discover -s experimental -v
       - name: Collect historical data in quarantine
         env:
           BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
-          EVENT_ID: '21718183'
-          SEASON: '2026'
-          CUTOFF: '2026-11-25T03:00:00Z'
-        run: python experimental/nba_history.py
+          WINDOW_HOURS: '24'
+        run: python experimental/nba_batch.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nba-history-quarantine
-          path: nba-history-quarantine.json
+          name: nba-batch-quarantine
+          path: nba-batch-quarantine.json
           retention-days: 1
           if-no-files-found: warn
