@@ -1,0 +1,24 @@
+name: Football data qualification
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['.github/workflows/football-qualification.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - run: python experimental/football_collect.py
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: football-quarantine
+          path: football-quarantine.json
+          retention-days: 1
