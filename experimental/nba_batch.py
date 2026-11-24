@@ -1,4 +1,4 @@
-import os,json,time,urllib.parse
+import os,json,time,urllib.parse,hashlib
 from datetime import datetime,timezone,timedelta
 from nba_history import BASE,stamp,request_json,collect,normalize,summarize
 
@@ -11,6 +11,7 @@ def select(rows,now,end):
             seen.add(i)
             tip=stamp(g["datetime"])
             if not now<tip<=end: continue
+            if g.get("postponed") is True: continue
             if g.get("status") in ("Final","Postponed","Canceled","Cancelled"): continue
             if g.get("home_team_score",0) or g.get("visitor_team_score",0): continue
             h,a=g["home_team"]["id"],g["visitor_team"]["id"]
@@ -21,16 +22,17 @@ def select(rows,now,end):
             issues.append({"reason":str(e)})
     return sorted(games,key=lambda g:g["tipoff"]),issues
 
-def discover(now,end,key,errors):
-    rows,seen,cursor=[],set(),None
+def discover(now,end,key,errors,trace=None,partial=None):
+    rows,seen,cursor=([] if partial is None else partial),set(),None
     for _ in range(30):
         q={"start_date":(now-timedelta(days=1)).date().isoformat(),"end_date":end.date().isoformat(),"per_page":100}
         if cursor is not None:q["cursor"]=cursor
         p=request_json(BASE+"?"+urllib.parse.urlencode(q),key,errors)
         if not isinstance(p.get("data"),list) or not isinstance(p.get("meta"),dict): raise ValueError("invalid calendar page")
+        if trace is not None: trace.append({"query":q.copy(),"count":len(p["data"]),"next_cursor":p["meta"].get("next_cursor"),"received_at":datetime.now(timezone.utc).isoformat(),"sha256":hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
         rows.extend(p["data"])
         cursor=p["meta"].get("next_cursor")
-        time.sleep(13)
+        time.sleep(16)
         if cursor is None:return rows
         if cursor in seen:raise ValueError("calendar cursor loop")
         seen.add(cursor)
@@ -47,21 +49,47 @@ def build(events,now,key,report,clock=lambda:datetime.now(timezone.utc)):
             ref=f"{season}:{team}"
             refs.append(ref)
             if ref in cache:continue
-            trace,excluded=[],[]
+            trace,excluded,partial=[],[],[]
             try:
-                raw=collect(team,season,now,key,trace,report["request_errors"])
+                raw=collect(team,season,now,key,trace,report["request_errors"],partial)
                 rows,issues=normalize(raw,team,now,excluded,season)
-                cache[ref]={"status":"COLLECTED","games":rows,"stats":summarize(rows),"issues":issues,"exclusions":excluded,"pages":trace,"received":len(raw),"accounting_ok":len(raw)==len(rows)+len(issues)+len(excluded),"external_completeness":"NOT_VERIFIED"}
+                cache[ref]={"status":"COLLECTED","pagination_complete":True,"games":rows,"stats":summarize(rows),"issues":issues,"exclusions":excluded,"pages":trace,"received":len(raw),"accounting_ok":len(raw)==len(rows)+len(issues)+len(excluded),"external_completeness":"NOT_VERIFIED"}
             except Exception as e:
-                cache[ref]={"status":"COLLECTION_ERROR","error_type":type(e).__name__,"http_code":getattr(e,"code",None),"pages":trace}
+                cache[ref]={"status":"COLLECTION_ERROR","error_type":type(e).__name__,"http_code":getattr(e,"code",None),"pages":trace,"partial_rows":partial,"pagination_complete":False}
         if clock()>=stamp(event["tipoff"]):
             report["skipped"].append({"id":event["id"],"reason":"tipoff passed during collection"});continue
         ready=all(cache[r]["status"]=="COLLECTED" and cache[r]["accounting_ok"] and cache[r]["games"] and not cache[r]["issues"] for r in refs)
         report["dossiers"].append({"event":event,"history_refs":refs,"status":"QUARANTINE_UNVERIFIED" if ready else "INCOMPLETE","engine_access":False})
 
+def audit(report):
+    issues=[]
+    cutoff=stamp(report["cutoff"])
+    histories=report["histories"]
+    for ref,h in histories.items():
+        if h["status"]!="COLLECTED":continue
+        rows=h["games"]
+        if not h.get("accounting_ok") or h["received"]!=len(rows)+len(h["issues"])+len(h["exclusions"]):issues.append(ref+": accounting")
+        if sum(p["count"] for p in h["pages"])!=h["received"] or not h["pages"] or h["pages"][-1]["next_cursor"] is not None:issues.append(ref+": pagination")
+        if any(stamp(g["datetime"]).date()>=cutoff.date() for g in rows):issues.append(ref+": cutoff")
+        if len({g["id"] for g in rows})!=len(rows):issues.append(ref+": duplicate")
+        if summarize(rows)!=h["stats"]:issues.append(ref+": statistics")
+    ids=set()
+    for d in report["dossiers"]:
+        e=d["event"]
+        expected=[f'{e["season"]}:{e[k]}' for k in ("home_id","away_id")]
+        if d["history_refs"]!=expected or any(r not in histories for r in expected):issues.append("invalid history reference")
+        if e["id"] in ids:issues.append("duplicate dossier")
+        ids.add(e["id"])
+        if d.get("engine_access") is not False:issues.append("engine access")
+    if report.get("engine_access") is not False:issues.append("engine access")
+    if report.get("selected_count")!=len(report["dossiers"])+len(report["skipped"]):issues.append("event accounting")
+    pages=report.get("calendar_pages",[])
+    if not pages or pages[-1]["next_cursor"] is not None or sum(p["count"] for p in pages)!=report.get("calendar_received"):issues.append("calendar pagination")
+    return {"status":"PASS" if not issues else "FAIL","issues":issues,"external_verification":"NOT_VERIFIED"}
+
 def main():
     now=datetime.now(timezone.utc)
-    report={"schema":"BET_ANALYST_NBA_BATCH_V1","cutoff":now.isoformat(),"status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"histories":{},"dossiers":[],"skipped":[],"request_errors":[],"limitations":["Same UTC day excluded","Regular season history only","No external verification","No individual data"]}
+    report={"schema":"BET_ANALYST_NBA_BATCH_V2","cutoff":now.isoformat(),"status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"histories":{},"dossiers":[],"skipped":[],"request_errors":[],"limitations":["Same UTC day excluded","Regular season history only","No external verification","No individual data"]}
     try:
         key=os.environ["BDL_KEY"]
         if not key:raise ValueError("missing secret")
@@ -69,12 +97,19 @@ def main():
         if not 1<=hours<=48:raise ValueError("invalid window")
         end=now+timedelta(hours=hours)
         report["window_end"]=end.isoformat()
-        events,issues=select(discover(now,end,key,report["request_errors"]),now,end)
+        report["calendar_pages"]=[]
+        report["calendar_partial"]=[]
+        raw=discover(now,end,key,report["request_errors"],report["calendar_pages"],report["calendar_partial"])
+        report["calendar_received"]=len(raw)
+        del report["calendar_partial"]
+        events,issues=select(raw,now,end)
         report["calendar_issues"]=issues
         report["selected_count"]=len(events)
         build(events,now,key,report)
         if issues or report["skipped"] or any(d["status"]=="INCOMPLETE" for d in report["dossiers"]):report["status"]="PARTIAL"
         elif not events:report["status"]="NO_UPCOMING_GAMES"
+        report["audit"]=audit(report)
+        if report["audit"]["status"]=="FAIL":report["status"]="PARTIAL"
     except Exception as e:
         report["status"]="COLLECTION_ERROR"
         report["error_type"]=type(e).__name__
