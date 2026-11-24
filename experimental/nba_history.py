@@ -45,7 +45,7 @@ def collect(team, season, cutoff, key, trace=None, events=None, partial=None):
         payload = request_json(url,key,events)
         if not isinstance(payload.get("data"), list) or not isinstance(payload.get("meta"), dict): raise ValueError("invalid page structure")
         if trace is not None:
-            trace.append({"query":q.copy(),"received_at":datetime.now(timezone.utc).isoformat(),"count":len(payload["data"]),"next_cursor":payload["meta"].get("next_cursor"),"sha256":hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
+            trace.append({"payload":payload,"query":q.copy(),"received_at":datetime.now(timezone.utc).isoformat(),"count":len(payload["data"]),"next_cursor":payload["meta"].get("next_cursor"),"sha256":hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
         rows.extend(payload["data"])
         cursor = payload.get("meta", {}).get("next_cursor")
         time.sleep(16)
