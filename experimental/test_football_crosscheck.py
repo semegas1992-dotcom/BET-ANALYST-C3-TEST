@@ -12,3 +12,20 @@ class CrosscheckTests(unittest.TestCase):
     def test_structured_team(self):self.assertEqual(compare([P],[dict(S,team1={"name":"A"})])["matched"],1)
     def test_case_space(self):self.assertEqual(compare([P],[dict(S,team1=" a ")])["matched"],1)
     def test_invalid_score(self):self.assertEqual(compare([P],[dict(S,score={"ft":[True,1]})])["unmatched"],1)
+
+    def test_missing_score_evidence(self):
+        d=[]
+        compare([P],[dict(S,score=None)],d)
+        self.assertEqual(d[0]["reason"],"INVALID_OR_MISSING_SCORE")
+    def test_other_date_evidence(self):
+        d=[]
+        compare([P],[dict(S,date="2025-08-02")],d)
+        self.assertEqual(d[0]["reason"],"PAIR_OTHER_DATE")
+    def test_identity_evidence(self):
+        d=[]
+        compare([P],[dict(S,team1="C")],d)
+        self.assertEqual(d[0]["reason"],"IDENTITY_OR_COVERAGE")
+    def test_conflict_evidence(self):
+        d=[]
+        compare([P],[dict(S,score={"ft":[0,1]})],d)
+        self.assertEqual(d[0]["reason"],"SCORE_CONFLICT")
