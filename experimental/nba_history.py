@@ -1,4 +1,4 @@
-import os, json, time, urllib.request, urllib.parse
+import os, json, time, hashlib, urllib.request, urllib.parse
 from datetime import datetime, timezone
 from statistics import mean
 
@@ -10,7 +10,7 @@ def stamp(s):
         raise ValueError("timezone required")
     return d.astimezone(timezone.utc)
 
-def collect(team, season, cutoff, key):
+def collect(team, season, cutoff, key, trace=None):
     rows, cursors, cursor = [], set(), None
     for _ in range(30):
         q = {"team_ids[]": team, "seasons[]": season, "end_date": cutoff.date().isoformat(), "per_page": 100}
@@ -19,6 +19,9 @@ def collect(team, season, cutoff, key):
         req = urllib.request.Request(url, headers={"Authorization": key, "Accept": "application/json"})
         with urllib.request.urlopen(req, timeout=30) as res:
             payload = json.load(res)
+        if not isinstance(payload.get("data"), list) or not isinstance(payload.get("meta"), dict): raise ValueError("invalid page structure")
+        if trace is not None:
+            trace.append({"query":q.copy(),"received_at":datetime.now(timezone.utc).isoformat(),"count":len(payload["data"]),"next_cursor":payload["meta"].get("next_cursor"),"sha256":hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
         rows.extend(payload["data"])
         cursor = payload.get("meta", {}).get("next_cursor")
         time.sleep(13)
@@ -27,7 +30,9 @@ def collect(team, season, cutoff, key):
         cursors.add(cursor)
     raise ValueError("pagination incomplete")
 
-def normalize(rows, team, cutoff):
+def normalize(rows, team, cutoff, exclusions=None, season=None):
+    def exclude(g, reason):
+        if exclusions is not None: exclusions.append({"id":g.get("id"),"reason":reason})
     accepted, seen, issues = [], set(), []
     for g in rows:
         try:
@@ -37,15 +42,20 @@ def normalize(rows, team, cutoff):
             seen.add(i)
             h, a = g["home_team"]["id"], g["visitor_team"]["id"]
             if h == a or team not in (h,a): raise ValueError("team mismatch")
-            if g.get("status") != "Final": continue
-            if g.get("postseason") is True: continue
+            if season is not None and g.get("season") != season: raise ValueError("season mismatch")
+            if g.get("status") != "Final":
+                exclude(g,"not_final"); continue
+            if g.get("postseason") is True:
+                exclude(g,"postseason"); continue
             d = stamp(g["datetime"])
-            if d >= cutoff: continue
+            if d >= cutoff:
+                exclude(g,"at_or_after_cutoff"); continue
             # Same UTC day excluded: final status alone cannot prove completion before cutoff.
-            if d.date() >= cutoff.date(): continue
+            if d.date() >= cutoff.date():
+                exclude(g,"same_utc_day"); continue
             x,y = g["home_team_score"],g["visitor_team_score"]
             if any(type(v) is not int or v <= 0 for v in (x,y)) or x == y: raise ValueError("invalid final score")
-            accepted.append({"id":i,"datetime":d.isoformat(),"home":h==team,"pf":x if h==team else y,"pa":y if h==team else x})
+            accepted.append({"id":i,"datetime":d.isoformat(),"home":h==team,"opponent_id":a if h==team else h,"opponent_name":(g["visitor_team"] if h==team else g["home_team"]).get("full_name"),"pf":x if h==team else y,"pa":y if h==team else x})
         except (KeyError, ValueError, TypeError, AttributeError) as e:
             issues.append({"id":g.get("id") if isinstance(g,dict) else None,"reason":str(e)})
     return sorted(accepted,key=lambda g:g["datetime"],reverse=True),issues
@@ -54,6 +64,7 @@ def stats(rows):
     n=len(rows)
     return {"n":n,"wins":sum(g["pf"]>g["pa"] for g in rows),"losses":sum(g["pf"]<g["pa"] for g in rows),
             "pf":mean(g["pf"] for g in rows) if n else None,"pa":mean(g["pa"] for g in rows) if n else None,
+            "total":mean(g["pf"]+g["pa"] for g in rows) if n else None,
             "margin":mean(g["pf"]-g["pa"] for g in rows) if n else None,
             "game_ids":[g["id"] for g in rows]}
 
@@ -65,7 +76,7 @@ def main():
     cutoff=stamp(os.environ["CUTOFF"])
     now=datetime.now(timezone.utc)
     if cutoff > now: cutoff=now
-    report={"schema":"BET_ANALYST_NBA_PREMATCH_V1","source":BASE,"cutoff":cutoff.isoformat(),"collected_at":now.isoformat(),
+    report={"schema":"BET_ANALYST_NBA_PREMATCH_V2","source":BASE,"cutoff":cutoff.isoformat(),"collected_at":now.isoformat(),
             "status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"teams":{},
             "limitations":["Same UTC day excluded conservatively","No independent verification","No injuries or individual statistics","Historical completeness not independently verified"]}
     try:
@@ -82,8 +93,10 @@ def main():
         report["event"]={"id":event_id,"tipoff":tip.isoformat(),"home":event["home_team"]["full_name"],"away":event["visitor_team"]["full_name"]}
         time.sleep(13)
         for team in (event["home_team"]["id"],event["visitor_team"]["id"]):
-            rows,issues=normalize(collect(team,int(os.environ["SEASON"]),cutoff,os.environ["BDL_KEY"]),team,cutoff)
-            report["teams"][str(team)]={"games":rows,"issues":issues,"stats":summarize(rows)}
+            trace, exclusions = [], []
+            raw=collect(team,int(os.environ["SEASON"]),cutoff,key,trace)
+            rows,issues=normalize(raw,team,cutoff,exclusions,int(os.environ["SEASON"]))
+            report["teams"][str(team)]={"games":rows,"issues":issues,"exclusions":exclusions,"stats":summarize(rows),"pages":trace,"received":len(raw),"pagination_complete":True,"external_completeness":"NOT_VERIFIED","accounting_ok":len(raw)==len(rows)+len(issues)+len(exclusions)}
     except Exception as e:
         report["status"]="COLLECTION_ERROR"
         report["error_type"]=type(e).__name__
