@@ -2,6 +2,8 @@ import os,json,time,urllib.parse,hashlib
 from datetime import datetime,timezone,timedelta
 from nba_history import BASE,stamp,request_json,collect,normalize,summarize
 
+from nba_enrichment import grouped,distribute,context
+
 def select(rows,now,end):
     games,issues,seen=[],[],set()
     for g in rows:
@@ -61,6 +63,32 @@ def build(events,now,key,report,clock=lambda:datetime.now(timezone.utc)):
         ready=all(cache[r]["status"]=="COLLECTED" and cache[r]["accounting_ok"] and cache[r]["games"] and not cache[r]["issues"] for r in refs)
         report["dossiers"].append({"event":event,"history_refs":refs,"status":"QUARANTINE_UNVERIFIED" if ready else "INCOMPLETE","engine_access":False})
 
+def build_grouped(events,now,key,report,clock=lambda:datetime.now(timezone.utc)):
+    groups={}
+    for e in events:groups.setdefault(e["season"],set()).update((e["home_id"],e["away_id"]))
+    report["group_pages"]={}
+    for season,teams in groups.items():
+        trace,partial=[],[]
+        group={"pages":trace,"teams":sorted(teams)}
+        report["group_pages"][str(season)]=group
+        try:
+            raw=grouped(teams,season,now,key,trace,report["request_errors"],partial)
+            split=distribute(raw,teams)
+            group.update(status="COLLECTED",received=len(raw))
+            for team,items in split.items():
+                excluded=[]
+                rows,issues=normalize(items,team,now,excluded,season)
+                report["histories"][f"{season}:{team}"]={"status":"COLLECTED","pagination_complete":True,"games":rows,"stats":summarize(rows),"issues":issues,"exclusions":excluded,"received":len(items),"accounting_ok":len(items)==len(rows)+len(issues)+len(excluded),"group_ref":str(season),"external_completeness":"NOT_VERIFIED"}
+        except Exception as e:
+            group.update(status="COLLECTION_ERROR",partial_rows=partial,error_type=type(e).__name__)
+            for team in teams:report["histories"][f"{season}:{team}"]={"status":"COLLECTION_ERROR","group_ref":str(season)}
+    build(events,now,key,report,clock)
+    for d in report["dossiers"]:
+        if d["status"]!="QUARANTINE_UNVERIFIED":continue
+        e=d["event"]
+        d["context"]={side:context(report["histories"][ref]["games"],e["tipoff"],e[other]) for side,ref,other in zip(("home","away"),d["history_refs"],("away_id","home_id"))}
+    report["api_metrics"]={"successful_pages":len(report["calendar_pages"])+sum(len(g["pages"]) for g in report["group_pages"].values()),"retry_events":len(report["request_errors"]),"http_429":sum(e["http_code"]==429 for e in report["request_errors"])}
+
 def audit(report):
     issues=[]
     cutoff=stamp(report["cutoff"])
@@ -69,7 +97,11 @@ def audit(report):
         if h["status"]!="COLLECTED":continue
         rows=h["games"]
         if not h.get("accounting_ok") or h["received"]!=len(rows)+len(h["issues"])+len(h["exclusions"]):issues.append(ref+": accounting")
-        if sum(p["count"] for p in h["pages"])!=h["received"] or not h["pages"] or h["pages"][-1]["next_cursor"] is not None:issues.append(ref+": pagination")
+        if "group_ref" in h:
+            group=report.get("group_pages",{}).get(h["group_ref"],{})
+            pages=group.get("pages",[])
+            if not pages or pages[-1]["next_cursor"] is not None or sum(p["count"] for p in pages)!=group.get("received") or int(ref.split(":")[1]) not in group.get("teams",[]):issues.append(ref+": group pagination")
+        elif sum(p["count"] for p in h["pages"])!=h["received"] or not h["pages"] or h["pages"][-1]["next_cursor"] is not None:issues.append(ref+": pagination")
         if any(stamp(g["datetime"]).date()>=cutoff.date() for g in rows):issues.append(ref+": cutoff")
         if len({g["id"] for g in rows})!=len(rows):issues.append(ref+": duplicate")
         if summarize(rows)!=h["stats"]:issues.append(ref+": statistics")
@@ -81,6 +113,9 @@ def audit(report):
         if e["id"] in ids:issues.append("duplicate dossier")
         ids.add(e["id"])
         if d.get("engine_access") is not False:issues.append("engine access")
+        if "context" in d and all(r in histories and histories[r]["status"]=="COLLECTED" for r in expected):
+            expected_context={side:context(histories[ref]["games"],e["tipoff"],e[other]) for side,ref,other in zip(("home","away"),expected,("away_id","home_id"))}
+            if d["context"]!=expected_context:issues.append("context mismatch")
     if report.get("engine_access") is not False:issues.append("engine access")
     if report.get("selected_count")!=len(report["dossiers"])+len(report["skipped"]):issues.append("event accounting")
     pages=report.get("calendar_pages",[])
@@ -89,7 +124,7 @@ def audit(report):
 
 def main():
     now=datetime.now(timezone.utc)
-    report={"schema":"BET_ANALYST_NBA_BATCH_V2","cutoff":now.isoformat(),"status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"histories":{},"dossiers":[],"skipped":[],"request_errors":[],"limitations":["Same UTC day excluded","Regular season history only","No external verification","No individual data"]}
+    report={"schema":"BET_ANALYST_NBA_BATCH_V3","cutoff":now.isoformat(),"status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"histories":{},"dossiers":[],"skipped":[],"request_errors":[],"limitations":["Same UTC day excluded","Regular season history only","No external verification","No individual data"]}
     try:
         key=os.environ["BDL_KEY"]
         if not key:raise ValueError("missing secret")
@@ -105,7 +140,7 @@ def main():
         events,issues=select(raw,now,end)
         report["calendar_issues"]=issues
         report["selected_count"]=len(events)
-        build(events,now,key,report)
+        build_grouped(events,now,key,report)
         if issues or report["skipped"] or any(d["status"]=="INCOMPLETE" for d in report["dossiers"]):report["status"]="PARTIAL"
         elif not events:report["status"]="NO_UPCOMING_GAMES"
         report["audit"]=audit(report)
