@@ -36,8 +36,8 @@ def request_json(url, key, events=None):
             if not retry: raise
             time.sleep(delay)
 
-def collect(team, season, cutoff, key, trace=None, events=None):
-    rows, cursors, cursor = [], set(), None
+def collect(team, season, cutoff, key, trace=None, events=None, partial=None):
+    rows, cursors, cursor = ([] if partial is None else partial), set(), None
     for _ in range(30):
         q = {"team_ids[]": team, "seasons[]": season, "end_date": cutoff.date().isoformat(), "per_page": 100}
         if cursor is not None: q["cursor"] = cursor
@@ -48,7 +48,7 @@ def collect(team, season, cutoff, key, trace=None, events=None):
             trace.append({"query":q.copy(),"received_at":datetime.now(timezone.utc).isoformat(),"count":len(payload["data"]),"next_cursor":payload["meta"].get("next_cursor"),"sha256":hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
         rows.extend(payload["data"])
         cursor = payload.get("meta", {}).get("next_cursor")
-        time.sleep(13)
+        time.sleep(16)
         if cursor is None: return rows
         if cursor in cursors: raise ValueError("pagination loop")
         cursors.add(cursor)
@@ -100,6 +100,8 @@ def normalize(rows, team, cutoff, exclusions=None, season=None):
             h, a = g["home_team"]["id"], g["visitor_team"]["id"]
             if h == a or team not in (h,a): raise ValueError("team mismatch")
             if season is not None and g.get("season") != season: raise ValueError("season mismatch")
+            if g.get("postponed") is True:
+                exclude(g,"postponed"); continue
             if g.get("status") != "Final":
                 exclude(g,"not_final"); continue
             if g.get("postseason") is True:
