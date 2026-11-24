@@ -1,0 +1,28 @@
+name: NBA player identity qualification
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['.github/workflows/player-identity-probe.yml']
+permissions:
+  contents: read
+concurrency:
+  group: dunkapi-one-shot
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - run: python experimental/player_probe.py
+        env:
+          DUNK_KEY: ${{ secrets.DUNKAPI_API_KEY }}
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: player-probe
+          path: player-probe.json
+          retention-days: 1
