@@ -2,6 +2,8 @@ import unittest
 from nba_history import normalize, summarize, stamp, collect
 from unittest.mock import patch, MagicMock
 import json
+from urllib.error import HTTPError, URLError
+from nba_history import request_json
 
 def game(i=1, date="2026-11-20T01:00:00Z", status="Final", x=110, y=100, h=1,a=2):
     return {"id":i,"datetime":date,"status":status,"home_team":{"id":h},"visitor_team":{"id":a},"home_team_score":x,"visitor_team_score":y}
@@ -67,5 +69,46 @@ class HistoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"pagination loop"):
             collect(1,2026,self.cutoff,"test")
 
+    @patch("nba_history.time.sleep")
+    @patch("nba_history.urllib.request.urlopen")
+    def test_retry_429(self, urlopen, sleep):
+        response=MagicMock()
+        response.__enter__.return_value.read.return_value='{"data":[]}'
+        urlopen.side_effect=[HTTPError("https://example.com",429,"limit",{"Retry-After":"75"},None),response]
+        events=[]
+        self.assertEqual(request_json("https://example.com","test",events),{"data":[]})
+        sleep.assert_called_once_with(75)
+        self.assertEqual(events[0]["http_code"],429)
+    @patch("nba_history.time.sleep")
+    @patch("nba_history.urllib.request.urlopen")
+    def test_no_retry_401(self, urlopen, sleep):
+        urlopen.side_effect=HTTPError("https://example.com",401,"auth",{},None)
+        with self.assertRaises(HTTPError): request_json("https://example.com","test")
+        self.assertEqual(urlopen.call_count,1)
+        sleep.assert_not_called()
+    @patch("nba_history.time.sleep")
+    @patch("nba_history.urllib.request.urlopen")
+    def test_retry_exhausted(self, urlopen, sleep):
+        urlopen.side_effect=HTTPError("https://example.com",503,"unavailable",{},None)
+        events=[]
+        with self.assertRaises(HTTPError): request_json("https://example.com","test",events)
+        self.assertEqual(urlopen.call_count,3)
+        self.assertEqual([x["delay_seconds"] for x in events],[15,30,None])
+    @patch("nba_history.time.sleep")
+    @patch("nba_history.urllib.request.urlopen")
+    def test_network_retry(self, urlopen, sleep):
+        response=MagicMock()
+        response.__enter__.return_value.read.return_value='{}'
+        urlopen.side_effect=[URLError("temporary"),response]
+        self.assertEqual(request_json("https://example.com","test"),{})
+        sleep.assert_called_once_with(15)
+    @patch("nba_history.time.sleep")
+    @patch("nba_history.urllib.request.urlopen")
+    def test_long_retry_after_stops(self, urlopen, sleep):
+        urlopen.side_effect=HTTPError("https://example.com",429,"limit",{"Retry-After":"300"},None)
+        with self.assertRaises(HTTPError): request_json("https://example.com","test")
+        sleep.assert_not_called()
+
 if __name__=="__main__": unittest.main()
+
 
