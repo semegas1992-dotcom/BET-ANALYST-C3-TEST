@@ -31,7 +31,7 @@ def discover(now,end,key,errors,trace=None,partial=None):
         if cursor is not None:q["cursor"]=cursor
         p=request_json(BASE+"?"+urllib.parse.urlencode(q),key,errors)
         if not isinstance(p.get("data"),list) or not isinstance(p.get("meta"),dict): raise ValueError("invalid calendar page")
-        if trace is not None: trace.append({"query":q.copy(),"count":len(p["data"]),"next_cursor":p["meta"].get("next_cursor"),"received_at":datetime.now(timezone.utc).isoformat(),"sha256":hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
+        if trace is not None: trace.append({"payload":p,"query":q.copy(),"count":len(p["data"]),"next_cursor":p["meta"].get("next_cursor"),"received_at":datetime.now(timezone.utc).isoformat(),"sha256":hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
         rows.extend(p["data"])
         cursor=p["meta"].get("next_cursor")
         time.sleep(16)
@@ -87,7 +87,7 @@ def build_grouped(events,now,key,report,clock=lambda:datetime.now(timezone.utc))
         if d["status"]!="QUARANTINE_UNVERIFIED":continue
         e=d["event"]
         d["context"]={side:context(report["histories"][ref]["games"],e["tipoff"],e[other]) for side,ref,other in zip(("home","away"),d["history_refs"],("away_id","home_id"))}
-    report["api_metrics"]={"successful_pages":len(report["calendar_pages"])+sum(len(g["pages"]) for g in report["group_pages"].values()),"retry_events":len(report["request_errors"]),"http_429":sum(e["http_code"]==429 for e in report["request_errors"])}
+    report["api_metrics"]={"successful_pages":len(report["calendar_pages"])+sum(len(g["pages"]) for g in report["group_pages"].values())+sum(len(h.get("pages",[])) for h in report["histories"].values()),"retry_events":len(report["request_errors"]),"http_429":sum(e["http_code"]==429 for e in report["request_errors"])}
 
 def reciprocity(histories):
     issues=[]
@@ -105,6 +105,9 @@ def reciprocity(histories):
             p,q=g.get("periods",{}),x.get("periods",{})
             if p.get("status")!=q.get("status") or (p.get("status")=="CONSISTENT" and (p["pf"]!=q["pa"] or p["pa"]!=q["pf"])):issues.append(ref+": reciprocal periods "+str(g["id"]))
     return issues
+
+def verify_pages(pages):
+    return all("payload" in p and hashlib.sha256(json.dumps(p["payload"],sort_keys=True,separators=(",",":")).encode()).hexdigest()==p["sha256"] and len(p["payload"]["data"])==p["count"] and p["payload"]["meta"].get("next_cursor")==p["next_cursor"] for p in pages)
 
 def audit(report):
     issues=[]
@@ -139,6 +142,9 @@ def audit(report):
     if report.get("selected_count")!=len(report["dossiers"])+len(report["skipped"]):issues.append("event accounting")
     pages=report.get("calendar_pages",[])
     if not pages or pages[-1]["next_cursor"] is not None or sum(p["count"] for p in pages)!=report.get("calendar_received"):issues.append("calendar pagination")
+    if report.get("schema")=="BET_ANALYST_NBA_BATCH_V4":
+        traces=[report.get("calendar_pages",[])]+[g["pages"] for g in report.get("group_pages",{}).values()]+[h.get("pages",[]) for h in histories.values()]
+        if not all(verify_pages(p) for p in traces):issues.append("page integrity")
     return {"status":"PASS" if not issues else "FAIL","issues":issues,"external_verification":"NOT_VERIFIED"}
 
 def main():
