@@ -22,8 +22,13 @@ class FootballTests(unittest.TestCase):
         from football_collect import audit
         h=history([H],E,3,NOW)
         s={"history":h,"season":stats(h),"last5":stats(h),"last10":stats(h),"home":stats(h),"away":stats([])}
-        d={"id":1,"kickoff":E["utcDate"],"engine_access":False,"stats":{"home":s}}
+        from football_enrichment import enrich
+        s["enrichment"]=enrich(h,4)
+        a=dict(s,enrichment=enrich(h,3))
+        d={"id":1,"kickoff":E["utcDate"],"engine_access":False,"teams":[3,4],"stats":{"home":s,"away":a}}
         self.assertEqual(audit({"dossiers":[d]})["status"],"PASS")
+        self.assertEqual(audit({"dossiers":[dict(d,stats={"home":s})]})["status"],"FAIL")
+        self.assertEqual(audit({"dossiers":[dict(d,stats={"home":dict(s,enrichment=None),"away":a})]})["status"],"FAIL")
         s["last5"]=stats([])
         self.assertEqual(audit({"dossiers":[d]})["status"],"FAIL")
     def test_empty_audit(self):
