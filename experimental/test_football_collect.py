@@ -35,3 +35,8 @@ class FootballTests(unittest.TestCase):
         from football_collect import audit
         self.assertEqual(audit({"dossiers":[]})["status"],"FAIL")
     def test_same_day(self):self.assertEqual(history([dict(H,utcDate="2026-11-24T10:00:00Z")],E,3,NOW),[])
+
+    def test_previous_season(self):
+        old=dict(H,season={"id":9},utcDate="2025-11-22T20:00:00Z")
+        self.assertEqual(history([old],E,3,NOW),[])
+        self.assertEqual(len(history([old],E,3,NOW,multi=True)),1)
