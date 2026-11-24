@@ -3,7 +3,7 @@ from nba_history import normalize, summarize, stamp, collect
 from unittest.mock import patch, MagicMock
 import json
 from urllib.error import HTTPError, URLError
-from nba_history import request_json
+from nba_history import request_json, periods, period_stats
 
 def game(i=1, date="2026-11-20T01:00:00Z", status="Final", x=110, y=100, h=1,a=2):
     return {"id":i,"datetime":date,"status":status,"home_team":{"id":h},"visitor_team":{"id":a},"home_team_score":x,"visitor_team_score":y}
@@ -108,6 +108,40 @@ class HistoryTests(unittest.TestCase):
         urlopen.side_effect=HTTPError("https://example.com",429,"limit",{"Retry-After":"300"},None)
         with self.assertRaises(HTTPError): request_json("https://example.com","test")
         sleep.assert_not_called()
+
+    def quarter_game(self):
+        g=game()
+        g["period"]=4
+        for i,(h,a) in enumerate(zip([25,30,25,30],[25,25,25,25]),1):
+            g[f"home_q{i}"]=h
+            g[f"visitor_q{i}"]=a
+        return g
+    def test_quarters(self):
+        g=self.quarter_game()
+        rows,_=normalize([g],1,self.cutoff)
+        self.assertEqual(period_stats(rows)["H1"]["pf"],55)
+        self.assertEqual(period_stats(rows)["REG"]["pf"],110)
+        self.assertEqual(periods(g,False)["pf"],[25]*4)
+    def test_quarter_missing(self):
+        g=self.quarter_game(); del g["home_q1"]
+        self.assertEqual(periods(g,True)["status"],"MISSING")
+    def test_quarter_mismatch(self):
+        g=self.quarter_game(); g["home_q1"]=26
+        self.assertEqual(periods(g,True)["status"],"TOTAL_MISMATCH")
+    def test_overtime(self):
+        g=self.quarter_game(); g.update(period=5,home_q4=20,home_ot1=10,visitor_ot1=0)
+        self.assertEqual(periods(g,True)["status"],"CONSISTENT")
+        rows,_=normalize([g],1,self.cutoff)
+        self.assertEqual(period_stats(rows)["REG"]["pf"],100)
+    def test_invalid_quarter(self):
+        g=self.quarter_game(); g["home_q1"]=True
+        self.assertEqual(periods(g,True)["status"],"INVALID")
+    def test_period_coverage(self):
+        rows,_=normalize([self.quarter_game(),game(2)],1,self.cutoff)
+        self.assertEqual(period_stats(rows)["coverage"],0.5)
+    def test_overtime_mismatch(self):
+        g=self.quarter_game(); g.update(period=5,home_ot1=0,visitor_ot1=0)
+        self.assertEqual(periods(g,True)["status"],"OT_MISMATCH")
 
 if __name__=="__main__": unittest.main()
 
