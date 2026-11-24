@@ -1,0 +1,70 @@
+name: NBA joined dossier qualification
+on:
+  push:
+    branches: [c3-nba-history]
+    paths:
+      - '.github/workflows/dunk-join-probe.yml'
+permissions:
+  contents: read
+concurrency:
+  group: dunkapi-one-shot
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - name: Collect collective histories
+        env:
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
+        run: python experimental/nba_batch.py
+      - name: Join and audit
+        env:
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
+          DUNK_KEY: ${{ secrets.DUNKAPI_API_KEY }}
+          PYTHONPATH: experimental
+        run: |
+          python - <<'PY'
+          import os,json
+          from datetime import datetime,timezone
+          from dunkapi_client import Budget,call
+          from nba_history import request_json
+          from dunk_join import mapping,injury_counts,assemble,audit_join
+          with open("nba-batch-quarantine.json") as f: base=json.load(f)
+          result={"engine_access":False,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED"}
+          try:
+              now=datetime.now(timezone.utc)
+              budget=Budget("probe-budget.db")
+              bdl=request_json("https://api.balldontlie.io/v1/teams",os.environ["BDL_KEY"])["data"]
+              mapped={}
+              def teams(data):
+                  mapped.update(mapping(bdl,data["teams"]))
+                  return {"mapped_count":len(mapped),"provider_count":len(data["teams"]),"unmatched_bdl_count":len(bdl)-len(mapped)}
+              result["teams"]=call("list_teams",{"season":now.year+int(now.month>=7)},os.environ["DUNK_KEY"],budget,inspect=teams)
+              if len(mapped)!=30:raise ValueError("mapping incomplete")
+              def injuries(data):
+                  counts,unknown=injury_counts(data["injuries"],mapped)
+                  observed=datetime.now(timezone.utc).isoformat()
+                  dossiers=assemble(base,mapped,counts,unknown,observed,data["date"])
+                  result["audit"]=audit_join(base,dossiers,mapped,counts,unknown,data["count"])
+                  result["dossier_count"]=len(dossiers)
+                  result["unmapped_injury_count"]=unknown
+                  result["covered_sides"]=sum(s["mapped"] for d in dossiers for s in d["sides"].values())
+                  return {"accounted_count":sum(sum(c.values()) for c in counts.values())+unknown}
+              result["injuries"]=call("get_injuries",{},os.environ["DUNK_KEY"],budget,inspect=injuries)
+              result["status"]="QUARANTINE_UNVERIFIED" if result["audit"]["status"]=="PASS" and base["audit"]["status"]=="PASS" else "PARTIAL"
+          except Exception as e:
+              result.update(status="PROBE_FAILED",error_type=type(e).__name__,http_code=getattr(e,"code",None))
+          with open("nba-joined-audit.json","w") as f:json.dump(result,f,indent=2)
+          print(json.dumps(result))
+          if result["status"]!="QUARANTINE_UNVERIFIED":raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-joined-audit
+          path: nba-joined-audit.json
+          retention-days: 1
