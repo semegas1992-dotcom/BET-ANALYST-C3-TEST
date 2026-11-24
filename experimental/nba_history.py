@@ -1,5 +1,5 @@
 import os, json, time, hashlib, urllib.request, urllib.parse
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from statistics import mean
 from urllib.error import HTTPError, URLError
 from email.utils import parsedate_to_datetime
@@ -58,6 +58,13 @@ def periods(g, home):
     p=g.get("period")
     if type(p) is not int or not 4<=p<=7:
         return {"status":"MISSING_OR_UNSUPPORTED"}
+    observed=0
+    for i in range(1,4):
+        pair=[g.get(f"{side}_ot{i}") for side in ("home","visitor")]
+        if any(v is not None and (type(v) is not int or v<0) for v in pair):
+            return {"status":"INVALID"}
+        if any(v not in (None,0) for v in pair): observed=i
+    p=max(p,4+observed)
     keys=[f"q{i}" for i in range(1,5)]+[f"ot{i}" for i in range(1,p-3)]
     h=[g.get("home_"+k) for k in keys]
     a=[g.get("visitor_"+k) for k in keys]
@@ -67,6 +74,7 @@ def periods(g, home):
         return {"status":"INVALID"}
     if sum(h)!=g["home_team_score"] or sum(a)!=g["visitor_team_score"]:
         return {"status":"TOTAL_MISMATCH"}
+    if sum(h)==sum(a): return {"status":"TOTAL_MISMATCH"}
     for n in range(4,p):
         if sum(h[:n])!=sum(a[:n]):
             return {"status":"OT_MISMATCH"}
