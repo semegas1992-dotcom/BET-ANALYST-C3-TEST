@@ -8,7 +8,7 @@ def stamp(s):
     d = datetime.fromisoformat(s.replace("Z", "+00:00"))
     if d.tzinfo is None:
         raise ValueError("timezone required")
-    return d
+    return d.astimezone(timezone.utc)
 
 def collect(team, season, cutoff, key):
     rows, cursors, cursor = [], set(), None
@@ -38,6 +38,7 @@ def normalize(rows, team, cutoff):
             h, a = g["home_team"]["id"], g["visitor_team"]["id"]
             if h == a or team not in (h,a): raise ValueError("team mismatch")
             if g.get("status") != "Final": continue
+            if g.get("postseason") is True: continue
             d = stamp(g["datetime"])
             if d >= cutoff: continue
             # Same UTC day excluded: final status alone cannot prove completion before cutoff.
@@ -68,7 +69,19 @@ def main():
             "status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"teams":{},
             "limitations":["Same UTC day excluded conservatively","No independent verification","No injuries or individual statistics","Historical completeness not independently verified"]}
     try:
-        for team in map(int,os.environ["TEAM_IDS"].split(",")):
+        key=os.environ["BDL_KEY"]
+        if not key: raise ValueError("missing secret")
+        event_id=int(os.environ["EVENT_ID"])
+        req=urllib.request.Request(BASE+"/"+str(event_id),headers={"Authorization":key,"Accept":"application/json"})
+        with urllib.request.urlopen(req,timeout=30) as res:
+            event=json.load(res)["data"]
+        if event["id"]!=event_id or event["home_team"]["full_name"]!="Denver Nuggets" or event["visitor_team"]["full_name"]!="Dallas Mavericks": raise ValueError("event mismatch")
+        tip=stamp(event["datetime"])
+        if tip!=stamp(os.environ["CUTOFF"]) or now>=tip: raise ValueError("event time mismatch or expired")
+        if event["season"]!=int(os.environ["SEASON"]): raise ValueError("season mismatch")
+        report["event"]={"id":event_id,"tipoff":tip.isoformat(),"home":event["home_team"]["full_name"],"away":event["visitor_team"]["full_name"]}
+        time.sleep(13)
+        for team in (event["home_team"]["id"],event["visitor_team"]["id"]):
             rows,issues=normalize(collect(team,int(os.environ["SEASON"]),cutoff,os.environ["BDL_KEY"]),team,cutoff)
             report["teams"][str(team)]={"games":rows,"issues":issues,"stats":summarize(rows)}
     except Exception as e:
@@ -76,6 +89,8 @@ def main():
         report["error_type"]=type(e).__name__
     with open("nba-history-quarantine.json","w") as f: json.dump(report,f,indent=2)
     print("Status:",report["status"],"Teams:",len(report["teams"]))
+    for team, data in report["teams"].items():
+        print("Team",team,"accepted",len(data["games"]),"issues",len(data["issues"]))
     if report["status"]=="COLLECTION_ERROR": raise SystemExit(1)
 
 if __name__=="__main__": main()
