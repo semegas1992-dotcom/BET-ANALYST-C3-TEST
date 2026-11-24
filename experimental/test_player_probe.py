@@ -9,3 +9,10 @@ class ProbeTests(unittest.TestCase):
     def test_conflict(self):self.assertFalse(candidate(B,dict(P,jersey_number="1"),M))
     def test_team(self):self.assertFalse(candidate(B,dict(P,team_id="dal"),M))
     def test_birth_conflict(self):self.assertFalse(candidate(dict(B,birth_date="1998-03-03"),dict(P,birth_date="1998-03-04"),M))
+
+    def test_real_alias_zero(self):self.assertTrue(candidate(B,{"name":"Jayson Tatum","team_id":"bos","jersey":0},M))
+    def test_alias_conflict(self):
+        with self.assertRaises(ValueError):candidate(B,dict(P,jersey=1),M)
+    def test_boolean_invalid(self):self.assertFalse(candidate(B,dict(P,jersey_number=False),M))
+    def test_double_zero_distinct(self):self.assertFalse(candidate(B,dict(P,jersey_number="00"),M))
+    def test_blank(self):self.assertFalse(candidate(B,dict(P,jersey_number=" "),M))
