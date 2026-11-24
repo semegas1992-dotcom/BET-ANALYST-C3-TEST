@@ -1,0 +1,43 @@
+name: DunkAPI one-shot qualification
+on:
+  push:
+    branches: [c3-nba-history]
+    paths:
+      - '.github/workflows/dunkapi-probe.yml'
+permissions:
+  contents: read
+concurrency:
+  group: dunkapi-one-shot
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - name: Single injury probe
+        env:
+          DUNK_KEY: ${{ secrets.DUNKAPI_API_KEY }}
+          PYTHONPATH: experimental
+        run: |
+          python - <<'PY'
+          import os,json
+          from dunkapi_client import Budget,call
+          from urllib.error import HTTPError
+          report={"engine_access":False,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED"}
+          try:
+              report.update(call("get_injuries",{},os.environ.get("DUNK_KEY"),Budget("probe-budget.db")))
+          except Exception as e:
+              report.update(status="PROBE_FAILED",error_type=type(e).__name__,http_code=getattr(e,"code",None))
+          with open("dunk-probe.json","w") as f: json.dump(report,f,indent=2)
+          print(json.dumps(report))
+          if report["status"]=="PROBE_FAILED": raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dunk-probe
+          path: dunk-probe.json
+          retention-days: 1
