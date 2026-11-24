@@ -26,7 +26,7 @@ def fetch(path,params,key,trace):
             code=e.code;e.close()
             if code not in (429,500,502,503,504) or attempt==2:raise
             time.sleep(60 if code==429 else 10*(attempt+1))
-    trace.append({"path":path,"params":params,"observed":datetime.now(timezone.utc).isoformat(),"sha256":hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()})
+    trace.append({"path":path,"params":params,"observed":datetime.now(timezone.utc).isoformat(),"sha256":hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest(),"count":len(data.get("matches",[]))})
     return data
 
 def matches(data):
@@ -64,6 +64,7 @@ def stats(rows):
 def audit(report):
     issues=[]
     seen=set()
+    if report.get("engine_access",False) is not False:issues.append("report engine lock")
     for d in report["dossiers"]:
         if d["id"] in seen:issues.append("duplicate dossier")
         seen.add(d["id"])
@@ -74,6 +75,8 @@ def audit(report):
             h=s["history"]
             if s.get("enrichment")!=enrich(h,d["teams"][1 if side=="home" else 0]):issues.append("enrichment mismatch")
             if not h:issues.append("empty history")
+            if report.get("cutoff") and any(stamp(r["date"]).date()>=stamp(report["cutoff"]).date() for r in h+s.get("previous_h2h",[])):issues.append("cutoff violation")
+            if any(r["opponent"]!=d["teams"][1 if side=="home" else 0] for r in s.get("previous_h2h",[])):issues.append("h2h opponent mismatch")
             if len({r["id"] for r in h})!=len(h):issues.append("duplicate history")
             if any(stamp(r["date"])>=stamp(d["kickoff"]) for r in h):issues.append("future history")
             for k,rows in (("season",h),("last5",h[:5]),("last10",h[:10]),("home",[r for r in h if r["home"]]),("away",[r for r in h if not r["home"]])):
