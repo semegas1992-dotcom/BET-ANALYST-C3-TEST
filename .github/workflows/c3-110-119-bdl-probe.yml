@@ -1,0 +1,55 @@
+name: C3.110-119 BALLDONTLIE NBA probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/c3-110-119-bdl-probe.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Test authenticated NBA calendar
+        env:
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os, json, datetime, urllib.request, urllib.error, urllib.parse
+          key=os.environ.get('BDL_KEY','')
+          day=datetime.datetime.now(datetime.timezone.utc).date()
+          url='https://api.balldontlie.io/v1/games?'+urllib.parse.urlencode({'start_date':day.isoformat(),'end_date':(day+datetime.timedelta(days=1)).isoformat(),'per_page':100})
+          report={'source':url,'attempted_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'games':[],'engine_access':False,'publication':'BLOCKED_RIGHTS_NOT_CONFIRMED','verification':'NOT_PERFORMED'}
+          if not key:
+              report['status']='MISSING_SECRET'
+          else:
+              try:
+                  req=urllib.request.Request(url,headers={'Authorization':key,'Accept':'application/json'})
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      report['http_status']=response.status
+                      raw=response.read(2000001)
+                      if len(raw)>2000000: raise ValueError()
+                      payload=json.loads(raw)
+                      games=payload['data']
+                      if not isinstance(games,list) or len(games)>100: raise ValueError()
+                      for g in games:
+                          if not isinstance(g['id'],int) or not isinstance(g['home_team']['full_name'],str) or not isinstance(g['visitor_team']['full_name'],str): raise ValueError()
+                          report['games'].append({'id':g['id'],'date':g['date'],'home':g['home_team']['full_name'],'away':g['visitor_team']['full_name'],'status':g.get('status'),'verified':False})
+                      report['collected_at']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+                      report['status']='QUARANTINE_UNVERIFIED' if games else 'EMPTY_RESPONSE'
+                      report['pagination_pending']=bool(payload.get('meta',{}).get('next_cursor'))
+              except urllib.error.HTTPError as e:
+                  report.update(status='HTTP_ERROR',http_status=e.code,games=[])
+              except urllib.error.URLError:
+                  report.update(status='NETWORK_ERROR',games=[])
+              except Exception:
+                  report.update(status='PARSE_OR_VALIDATION_ERROR',games=[])
+          print('Status:',report['status'],'HTTP:',report.get('http_status'),'Games:',len(report['games']))
+          with open('bdl-probe.json','w') as f: json.dump(report,f,indent=2)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bdl-probe-quarantine
+          path: bdl-probe.json
+          retention-days: 1
