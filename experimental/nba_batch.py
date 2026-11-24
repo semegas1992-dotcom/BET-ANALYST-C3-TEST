@@ -81,13 +81,30 @@ def build_grouped(events,now,key,report,clock=lambda:datetime.now(timezone.utc))
                 report["histories"][f"{season}:{team}"]={"status":"COLLECTED","pagination_complete":True,"games":rows,"stats":summarize(rows),"issues":issues,"exclusions":excluded,"received":len(items),"accounting_ok":len(items)==len(rows)+len(issues)+len(excluded),"group_ref":str(season),"external_completeness":"NOT_VERIFIED"}
         except Exception as e:
             group.update(status="COLLECTION_ERROR",partial_rows=partial,error_type=type(e).__name__)
-            for team in teams:report["histories"][f"{season}:{team}"]={"status":"COLLECTION_ERROR","group_ref":str(season)}
+            for team in teams:report["histories"].pop(f"{season}:{team}",None)
     build(events,now,key,report,clock)
     for d in report["dossiers"]:
         if d["status"]!="QUARANTINE_UNVERIFIED":continue
         e=d["event"]
         d["context"]={side:context(report["histories"][ref]["games"],e["tipoff"],e[other]) for side,ref,other in zip(("home","away"),d["history_refs"],("away_id","home_id"))}
     report["api_metrics"]={"successful_pages":len(report["calendar_pages"])+sum(len(g["pages"]) for g in report["group_pages"].values()),"retry_events":len(report["request_errors"]),"http_429":sum(e["http_code"]==429 for e in report["request_errors"])}
+
+def reciprocity(histories):
+    issues=[]
+    for ref,h in histories.items():
+        if h["status"]!="COLLECTED":continue
+        season,team=ref.split(":")
+        for g in h["games"]:
+            other=histories.get(f"{season}:{g.get('opponent_id')}")
+            if not other or other["status"]!="COLLECTED":continue
+            matches=[x for x in other["games"] if x["id"]==g["id"]]
+            if len(matches)!=1:
+                issues.append(ref+": missing reciprocal game "+str(g["id"]));continue
+            x=matches[0]
+            if (g["pf"],g["pa"],g["home"],g["datetime"],int(team))!=(x["pa"],x["pf"],not x["home"],x["datetime"],x.get("opponent_id")):issues.append(ref+": reciprocal mismatch "+str(g["id"]))
+            p,q=g.get("periods",{}),x.get("periods",{})
+            if p.get("status")!=q.get("status") or (p.get("status")=="CONSISTENT" and (p["pf"]!=q["pa"] or p["pa"]!=q["pf"])):issues.append(ref+": reciprocal periods "+str(g["id"]))
+    return issues
 
 def audit(report):
     issues=[]
@@ -105,6 +122,7 @@ def audit(report):
         if any(stamp(g["datetime"]).date()>=cutoff.date() for g in rows):issues.append(ref+": cutoff")
         if len({g["id"] for g in rows})!=len(rows):issues.append(ref+": duplicate")
         if summarize(rows)!=h["stats"]:issues.append(ref+": statistics")
+    issues.extend(reciprocity(histories))
     ids=set()
     for d in report["dossiers"]:
         e=d["event"]
@@ -113,6 +131,7 @@ def audit(report):
         if e["id"] in ids:issues.append("duplicate dossier")
         ids.add(e["id"])
         if d.get("engine_access") is not False:issues.append("engine access")
+        if d["status"]=="QUARANTINE_UNVERIFIED" and "context" not in d:issues.append("missing context")
         if "context" in d and all(r in histories and histories[r]["status"]=="COLLECTED" for r in expected):
             expected_context={side:context(histories[ref]["games"],e["tipoff"],e[other]) for side,ref,other in zip(("home","away"),expected,("away_id","home_id"))}
             if d["context"]!=expected_context:issues.append("context mismatch")
@@ -124,7 +143,7 @@ def audit(report):
 
 def main():
     now=datetime.now(timezone.utc)
-    report={"schema":"BET_ANALYST_NBA_BATCH_V3","cutoff":now.isoformat(),"status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"histories":{},"dossiers":[],"skipped":[],"request_errors":[],"limitations":["Same UTC day excluded","Regular season history only","No external verification","No individual data"]}
+    report={"schema":"BET_ANALYST_NBA_BATCH_V4","cutoff":now.isoformat(),"status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"histories":{},"dossiers":[],"skipped":[],"request_errors":[],"limitations":["Same UTC day excluded","Regular season history only","No external verification","No individual data"]}
     try:
         key=os.environ["BDL_KEY"]
         if not key:raise ValueError("missing secret")
