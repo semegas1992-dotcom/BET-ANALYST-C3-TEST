@@ -1,0 +1,15 @@
+name: NBA history experimental
+on:
+  push:
+    branches: [c3-nba-history]
+    paths:
+      - 'experimental/**'
+      - '.github/workflows/nba-history-experimental.yml'
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
