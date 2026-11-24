@@ -1,0 +1,59 @@
+name: DunkAPI enrichment qualification
+on:
+  push:
+    branches: [c3-nba-history]
+    paths:
+      - '.github/workflows/dunk-enrichment-probe.yml'
+permissions:
+  contents: read
+concurrency:
+  group: dunkapi-one-shot
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - name: Qualify three endpoints
+        env:
+          DUNK_KEY: ${{ secrets.DUNKAPI_API_KEY }}
+          BDL_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
+          PYTHONPATH: experimental
+        run: |
+          python - <<'PY'
+          import os,json
+          from datetime import datetime,timezone
+          from dunkapi_client import Budget,call
+          from dunk_enrichment import player_summary,injury_shape,team_mapping
+          from nba_history import request_json
+          now=datetime.now(timezone.utc)
+          season=now.year+int(now.month>=7)
+          budget=Budget("probe-budget.db")
+          key=os.environ.get("DUNK_KEY")
+          report={"engine_access":False,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","results":{}}
+          def teams(data):
+              bdl=request_json("https://api.balldontlie.io/v1/teams",os.environ["BDL_KEY"])["data"]
+              rows=data["teams"]
+              normalized=[{"name":t.get("name") or t.get("full_name") or t.get("team_name"),"team_id":t["team_id"]} for t in rows]
+              mapping=team_mapping(bdl,normalized)
+              return {"team_count":len(rows),"candidate_count":len(mapping),"fields":sorted({k for t in rows for k in t}),"mapping_status":"UNVERIFIED"}
+          probes=[("list_teams",{"season":season},teams),("get_injuries",{},injury_shape),("get_player",{"player_id":"4065648"},lambda d: {"profile_validation":{k:v for k,v in player_summary(d,"4065648",now,season).items() if k!="means"}})]
+          for endpoint,params,inspect in probes:
+              try:
+                  report["results"][endpoint]=call(endpoint,params,key,budget,now=now,inspect=inspect)
+              except Exception as e:
+                  report["results"][endpoint]={"status":"PROBE_FAILED","error_type":type(e).__name__,"http_code":getattr(e,"code",None)}
+                  if getattr(e,"code",None) in (401,402,403,429):break
+          with open("dunk-enrichment-probe.json","w") as f:json.dump(report,f,indent=2)
+          print(json.dumps(report))
+          if len(report["results"])!=3 or any(r["status"]=="PROBE_FAILED" for r in report["results"].values()):raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dunk-enrichment-probe
+          path: dunk-enrichment-probe.json
+          retention-days: 1
