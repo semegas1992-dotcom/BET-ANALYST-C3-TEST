@@ -32,6 +32,7 @@ def request_json(url, key, events=None):
             retry=retryable and attempt<3 and delay<=120
             if events is not None:
                 events.append({"attempt":attempt,"http_code":code,"error_type":type(exc).__name__,"retry":retry,"delay_seconds":delay if retry else None,"at":datetime.now(timezone.utc).isoformat()})
+            if isinstance(exc, HTTPError): exc.close()
             if not retry: raise
             time.sleep(delay)
 
@@ -52,6 +53,31 @@ def collect(team, season, cutoff, key, trace=None, events=None):
         if cursor in cursors: raise ValueError("pagination loop")
         cursors.add(cursor)
     raise ValueError("pagination incomplete")
+
+def periods(g, home):
+    p=g.get("period")
+    if type(p) is not int or not 4<=p<=7:
+        return {"status":"MISSING_OR_UNSUPPORTED"}
+    keys=[f"q{i}" for i in range(1,5)]+[f"ot{i}" for i in range(1,p-3)]
+    h=[g.get("home_"+k) for k in keys]
+    a=[g.get("visitor_"+k) for k in keys]
+    if any(v is None for v in h+a):
+        return {"status":"MISSING"}
+    if any(type(v) is not int or v<0 for v in h+a):
+        return {"status":"INVALID"}
+    if sum(h)!=g["home_team_score"] or sum(a)!=g["visitor_team_score"]:
+        return {"status":"TOTAL_MISMATCH"}
+    for n in range(4,p):
+        if sum(h[:n])!=sum(a[:n]):
+            return {"status":"OT_MISMATCH"}
+    return {"status":"CONSISTENT","pf":h if home else a,"pa":a if home else h,"overtime_count":p-4}
+
+def period_stats(rows):
+    valid=[g for g in rows if g.get("periods",{}).get("status")=="CONSISTENT"]
+    result={"n":len(valid),"eligible":len(rows),"coverage":len(valid)/len(rows) if rows else None}
+    for label,indices in [("Q1",[0]),("Q2",[1]),("Q3",[2]),("Q4",[3]),("H1",[0,1]),("H2",[2,3]),("REG",[0,1,2,3])]:
+        result[label]={k:mean(sum(g["periods"][k][i] for i in indices) for g in valid) if valid else None for k in ("pf","pa")}
+    return result
 
 def normalize(rows, team, cutoff, exclusions=None, season=None):
     def exclude(g, reason):
@@ -78,7 +104,7 @@ def normalize(rows, team, cutoff, exclusions=None, season=None):
                 exclude(g,"same_utc_day"); continue
             x,y = g["home_team_score"],g["visitor_team_score"]
             if any(type(v) is not int or v <= 0 for v in (x,y)) or x == y: raise ValueError("invalid final score")
-            accepted.append({"id":i,"datetime":d.isoformat(),"home":h==team,"opponent_id":a if h==team else h,"opponent_name":(g["visitor_team"] if h==team else g["home_team"]).get("full_name"),"pf":x if h==team else y,"pa":y if h==team else x})
+            accepted.append({"id":i,"datetime":d.isoformat(),"home":h==team,"opponent_id":a if h==team else h,"opponent_name":(g["visitor_team"] if h==team else g["home_team"]).get("full_name"),"pf":x if h==team else y,"pa":y if h==team else x,"periods":periods(g,h==team),"source_date":g.get("date")})
         except (KeyError, ValueError, TypeError, AttributeError) as e:
             issues.append({"id":g.get("id") if isinstance(g,dict) else None,"reason":str(e)})
     return sorted(accepted,key=lambda g:g["datetime"],reverse=True),issues
@@ -89,7 +115,7 @@ def stats(rows):
             "pf":mean(g["pf"] for g in rows) if n else None,"pa":mean(g["pa"] for g in rows) if n else None,
             "total":mean(g["pf"]+g["pa"] for g in rows) if n else None,
             "margin":mean(g["pf"]-g["pa"] for g in rows) if n else None,
-            "game_ids":[g["id"] for g in rows]}
+            "game_ids":[g["id"] for g in rows],"period_stats":period_stats(rows)}
 
 def summarize(rows):
     return {"season":stats(rows),"L5":stats(rows[:5]),"L10":stats(rows[:10]),"L15":stats(rows[:15]),
@@ -99,7 +125,7 @@ def main():
     cutoff=stamp(os.environ["CUTOFF"])
     now=datetime.now(timezone.utc)
     if cutoff > now: cutoff=now
-    report={"schema":"BET_ANALYST_NBA_PREMATCH_V2","source":BASE,"cutoff":cutoff.isoformat(),"collected_at":now.isoformat(),
+    report={"schema":"BET_ANALYST_NBA_PREMATCH_V3","source":BASE,"cutoff":cutoff.isoformat(),"collected_at":now.isoformat(),
             "status":"QUARANTINE_UNVERIFIED","publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","engine_access":False,"teams":{},"request_errors":[],
             "limitations":["Same UTC day excluded conservatively","No independent verification","No injuries or individual statistics","Historical completeness not independently verified"]}
     try:
