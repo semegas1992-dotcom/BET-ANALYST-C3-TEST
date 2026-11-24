@@ -80,9 +80,21 @@ def independent_check(hist,accepted,aggregates):
             return {"n":len(rs),"home_share":mean([int(r["home"]) for r in rs]) if rs else None,"gf_mean":mean([r["gf"] for r in rs]) if rs else None,"ga_mean":mean([r["ga"] for r in rs]) if rs else None,"win_share":mean([int(r["gf"]>r["ga"]) for r in rs]) if rs else None}
         bias[period]={"covered":profile(covered),"missing":profile(absent),"representativeness":"NOT_ESTABLISHED"}
     return {"checks":checks,"issues":issues,"bias":bias,"scope":"in-memory observation recomputation; no raw export"}
+def sample_gate(side):
+    result={}
+    for period in ("advanced_season","advanced_last5"):
+        profile=side["independent_check"]["bias"][period]
+        a,b=profile["covered"],profile["missing"]
+        gaps={k:abs(a[k]-b[k]) if a[k] is not None and b[k] is not None else None for k in ("home_share","gf_mean","ga_mean","win_share")}
+        fields={}
+        for k,v in side[period].items():
+            coverage=v["n"]/v["eligible"] if v["eligible"] else 0
+            fields[k]={"coverage":coverage,"status":"INSUFFICIENT" if v["n"]<5 or coverage<0.8 else "DESCRIPTIVE_ONLY"}
+        result[period]={"fields":fields,"profile_gaps":gaps,"representativeness":"NOT_ESTABLISHED","engine_access":False}
+    return result
 def main():
     now=datetime.now(timezone.utc);trace=[];key=os.environ["FOOTBALL_DATA_TOKEN"]
-    report={"schema":"D0_ENRICHED_EXPERIMENTAL_V1","engine_access":False,"publication":"BLOCKED_UPSTREAM_RIGHTS_NOT_CONFIRMED","cutoff":now.isoformat(),"leagues":{},"dossier":None}
+    report={"schema":"D0_ENRICHED_EXPERIMENTAL_V1","engine_access":False,"publication":"BLOCKED_UPSTREAM_RIGHTS_NOT_CONFIRMED","cutoff":now.isoformat(),"leagues":{},"dossier":None,"dossiers":[],"rejected_candidates":0}
     try:
         events=upcoming(matches(fetch("matches",{"dateFrom":now.date().isoformat(),"dateTo":(now+timedelta(days=7)).date().isoformat()},key,trace)),now,now+timedelta(days=7))
         for code,folder in FOLDERS.items():
@@ -94,7 +106,7 @@ def main():
             accepted,counts,missing=join(primary,secondary,now)
             report["leagues"][code]={"counts":counts,"missing":missing,"accounting_ok":sum(counts.values())==len(primary),"source":url,"sha256":hashlib.sha256(raw).hexdigest()}
             for e in sorted(events,key=lambda m:stamp(m["utcDate"])):
-                if report["dossier"] or e["competition"]["code"]!=code or stamp(e["utcDate"])<=datetime.now(timezone.utc):continue
+                if len(report["dossiers"])>=10 or e["competition"]["code"]!=code or stamp(e["utcDate"])<=datetime.now(timezone.utc):continue
                 sides={}
                 for side in ("home","away"):
                     h=history(primary,e,e[side+"Team"]["id"],now)
@@ -102,13 +114,18 @@ def main():
                 for side in ("home","away"):
                     h=history(primary,e,e[side+"Team"]["id"],now)
                     sides[side]["independent_check"]=independent_check(h,accepted,sides[side])
+                    sides[side]["sample_gate"]=sample_gate(sides[side])
                 if all(s["advanced_season"]["shots_for"]["n"]>=5 for s in sides.values()):
-                    report["dossier"]={"id":e["id"],"kickoff":e["utcDate"],"competition":code,"sides":sides,"source_hash":report["leagues"][code]["sha256"],"engine_access":False,"limitations":["advanced statistics not externally verified","historical publication timestamps unknown","no injuries or lineups","goal minutes excluded","descriptive means not probabilities"]}
-                    break
+                    dossier={"id":e["id"],"kickoff":e["utcDate"],"competition":code,"sides":sides,"source_hash":report["leagues"][code]["sha256"],"engine_access":False,"limitations":["advanced statistics not externally verified","historical publication timestamps unknown","no injuries or lineups","goal minutes excluded","descriptive means not probabilities"]}
+                    report["dossiers"].append(dossier)
+                else:report["rejected_candidates"]+=1
     except Exception as e:report["error"]=type(e).__name__
     report["trace"]=trace
-    report["audit"]=audit_dossier(report["dossier"])
-    if report["dossier"] and stamp(report["dossier"]["kickoff"])<=datetime.now(timezone.utc):report["dossier"]=None
+    report["dossiers"]=[d for d in report["dossiers"] if stamp(d["kickoff"])>datetime.now(timezone.utc)]
+    report["dossiers"].sort(key=lambda d:stamp(d["kickoff"]))
+    report["dossier"]=report["dossiers"][0] if report["dossiers"] else None
+    audits=[audit_dossier(d) for d in report["dossiers"]]
+    report["audit"]={"pass":bool(audits) and all(a["pass"] for a in audits),"dossiers":len(audits),"issues":[i for a in audits for i in a["issues"]]}
     with open("football-d0-enriched.json","w") as f:json.dump(report,f,indent=2)
     print(json.dumps({**report,"leagues":{k:{a:b for a,b in v.items() if a!="missing"} for k,v in report["leagues"].items()}}))
     return int("error" in report or not report["audit"]["pass"] or not report["dossier"] or not all(v["accounting_ok"] for v in report["leagues"].values()))
