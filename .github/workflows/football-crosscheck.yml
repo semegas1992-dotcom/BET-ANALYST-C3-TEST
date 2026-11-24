@@ -1,4 +1,4 @@
-name: Football crosscheck v3
+name: Football crosscheck v4
 on:
   push:
     branches: [c3-nba-history]
