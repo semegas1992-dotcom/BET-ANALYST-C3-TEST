@@ -134,7 +134,7 @@ def audit(report):
         if e["id"] in ids:issues.append("duplicate dossier")
         ids.add(e["id"])
         if d.get("engine_access") is not False:issues.append("engine access")
-        if d["status"]=="QUARANTINE_UNVERIFIED" and "context" not in d:issues.append("missing context")
+        if d.get("status")=="QUARANTINE_UNVERIFIED" and "context" not in d:issues.append("missing context")
         if "context" in d and all(r in histories and histories[r]["status"]=="COLLECTED" for r in expected):
             expected_context={side:context(histories[ref]["games"],e["tipoff"],e[other]) for side,ref,other in zip(("home","away"),expected,("away_id","home_id"))}
             if d["context"]!=expected_context:issues.append("context mismatch")
