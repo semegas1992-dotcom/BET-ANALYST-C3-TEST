@@ -22,13 +22,13 @@ def compare(primary,secondary,details=None):
             if details is not None:details.append({"id":m.get("id"),"key":k,"reason":"AMBIGUOUS"})
             continue
         score=(rows[0].get("score") or {}) if rows else {}
-        ft=score.get("ft") if isinstance(score,dict) else None
+        ft=score.get("ft") if isinstance(score,dict) else score if isinstance(score,list) else None
         if not isinstance(ft,list) or len(ft)!=2 or any(type(x) is not int or x<0 for x in ft):
             counts["unmatched"]+=1
             if details is not None:
                 same_pair=[x[0] for x in idx if x[1:]==k[1:]]
                 same_date=[x[1:] for x in idx if x[0]==k[0]]
-                details.append({"id":m.get("id"),"key":k,"reason":"INVALID_OR_MISSING_SCORE" if rows else ("PAIR_OTHER_DATE" if same_pair else "IDENTITY_OR_COVERAGE"),"pair_dates":same_pair,"date_candidates":same_date})
+                details.append({"id":m.get("id"),"key":k,"reason":"INVALID_OR_MISSING_SCORE" if rows else ("PAIR_OTHER_DATE" if same_pair else "IDENTITY_OR_COVERAGE"),"score_shape":type(rows[0].get("score")).__name__ if rows else "NO_ROW","pair_dates":same_pair,"date_candidates":same_date})
             continue
         s=m["score"]["fullTime"]
         status="matched" if ft==[s["home"],s["away"]] else "conflicting"
