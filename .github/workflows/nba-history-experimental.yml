@@ -5,6 +5,9 @@ on:
     paths:
       - 'experimental/**'
       - '.github/workflows/nba-history-experimental.yml'
+concurrency:
+  group: nba-history-experimental-api
+  cancel-in-progress: false
 permissions:
   contents: read
 jobs:
