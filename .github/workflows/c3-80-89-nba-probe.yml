@@ -1,0 +1,47 @@
+name: C3.80-89 NBA server probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/c3-80-89-nba-probe.yml'
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Probe public NBA endpoint
+        run: |
+          python - <<'PY'
+          import urllib.request, urllib.error, json, datetime
+          url = 'https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json'
+          report = {'source':url,'attempted_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'engine_access':False,'verification':'NOT_PERFORMED','games':[]}
+          try:
+              with urllib.request.urlopen(url,timeout=15) as r:
+                  report['http_status']=r.status
+                  raw=r.read(2000001)
+                  if len(raw)>2000000: raise ValueError('Payload too large')
+                  data=json.loads(raw)
+                  s=data['scoreboard']
+                  if not isinstance(s['games'],list) or len(s['games'])>100: raise ValueError('Invalid games')
+                  for g in s['games']:
+                      if not isinstance(g['gameId'],str) or not isinstance(g['homeTeam']['teamName'],str) or not isinstance(g['awayTeam']['teamName'],str): raise ValueError('Invalid game')
+                      report['games'].append({'id':g['gameId'],'date':s['gameDate'],'home':g['homeTeam']['teamName'],'away':g['awayTeam']['teamName'],'verified':False})
+                  report['status']='QUARANTINE_UNVERIFIED'
+                  report['collected_at']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+          except urllib.error.HTTPError as e:
+              report.update(status='HTTP_ERROR',http_status=e.code,games=[])
+          except urllib.error.URLError as e:
+              report.update(status='NETWORK_ERROR',error=str(e.reason),games=[])
+          except Exception as e:
+              report.update(status='PARSE_OR_VALIDATION_ERROR',error=str(e),games=[])
+          with open('nba-probe.json','w') as f: json.dump(report,f,indent=2)
+          print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nba-probe-quarantine
+          path: nba-probe.json
+          retention-days: 7
