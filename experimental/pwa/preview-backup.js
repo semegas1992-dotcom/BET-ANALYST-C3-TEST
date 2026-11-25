@@ -9,7 +9,8 @@ function validate(p){
 }
 function decode(text){
  if(typeof text!=="string"||new TextEncoder().encode(text).length>131072)throw Error("SIZE");
- const d=JSON.parse(text);
+ const parser=typeof module!=="undefined"?require("./archive-import.js"):root.ArchiveImport;
+ const d=parser.parseStrict(text);
  if(d?.schema!=="QUARANTINE_PREVIEW_BACKUP_V1"||!Array.isArray(d.previews)||d.previews.length>100)throw Error("SCHEMA");
  const seen=new Set();
  return d.previews.map(p=>{const v=validate(p);if(seen.has(v.file_sha256))throw Error("DUPLICATE");seen.add(v.file_sha256);return v});
