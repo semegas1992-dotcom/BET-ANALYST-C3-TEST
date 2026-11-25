@@ -1,6 +1,7 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
 from c4_matched_opposition import contrast
 from c4_trajectory_prompts import build as trajectory_prompts
+from c4_availability_review import review as availability_review
 from c4_interactions import build as interactions, audit as interaction_audit
 from c4_market_independent import audit as independent_market_audit
 from c4_market_scope import evaluate as market_scope, audit as market_audit
@@ -58,6 +59,7 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         stages["interactions"]=interactions(d["sport"],stages["specific_dependencies"],stages["trajectories"])
         audits.append(interaction_audit(stages["specific_dependencies"],stages["trajectories"],stages["interactions"]))
         stages["context_analysis"]=enrich(d,event,extra,stages["context"],doc,hypotheses)
+        stages["availability_review"]=availability_review(d["sport"],extra["configurations"],stages["context_analysis"]["summary"])
     if market_requests and extra is None:raise ValueError("context required")
     stages["E5"]["market_scopes"]=[]
     for request in market_requests:

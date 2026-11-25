@@ -44,3 +44,5 @@ Update: C4 read-only PWA report import, structural gate checks, text-only render
 Update: isolated synthetic matched-opponent/context descriptive contrast prototype and multisport unit tests added. No causal adjustment, predictive estimate, integration or qualification; test execution pending. T01 and trajectory acceptance criteria unchanged.
 
 Update: optional supplied/unverified matched-opposition stage linked to report, sport-specific observation prompts linked to trajectory fingerprint, T01 byte receipt with strict JSON duplicate-key rejection. No original T01 mapping, no independent authentication, no forecast or dominance. Unit tests added; execution pending. No full action certified.
+
+TERRAIN feedback: added separate historical fingerprint/current capacity review, role-specific market review prompts and available same-role candidates without equivalence or numeric effect. Integrated supplemental stage; existing global gates unchanged. Synthetic tests added, execution pending. T01 mapping and individual market propagation remain open.
