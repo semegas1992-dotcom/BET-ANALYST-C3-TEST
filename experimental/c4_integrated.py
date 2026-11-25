@@ -1,4 +1,6 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
+from c4_interactions import build as interactions, audit as interaction_audit
+from c4_market_independent import audit as independent_market_audit
 from c4_market_scope import evaluate as market_scope, audit as market_audit
 from c4_trajectories import build as trajectories, audit as trajectory_audit
 from c4_event_contract import compare as event_compare, audit as event_audit
@@ -47,11 +49,14 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         audits.append(stages["dependency_audit"])
         stages["trajectories"]=trajectories(stages["specific_dependencies"])
         audits.append(trajectory_audit(stages["specific_dependencies"],stages["trajectories"]))
+        stages["interactions"]=interactions(d["sport"],stages["specific_dependencies"],stages["trajectories"])
+        audits.append(interaction_audit(stages["specific_dependencies"],stages["trajectories"],stages["interactions"]))
         stages["context_analysis"]=enrich(d,event,extra,stages["context"],doc,hypotheses)
     if market_requests and extra is None:raise ValueError("context required")
     stages["E5"]["market_scopes"]=[]
     for request in market_requests:
         m=market_scope(event,extra,stages["trajectories"],request["contract"],request["thresholds"])
         audits.append(market_audit(event,extra,stages["trajectories"],m))
+        audits.append(independent_market_audit(event,extra,stages["trajectories"],m))
         stages["E5"]["market_scopes"].append(m)
     return {"schema":"C4_INTEGRATED_SYNTHETIC_V1","input_sha256":fingerprint,"event_sha256":digest(event),"stage_sha256":{k:digest(v) for k,v in stages.items()},"stages":stages,"audits":audits+[review],"documentary_gate":doc["synthetic_documentary_gate"],"limitations":["Event identity only matched to synthetic labels and kickoff","Documentary records not authenticated or linked to individual observations","No verified tactical or sequence projection","No event market evaluation"],"engine_access":False,"publication":"BLOCKED","qualification":"BLOCKED","sporting_analysis_complete":False}
