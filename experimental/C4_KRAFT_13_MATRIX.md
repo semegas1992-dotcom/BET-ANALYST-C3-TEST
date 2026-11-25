@@ -18,3 +18,5 @@ All statuses scoped to synthetic prototype; no full action certified.
 Cross-cutting: seven report sections, separate qualitative assessments, actualization/version history, no financial fields, real-data rights and pre-event provenance. Integrated replay is not a complete report. Baseline 8f0ae31 both workflows passed. New CI pending.
 
 Update: b98f998 offline passed; new contextual summaries and dependency gates pending CI. No full action certified. Global conservative gating is not specific causal attribution; no real-data admission.
+
+Update: 3fe7854 both workflows passed. Audit now checks participant and metric completeness and tolerates floating-point rounding. Seven-section synthetic report with stage integrity check added. Complete positive documentary fixtures, specific mechanism dependencies and substantive sequence arguments remain open. No full action certified. New CI pending.

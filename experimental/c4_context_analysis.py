@@ -1,6 +1,7 @@
 """Synthetic contextual summaries and conservative dependency propagation."""
 from fractions import Fraction
 from statistics import mean
+from math import isclose
 from c4_context_contract import SEQUENCES
 from d0_contract import digest
 PAIRS={"football":{},"nba":{"points_per_possession":("points_for","possessions")},"tennis":{"first_serve_rate":("first_serve_won","first_serve_played"),"second_serve_rate":("second_serve_won","second_serve_played"),"break_rate":("break_points_won","break_points_played")}}
@@ -29,8 +30,11 @@ def summarize(d,event,extra):
     return out
 def audit(d,event,extra,summary):
     checks=0
+    if set(summary)!=set(event["participants"]):raise ValueError("participant coverage")
     for p,metrics in summary.items():
         ids={o["id"] for o in d["observations"] if o.get("side",o.get("participant"))==p}
+        expected={x["metric"] for x in extra["indicators"] if x["observation_id"] in ids}|set(PAIRS[d["sport"]])
+        if set(metrics)!=expected:raise ValueError("metric coverage")
         for f,m in metrics.items():
             values={x["observation_id"]:Fraction(str(x["value"])) for x in extra["indicators"] if x["metric"]==f and x["observation_id"] in ids}
             if f in PAIRS[d["sport"]]:
@@ -39,10 +43,10 @@ def audit(d,event,extra,summary):
                 bb={x["observation_id"]:Fraction(str(x["value"])) for x in extra["indicators"] if x["metric"]==b and x["observation_id"] in ids}
                 used={i for i in aa.keys()&bb.keys() if bb[i]>0}
                 n=sum((aa[i] for i in used),Fraction(0));den=sum((bb[i] for i in used),Fraction(0))
-                if m["numerator"]!=float(n) or m["denominator"]!=float(den) or m["ratio"]!=(float(n/den) if den else None):raise ValueError("ratio audit")
+                if not isclose(m["numerator"],float(n),rel_tol=1e-12,abs_tol=1e-12) or not isclose(m["denominator"],float(den),rel_tol=1e-12,abs_tol=1e-12) or (not isclose(m["ratio"],float(n/den),rel_tol=1e-12,abs_tol=1e-12) if den else m["ratio"] is not None):raise ValueError("ratio audit")
             else:
                 used=set(values)
-                if m["mean"]!=float(sum(values.values())/len(values)):raise ValueError("mean audit")
+                if not isclose(m["mean"],float(sum(values.values())/len(values)),rel_tol=1e-12,abs_tol=1e-12):raise ValueError("mean audit")
             if set(m["ids"])!=used or m["n"]!=len(used) or m["eligible"]!=len(ids):raise ValueError("coverage audit")
             checks+=1
     return checks
