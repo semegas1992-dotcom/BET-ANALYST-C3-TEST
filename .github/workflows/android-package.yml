@@ -1,0 +1,23 @@
+name: Android static preview package
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/pwa/**','.github/workflows/android-package.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir preview
+          for f in index.html viewer.js preview-backup.js archive-import.js native-import.js quarantine-import.js sw.js android-demo.json; do cp "experimental/pwa/$f" preview/; done
+          cd preview
+          sha256sum * > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-https-preview
+          path: preview/
+          retention-days: 14
