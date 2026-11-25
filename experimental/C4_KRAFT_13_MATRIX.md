@@ -38,3 +38,5 @@ Update: ddb352b both workflows passed. Added joint mechanism interaction records
 Update: 399c7f7 both workflows passed. T01 quarantine protocol and byte integrity/temporal intake checks added; original T01 JSON not received, no admission. User feedback: summary-first presentation, separate sporting and operational conclusions, detailed audit retained. No new opposition-adjusted estimate demonstrated. CI pending; no full action certified.
 
 Update: d70062e both workflows passed. Added conservative quick-summary payload to seven-section report, with stage integrity and multisport tamper tests. No visual Android integration or real T01 admission; no new estimate established. CI pending.
+
+Update: C4 read-only PWA report import, structural gate checks, text-only rendering and offline cache registration added. Node DOM-stub tests added; actual browser and CI not verified. No source authentication, new estimate, trajectory qualification or T01 admission. All 13 action acceptance criteria unchanged.

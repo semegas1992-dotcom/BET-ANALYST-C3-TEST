@@ -1,6 +1,6 @@
 'use strict';
-const CACHE='bet-c3-1-isolated-v2';
-const ASSETS=['./','./index.html','./c3-reader.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
+const CACHE='bet-c3-1-isolated-v3';
+const ASSETS=['./','./index.html','./c3-reader.js','./c4-reader.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS))));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{
   const names=await caches.keys();
