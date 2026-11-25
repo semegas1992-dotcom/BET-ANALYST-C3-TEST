@@ -1,0 +1,2 @@
+# NBA consolidation — open
+Existing collector retained. Independent descriptive arithmetic, coverage and quarantine D0 envelope added. Experimental sample gate (5 observations and 80% coverage, minimum 5 period observations) is a technical diagnostic, not a change to football P2 or KRAFT. External source verification, player identities, injury availability and rights remain open. No paid service added. CI and artifact verification pending.
