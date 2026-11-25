@@ -27,6 +27,7 @@ def dossier(sport):
             a=record("production",i+":"+f+":historical:"+unit,str(v))
             x["indicators"].append(dict(observation_id=i,metric=f,value=v,unit=unit,record_ids=[a]))
     for p in ps:
-        a=record("availability",p+":role:prematch:label","available fictional participant")
-        x["configurations"].append(dict(participant=p,person_id=p+"-role",availability="available",role="fictional primary role",record_ids=[a]))
+        for role in {"football":["creator","defender","finisher"],"nba":["handler","defender","interior"],"tennis":["server","returner"]}[sport]:
+            a=record("availability",p+":"+role+":prematch:label","available fictional "+role)
+            x["configurations"].append(dict(participant=p,person_id=p+"-"+role,availability="available",role=role,record_ids=[a]))
     return d,e,records,essential,x

@@ -5,7 +5,12 @@ from math import isfinite
 METRICS={"football":{"goals_for":"goals","goals_against":"goals","xg":"expected_goals","xga":"expected_goals"},"nba":{"possessions":"possessions","turnovers":"turnovers","points_for":"points","points_against":"points"},"tennis":{"first_serve_won":"points","first_serve_played":"points","second_serve_won":"points","second_serve_played":"points","break_points_won":"points","break_points_played":"points"}}
 SEQUENCES={"football":("opening","middle","ending"),"nba":("starting_five","rotations","adjustments","ending"),"tennis":("installation","set_evolution","set_ending","following_sets")}
 def build(d,event,records,extra,hypotheses):
-    validate_phase({"engine_access":False,"extra":extra})
+    # Only the typed descriptive measurement field is exempt from the financial key guard.
+    for x in extra["indicators"]:
+        if set(x)!={"observation_id","metric","value","unit","record_ids"}:raise ValueError("indicator fields")
+        if type(x["value"]) not in (int,float):raise ValueError("numeric measurement")
+    guarded={**extra,"indicators":[{k:v for k,v in x.items() if k!="value"} for x in extra["indicators"]]}
+    validate_phase({"engine_access":False,"extra":guarded})
     if set(extra)!={"observations","configurations","comparables","indicators","sequences"}:raise ValueError("context fields")
     ps=set(event["participants"]);cut=stamp(d["cutoff"])
     obs={o["id"]:o for o in d["observations"]}
