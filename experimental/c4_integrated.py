@@ -1,4 +1,5 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
+from c4_context_contract import build as context_contract
 from c4_e1_quality import assess as documentary
 from c4_e2_quality import assess
 from c4_e2_independent import audit as arithmetic
@@ -9,7 +10,7 @@ from c4_e4_trace import audit as envelope_audit
 from c4_e5_descriptive import compare
 from c4_e5_inventory import inventory
 from d0_contract import digest,stamp,validate
-def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atypical,requests):
+def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atypical,requests,extra=None):
     fingerprint=validate(d)
     participants=["home","away"] if d["sport"]=="football" else d["participants"]
     if event["sport"]!=d["sport"] or event["participants"]!=participants or stamp(event["kickoff"])!=stamp(d["kickoff"]):raise ValueError("event mismatch")
@@ -28,4 +29,5 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         if c["envelope_report_sha256"]!=digest(env):raise ValueError("envelope mismatch")
         comparisons.append(c)
     stages={"E1":doc,"E2":stats,"E3":hypotheses,"E4":env,"E5":{"inventory":inventory(d["sport"]),"comparisons":comparisons}}
+    if extra is not None: stages["context"]=context_contract(d,event,records,extra,hypotheses)
     return {"schema":"C4_INTEGRATED_SYNTHETIC_V1","input_sha256":fingerprint,"event_sha256":digest(event),"stage_sha256":{k:digest(v) for k,v in stages.items()},"stages":stages,"audits":audits+[review],"documentary_gate":doc["synthetic_documentary_gate"],"limitations":["Event identity only matched to synthetic labels and kickoff","Documentary records not authenticated or linked to individual observations","No verified tactical or sequence projection","No event market evaluation"],"engine_access":False,"publication":"BLOCKED","qualification":"BLOCKED","sporting_analysis_complete":False}
