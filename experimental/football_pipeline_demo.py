@@ -1,6 +1,7 @@
 """Synthetic descriptive prototype; not a KRAFT implementation or betting engine."""
 from d0_contract import validate,digest
 from football_demo_audit import audit_side
+from kraft_phase_guard import validate_phase
 from football_qualification_v5 import rejection_reasons
 def analyze(d):
     fingerprint=validate(d)
@@ -19,4 +20,4 @@ def analyze(d):
             sides[side][period]=fields
         sides[side]["independent_check"]=audit_side(d["observations"],side,sides[side])
     reasons=rejection_reasons(sides)
-    return {"input_sha256":fingerprint,"engine_access":False,"synthetic":True,"facts":sides,"p2_rejections":reasons,"scenarios":{"A":"home advantage hypothesis","B":"balanced hypothesis","C":"away advantage hypothesis"},"scenario_status":"unranked; KRAFT mapping pending","p2_pass":not reasons,"market_comparison":{"status":"blocked","reason":"P2 or KRAFT implementation pending"},"decision":"ABSTENTION","decision_scope":"technical hold, not sporting NO BET"}
+    return validate_phase({"input_sha256":fingerprint,"engine_access":False,"synthetic":True,"facts":sides,"p2_rejections":reasons,"scenarios":[],"scenario_status":"insufficient evidence; no forced scenarios","p2_pass":not reasons,"market_comparison":{"status":"blocked","reason":"P2 or KRAFT implementation pending"},"decision":"ABSTENTION","decision_scope":"technical hold, not sporting NO BET"})
