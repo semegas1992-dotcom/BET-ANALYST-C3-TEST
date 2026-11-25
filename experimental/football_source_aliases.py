@@ -11,6 +11,8 @@ GROUPS.update({
 "SA":[("FC Internazionale Milano","Internazionale"),("Como 1907","Como")],
 "PD":[("Real Racing Club de Santander","R. Racing Club"),("RC Deportivo La Coruña","RC Deportivo")]
 })
+GROUPS["PD"].append(("Club Atlético de Madrid","Atlético de Madrid"))
+GROUPS["SA"].append(("Venezia FC","Venezia"))
 def identity(code,value):
     n=name(value)
     for group in GROUPS.get(code,[]):

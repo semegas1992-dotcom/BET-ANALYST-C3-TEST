@@ -1,4 +1,4 @@
-name: Football enriched D0 v7
+name: Football enriched D0 v8
 on:
   push:
     branches: [c3-nba-history]
@@ -15,9 +15,12 @@ jobs:
       - run: python experimental/football_d0_enriched.py
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+      - run: python experimental/football_coverage_monitor.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: football-d0-enriched
-          path: football-d0-enriched.json
+          path: |
+            football-d0-enriched.json
+            football-coverage-monitor.json
           retention-days: 1
