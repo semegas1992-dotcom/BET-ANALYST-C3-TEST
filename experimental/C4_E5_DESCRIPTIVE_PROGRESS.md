@@ -1,0 +1,2 @@
+# E5 descriptive comparison
+360c3aa both workflows successful. New comparison recomputes E4 and its audit from synthetic input; binds input digest, sport, participant, metric, unit and historical observation scope. Explicit thresholds compared across identical variants, with incomplete evidence blocked. No verified match-period or event identity contract exists in D0; no conversion to event markets, selection or predictive claims. Hash links are not source authentication. New tests pending. No production change.
