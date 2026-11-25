@@ -1,0 +1,4 @@
+# C3.955 interim evidence
+227 tests confirmed run 45556255017.
+Retrieved via GitHub connector main branch of https://github.com/Aneeshers/tennis-sackmann-archive, paths atp/atp_matches_2024.csv and wta/wta_matches_2024.csv. Attribution Jeff Sackmann; CC BY-NC-SA 4.0 documented by mirror LICENSE. Same origin as Hugging Face mirror. No raw rows committed.
+Independent JavaScript CSV scan: ATP 3076 rows, hard 1769 clay 980 grass 327; service constraints pass 3013, missing 60, invalid 3, duplicate tournament/match keys 0. WTA 2689 rows, hard 1598 clay 729 grass 305 unknown 57; pass 2622, missing 65, invalid 2, duplicate keys 0. Counts are not population completeness. No byte hash or pinned archive revision recorded. New independent arithmetic comparator tested on synthetic fixtures pending CI; full comparison against real parsed rows not yet performed. C3.955 OPEN. No time qualification, publication or engine access.
