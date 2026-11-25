@@ -95,6 +95,144 @@
     "event": "kickoff and home/away labels",
     "aggregates": "not individual observations; no expansion",
     "historical_evidence": "requires event_end, available_at, captured_at and metric definitions",
-    "admission": "real origin rejected by current d0_contract"
+    "admission": "real origin rejected by current d0_contract",
+    "historical_candidates": "gf/ga integer goals per completed match from team perspective; separate competition and venue; no admitted observations until timestamps and source validation"
+  },
+  "historical_candidates": {
+    "source": "https://www.skysports.com/football/arsenal-vs-manchester-city/stats/556659",
+    "consulted_date": "2026-11-25",
+    "status": "SECONDARY_DATE_VERIFIED_TIMESTAMPS_MISSING",
+    "rows": [
+      {
+        "id": "F01-H1",
+        "team": "Arsenal",
+        "opponent": "Dortmund",
+        "date": "2026-11-24",
+        "venue": "home",
+        "competition": "UCL",
+        "gf": 1,
+        "ga": 1,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H2",
+        "team": "Arsenal",
+        "opponent": "Newcastle",
+        "date": "2026-11-21",
+        "venue": "away",
+        "competition": "PL",
+        "gf": 2,
+        "ga": 2,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H3",
+        "team": "Arsenal",
+        "opponent": "Hull",
+        "date": "2026-11-07",
+        "venue": "home",
+        "competition": "PL",
+        "gf": 1,
+        "ga": 0,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H4",
+        "team": "Arsenal",
+        "opponent": "Slavia Prague",
+        "date": "2026-11-04",
+        "venue": "away",
+        "competition": "UCL",
+        "gf": 2,
+        "ga": 1,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H5",
+        "team": "Arsenal",
+        "opponent": "Liverpool",
+        "date": "2026-11-01",
+        "venue": "away",
+        "competition": "PL",
+        "gf": 1,
+        "ga": 0,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H6",
+        "team": "Manchester City",
+        "opponent": "Napoli",
+        "date": "2026-11-24",
+        "venue": "home",
+        "competition": "UCL",
+        "gf": 2,
+        "ga": 2,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H7",
+        "team": "Manchester City",
+        "opponent": "Fulham",
+        "date": "2026-11-21",
+        "venue": "home",
+        "competition": "PL",
+        "gf": 1,
+        "ga": 1,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H8",
+        "team": "Manchester City",
+        "opponent": "Nottingham Forest",
+        "date": "2026-11-07",
+        "venue": "away",
+        "competition": "PL",
+        "gf": 1,
+        "ga": 3,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H9",
+        "team": "Manchester City",
+        "opponent": "RB Leipzig",
+        "date": "2026-11-04",
+        "venue": "away",
+        "competition": "UCL",
+        "gf": 3,
+        "ga": 2,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      },
+      {
+        "id": "F01-H10",
+        "team": "Manchester City",
+        "opponent": "Brighton",
+        "date": "2026-10-31",
+        "venue": "home",
+        "competition": "PL",
+        "gf": 0,
+        "ga": 1,
+        "event_end": null,
+        "available_at": null,
+        "captured_at": null
+      }
+    ]
   }
 }
