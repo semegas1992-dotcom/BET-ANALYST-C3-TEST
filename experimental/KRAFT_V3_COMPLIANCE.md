@@ -17,4 +17,4 @@ Reference: KRAFT_V3_REFERENCE.txt, recovered from BET_ANALYST_M1_5_C_Branche_A.t
 | 12 | Markets | guard | allowlist and pre-odds restrictions |
 | 13 | Lines and comparison | open | no justified ranking |
 
-P2 unchanged. No real data promotion. No predictive model. C3.919 open.
+P2 unchanged. No real data promotion. No predictive model. C3.919 technical closure pending artifact verification. Seven report sections implemented; no sporting conclusions supported. Step 3 evidence includes source, cutoff, observation IDs and metrics. Step 9 no forced scenarios; steps 10 and 13 explicitly unsupported; step 12 no candidates. No claim of full methodological compliance.
