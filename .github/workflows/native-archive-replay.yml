@@ -1,0 +1,29 @@
+name: Native archive replay
+on:
+  workflow_dispatch:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/pwa/replay-native*','.github/workflows/native-archive-replay.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve pinned original archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/native-archives
+          for id in 14994825927 15000318977 15000561579; do
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/$id/zip" > "/tmp/native-archives/github-actions-artifact-$id.zip"
+          done
+      - run: python experimental/pwa/replay-native.py /tmp/native-archives > native-replay.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-replay-evidence
+          path: native-replay.json
+          retention-days: 7
