@@ -1,6 +1,6 @@
 """Synthetic documentary quality gate; no external retrieval or verification."""
 from c4_e1 import plan,LOTS
-from d0_contract import digest
+from d0_contract import digest,stamp
 FAILED={"Accès bloqué","Périmètre inadéquat","Non trouvée après recherche","Accessible, non extraite"}
 def assess(event,cutoff,records,essential):
     base=plan(event,cutoff,records)
@@ -12,7 +12,7 @@ def assess(event,cutoff,records,essential):
         if not isinstance(provider,str) or not provider.strip():raise ValueError("provider group")
         if "replaces" in row:
             prev=seen.get(row["replaces"])
-            if not prev or prev["topic"]!=row["topic"] or prev["status"] not in FAILED:raise ValueError("replacement")
+            if not prev or prev["topic"]!=row["topic"] or prev["status"] not in FAILED or stamp(prev["captured_at"])>stamp(row["captured_at"]):raise ValueError("replacement")
             replacements.append({"previous":prev["id"],"replacement":key,"status":row["status"]})
         seen[key]=row
         if row["status"]!="Contrôlée":continue
@@ -22,7 +22,7 @@ def assess(event,cutoff,records,essential):
         groups.setdefault((row["topic"],claim),[]).append(row)
     conflicts=[];dependencies=[];resolved=set()
     for (topic,claim),rows in sorted(groups.items()):
-        providers=sorted({r["provider_group"] for r in rows})
+        providers=sorted({r["provider_group"].strip() for r in rows})
         dependencies.append({"topic":topic,"claim_key":claim,"provider_groups":providers,"record_ids":[r["id"] for r in rows]})
         if len({r["measurement"] for r in rows})>1:
             conflicts.append({"topic":topic,"claim_key":claim,"record_ids":[r["id"] for r in rows]})
