@@ -1,6 +1,6 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
 from c4_scoped_uncertainty import build as scoped_uncertainty
-from c4_matched_opposition import contrast, linked_contrast
+from c4_matched_opposition import contrast, linked_contrast, documented_contrast
 from c4_trajectory_prompts import build as trajectory_prompts
 from c4_availability_routing import route as availability_route
 from c4_availability_review import review as availability_review
@@ -54,6 +54,7 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         stages["context"]=context_contract(d,event,records,extra,hypotheses)
         if matched_rows:
             stages["matched_opposition"]=linked_contrast(matched_rows,d,event,extra,records)
+            stages["matched_opposition"]["documented"]=documented_contrast(matched_rows,d,event,extra,records)
         stages["specific_dependencies"]=specific(d,event,extra,doc,hypotheses)
         stages["dependency_audit"]=dependency_audit(d,event,extra,doc,hypotheses,stages["specific_dependencies"])
         audits.append(stages["dependency_audit"])
