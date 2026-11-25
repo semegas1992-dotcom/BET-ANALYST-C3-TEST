@@ -34,6 +34,7 @@ def linked_contrast(rows, d, event, extra, records, min_n=3):
     comparables={o["observation_id"]:o for o in extra["comparables"]}
     rec={r["id"]:r for r in records}
     evidence=[]
+    context_issues=[]
     for row in rows:
         oid=row["observation_id"]
         i=indicators.get((oid,row["metric"]))
@@ -44,5 +45,6 @@ def linked_contrast(rows, d, event, extra, records, min_n=3):
         if row["value"]!=i["value"]:raise ValueError("opposition measurement")
         ids=sorted(set(i["record_ids"]+link["record_ids"]+comp["record_ids"]))
         if any(j not in rec or rec[j]["status"]!="Contrôlée" or not stamp(observations[oid]["event_end"])<=stamp(rec[j]["available_at"])<=stamp(rec[j]["captured_at"])<=stamp(d["cutoff"]) for j in ids):raise ValueError("opposition chronology")
+        context_issues.append({"observation_id":oid,"opponent":row["opponent"],"context":row["context"],"status":"UNVERIFIED","issues":["OPPONENT_IDENTITY_UNVERIFIED","HISTORICAL_FORMAT_UNVERIFIED","CONTEXT_EQUIVALENCE_UNVERIFIED","REPRESENTATIVENESS_UNESTABLISHED"]})
         evidence.append({"observation_id":oid,"metric":row["metric"],"unit":i["unit"],"record_ids":ids})
-    return {"result":contrast(rows,min_n),"evidence":evidence,"input_sha256":digest(rows),"provenance":"SYNTHETIC_MEASUREMENT_LINKED_CONTEXT_UNVERIFIED","qualification":"BLOCKED"}
+    return {"result":contrast(rows,min_n),"evidence":evidence,"comparability":{"status":"NOT_ESTABLISHED","observations":context_issues,"sporting_estimate":None},"input_sha256":digest(rows),"provenance":"SYNTHETIC_MEASUREMENT_LINKED_CONTEXT_UNVERIFIED","qualification":"BLOCKED"}
