@@ -1,0 +1,2 @@
+# C3 synthetic scope
+255 tests passed in run 45627804144, including five cross-sport tests. D0 synthetic workflow 45627804176 successful. NBA collection 45627804228 pending at initial check. Close only synthetic interface and descriptive adapters, not full KRAFT compliance, real data admission or Android correction. C4-E1 starts with synthetic identity and research ledger, no live collection or official identity verification. Reference unchanged. Tests pending for E1.
