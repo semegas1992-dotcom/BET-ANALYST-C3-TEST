@@ -40,3 +40,5 @@ Update: 399c7f7 both workflows passed. T01 quarantine protocol and byte integrit
 Update: d70062e both workflows passed. Added conservative quick-summary payload to seven-section report, with stage integrity and multisport tamper tests. No visual Android integration or real T01 admission; no new estimate established. CI pending.
 
 Update: C4 read-only PWA report import, structural gate checks, text-only rendering and offline cache registration added. Node DOM-stub tests added; actual browser and CI not verified. No source authentication, new estimate, trajectory qualification or T01 admission. All 13 action acceptance criteria unchanged.
+
+Update: isolated synthetic matched-opponent/context descriptive contrast prototype and multisport unit tests added. No causal adjustment, predictive estimate, integration or qualification; test execution pending. T01 and trajectory acceptance criteria unchanged.
