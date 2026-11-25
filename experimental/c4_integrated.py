@@ -1,4 +1,6 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
+from c4_matched_opposition import contrast
+from c4_trajectory_prompts import build as trajectory_prompts
 from c4_interactions import build as interactions, audit as interaction_audit
 from c4_market_independent import audit as independent_market_audit
 from c4_market_scope import evaluate as market_scope, audit as market_audit
@@ -18,7 +20,7 @@ from c4_e4_trace import audit as envelope_audit
 from c4_e5_descriptive import compare
 from c4_e5_inventory import inventory
 from d0_contract import digest,stamp,validate
-def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atypical,requests,extra=None,event_requests=(),market_requests=()):
+def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atypical,requests,extra=None,event_requests=(),market_requests=(),matched_rows=()):
     fingerprint=validate(d)
     participants=["home","away"] if d["sport"]=="football" else d["participants"]
     if event["sport"]!=d["sport"] or event["participants"]!=participants or stamp(event["kickoff"])!=stamp(d["kickoff"]):raise ValueError("event mismatch")
@@ -37,6 +39,9 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         if c["envelope_report_sha256"]!=digest(env):raise ValueError("envelope mismatch")
         comparisons.append(c)
     stages={"E1":doc,"E2":stats,"E3":hypotheses,"E4":env,"E5":{"inventory":inventory(d["sport"]),"comparisons":comparisons}}
+    if matched_rows:
+        if any(row["sport"]!=d["sport"] for row in matched_rows):raise ValueError("matched sport")
+        stages["matched_opposition"]={"input_sha256":digest(matched_rows),"result":contrast(matched_rows),"provenance":"SUPPLIED_UNVERIFIED"}
     stages["E5"]["event_contracts"]=[]
     for request in event_requests:
         c=event_compare(event,request["contract"],request["thresholds"])
@@ -49,6 +54,7 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         audits.append(stages["dependency_audit"])
         stages["trajectories"]=trajectories(stages["specific_dependencies"])
         audits.append(trajectory_audit(stages["specific_dependencies"],stages["trajectories"]))
+        stages["trajectory_prompts"]=trajectory_prompts(d["sport"],stages["trajectories"])
         stages["interactions"]=interactions(d["sport"],stages["specific_dependencies"],stages["trajectories"])
         audits.append(interaction_audit(stages["specific_dependencies"],stages["trajectories"],stages["interactions"]))
         stages["context_analysis"]=enrich(d,event,extra,stages["context"],doc,hypotheses)

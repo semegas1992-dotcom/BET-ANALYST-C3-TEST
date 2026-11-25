@@ -42,3 +42,5 @@ Update: d70062e both workflows passed. Added conservative quick-summary payload 
 Update: C4 read-only PWA report import, structural gate checks, text-only rendering and offline cache registration added. Node DOM-stub tests added; actual browser and CI not verified. No source authentication, new estimate, trajectory qualification or T01 admission. All 13 action acceptance criteria unchanged.
 
 Update: isolated synthetic matched-opponent/context descriptive contrast prototype and multisport unit tests added. No causal adjustment, predictive estimate, integration or qualification; test execution pending. T01 and trajectory acceptance criteria unchanged.
+
+Update: optional supplied/unverified matched-opposition stage linked to report, sport-specific observation prompts linked to trajectory fingerprint, T01 byte receipt with strict JSON duplicate-key rejection. No original T01 mapping, no independent authentication, no forecast or dominance. Unit tests added; execution pending. No full action certified.
