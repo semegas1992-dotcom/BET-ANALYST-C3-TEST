@@ -17,7 +17,9 @@ def assess(d,window,reason,context,min_n,min_coverage,atypical_ids):
         n=len(valid);coverage=n/len(rows) if rows else None
         clean=[(i,v) for i,v in valid if i not in atypical_ids]
         full=calc(valid);reduced=calc(clean)
-        return {"n":n,"eligible":len(rows),"coverage":coverage,"ids":[i for i,v in valid],"full":full,"without_declared_atypical":reduced,"excluded_ids":[i for i,v in valid if i in atypical_ids],"delta":reduced-full if reduced is not None and full is not None else None,"sample_gate":n>=min_n and coverage is not None and coverage>=min_coverage,"numerator":sum(v[0] for i,v in valid) if valid and isinstance(valid[0][1],tuple) else None,"denominator":sum(v[1] for i,v in valid) if valid and isinstance(valid[0][1],tuple) else None}
+        reduced_eligible=len([o for o in rows if o["id"] not in atypical_ids])
+        reduced_coverage=len(clean)/reduced_eligible if reduced_eligible else None
+        return {"n":n,"eligible":len(rows),"coverage":coverage,"ids":[i for i,v in valid],"full":full,"without_declared_atypical":reduced,"excluded_ids":[i for i,v in valid if i in atypical_ids],"delta":reduced-full if reduced is not None and full is not None else None,"reduced_n":len(clean),"reduced_eligible":reduced_eligible,"reduced_coverage":reduced_coverage,"reduced_sample_gate":len(clean)>=min_n and reduced_coverage is not None and reduced_coverage>=min_coverage,"sample_gate":n>=min_n and coverage is not None and coverage>=min_coverage,"numerator":sum(v[0] for i,v in valid) if valid and isinstance(valid[0][1],tuple) else None,"denominator":sum(v[1] for i,v in valid) if valid and isinstance(valid[0][1],tuple) else None}
     key="side" if d["sport"]=="football" else "participant"
     out={}
     for p,metrics in base["metrics"].items():
