@@ -1,0 +1,37 @@
+{
+  "schema": "D0_COMPARISON_CANDIDATE_V1",
+  "id": "F01",
+  "sport": "football",
+  "origin": "real",
+  "status": "QUARANTINE_INCOMPLETE",
+  "event": {
+    "home": "Arsenal",
+    "away": "Manchester City",
+    "competition": "Premier League",
+    "kickoff": "2026-11-29T16:30:00Z",
+    "venue": "Emirates Stadium"
+  },
+  "sources": [
+    {
+      "url": "https://www.premierleague.com/en/news/4725574/fixture-amendments-for-november",
+      "published": "2026-09-21",
+      "scope": "fixture and kickoff"
+    },
+    {
+      "url": "https://www.mancity.com/news/mens/arsenal-v-city-match-preview-pl-29-nov-63931129",
+      "published": "2026-11-25",
+      "scope": "fixture, venue, press conference planned"
+    }
+  ],
+  "cutoff": null,
+  "observations": [],
+  "missing": [
+    "verified observation records with timestamps and definitions",
+    "availability and roles",
+    "official unique event identifier",
+    "admission contract"
+  ],
+  "engine_access": false,
+  "publication": "BLOCKED",
+  "qualification": "BLOCKED"
+}
