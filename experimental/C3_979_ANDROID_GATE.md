@@ -1,0 +1,2 @@
+# C3.976–979 acceptance gate
+Desktop gate passed. Prepare isolated HTTPS preview without modifying main or production Pages settings. Before phone testing verify URL, revision and separate origin. Use synthetic fixture only. C3.976 load and service worker registration; C3.977 airplane-mode reload; C3.978 save/export/restore and invalid restore rejection; C3.979 verify production history unchanged and document Android/browser version. No engine access, no real data publication. Android not tested. Preview deployment pending.

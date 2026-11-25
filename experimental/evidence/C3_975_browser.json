@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "browser": "141.0.7390.37",
+  "offline_reload": true,
+  "service_worker_response": true,
+  "synthetic_import": true,
+  "export_restore": true,
+  "invalid_restore_refused": true,
+  "history_keys_unchanged": [
+    "BET_ANALYST_C1_HISTORY",
+    "BET_ANALYST_C3_1_DRAFT",
+    "BET_ANALYST_V1_DRAFT"
+  ],
+  "android": "NOT_TESTED"
+}
