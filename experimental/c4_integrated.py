@@ -1,4 +1,5 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
+from c4_opposition_market_context import route as opposition_market_context
 from c4_opposition_envelope import build as opposition_envelope
 from c4_scoped_uncertainty import build as scoped_uncertainty
 from c4_matched_opposition import contrast, linked_contrast, documented_contrast
@@ -75,6 +76,9 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         audits.append(market_audit(event,extra,stages["trajectories"],m))
         audits.append(independent_market_audit(event,extra,stages["trajectories"],m))
         stages["E5"]["market_scopes"].append(m)
+    if matched_rows and extra is not None:
+        opposition=stages["matched_opposition"]
+        stages["E5"]["opposition_context"]=[opposition_market_context(event,opposition["documented"],opposition["envelope"],m) for m in stages["E5"]["market_scopes"]]
     if extra is not None:
         stages["availability_routing"]=availability_route(event,stages["availability_review"],stages["trajectories"],stages["E5"]["market_scopes"])
     return {"schema":"C4_INTEGRATED_SYNTHETIC_V1","input_sha256":fingerprint,"event_sha256":digest(event),"stage_sha256":{k:digest(v) for k,v in stages.items()},"stages":stages,"audits":audits+[review],"documentary_gate":doc["synthetic_documentary_gate"],"limitations":["Event identity only matched to synthetic labels and kickoff","Documentary records not authenticated or linked to individual observations","No verified tactical or sequence projection","No event market evaluation"],"engine_access":False,"publication":"BLOCKED","qualification":"BLOCKED","sporting_analysis_complete":False}
