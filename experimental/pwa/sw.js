@@ -1,5 +1,5 @@
 "use strict";
-const CACHE="bet-analyst-experimental-pwa-v1";
+const CACHE="bet-analyst-experimental-pwa-v2";
 const FILES=["index.html","viewer.js","preview-backup.js","archive-import.js","native-import.js","quarantine-import.js"];
 const allowed=new Set(FILES.map(f=>new URL(f,self.registration.scope).href));
 self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll([...allowed]))));

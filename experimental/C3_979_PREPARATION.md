@@ -1,0 +1,2 @@
+# C3.976–979 Android preparation
+Built-in synthetic fixture, no download required. Demo hash computed from embedded bytes, not independent provenance. Desktop replay now exercises demo offline. Cache version bumped; upgrade behavior not yet verified. HTTPS deployment requires a separate origin; do not change existing Pages configuration. Connector has no repository creation or Pages configuration action. Android test blocked until separate HTTPS host is established. No main modification.

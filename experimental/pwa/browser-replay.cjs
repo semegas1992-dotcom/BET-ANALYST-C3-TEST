@@ -15,6 +15,7 @@ const raw=JSON.stringify({schema:"D0_EXPERIMENTAL_V1",sport:"football",origin:"s
 const hash=crypto.createHash("sha256").update(raw).digest("hex");
 await page.locator("#file").setInputFiles({name:"fixture.json",mimeType:"application/json",buffer:Buffer.from(raw)});
 await page.locator("#hash").fill(hash);await page.locator("#read").click();await page.waitForFunction(()=>!document.querySelector("#save").disabled);
+await page.locator("#demo").click();await page.waitForFunction(()=>!document.querySelector("#save").disabled && document.querySelector("#result").textContent.includes("football"));
 await page.locator("#save").click();await page.waitForFunction(()=>document.querySelector("#history").textContent.includes("football"));
 const [download]=await Promise.all([page.waitForEvent("download"),page.locator("#export").click()]);
 await download.saveAs("/tmp/preview-backup.json");const backup=fs.readFileSync("/tmp/preview-backup.json");assert.equal(JSON.parse(backup).previews.length,1);
