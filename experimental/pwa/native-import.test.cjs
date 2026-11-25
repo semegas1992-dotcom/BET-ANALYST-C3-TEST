@@ -1,0 +1,9 @@
+const {test}=require("node:test"),assert=require("node:assert/strict"),{inspectNative,hash,canonical}=require("./native-import.js");
+const fixture=()=>({schema:"D0_EXPERIMENTAL_V1",sport:"tennis",origin:"synthetic",engine_access:false,cutoff:"2026-01-02T00:00:00Z",kickoff:"2026-01-03T00:00:00Z",event:{tour:"ATP"},observations:[{id:"a",source:"synthetic_fixture",event_end:"2026-01-01T00:00:00Z",available_at:"2026-01-01T01:00:00Z",captured_at:"2026-01-01T02:00:00Z"}]});
+test("sha256 known vector",async()=>assert.equal(await hash("abc"),"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"));
+test("expected file hash",async()=>{const s=JSON.stringify(fixture());assert.equal((await inspectNative(s,await hash(s))).integrity,"EXPECTED_HASH_MATCH");await assert.rejects(inspectNative(s,"0".repeat(64)))});
+test("canonical ascii",()=>assert.equal(canonical({z:"é",a:1}),'{"a":1,"z":"\\u00e9"}'));
+async function wrapper(){const input=fixture(),r=input.observations[0];const output={schema:"D0_TENNIS_QUARANTINE_V1",origin:"synthetic",event:input.event,cutoff:input.cutoff,kickoff:input.kickoff,input_sha256:await hash(canonical(input)),evidence:[{...r,sha256:await hash(canonical(r))}],samples:{},audit:{status:"PASS",issues:[],checks:8,engine_access:false},qualification:"BLOCKED",reasons:[],engine_access:false,publication:"BLOCKED"};output.sha256=await hash(canonical(output));return {input,output}}
+test("native tennis",async()=>assert.equal((await inspectNative(JSON.stringify(await wrapper()))).native,"D0_TENNIS_QUARANTINE_V1"));
+test("tampered native",async()=>{const d=await wrapper();d.output.audit.checks=9;await assert.rejects(inspectNative(JSON.stringify(d)))});
+test("real native blocked",async()=>await assert.rejects(inspectNative('{"schema":"BET_ANALYST_NBA_BATCH_V4","engine_access":false}')));

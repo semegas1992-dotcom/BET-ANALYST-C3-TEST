@@ -10,4 +10,4 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - run: node --test experimental/pwa/quarantine-import.test.cjs
+      - run: node --test experimental/pwa/*.test.cjs
