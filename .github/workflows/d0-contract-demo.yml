@@ -1,0 +1,15 @@
+name: D0 contract synthetic pipeline
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/d0_contract.py','experimental/football_pipeline_demo.py','experimental/test_d0_pipeline_demo.py','.github/workflows/d0-contract-demo.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v

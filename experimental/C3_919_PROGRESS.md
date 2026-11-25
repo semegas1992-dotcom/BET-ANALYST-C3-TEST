@@ -1,0 +1,2 @@
+# C3.890–919 progress
+Synthetic multisport envelope, strict timestamps, deterministic replay and descriptive football prototype. No real data access, no odds, no predictive model, no paid service. P2 unchanged and independent audit deliberately not fabricated; prototype abstains. Full KRAFT mapping, independent recomputation, scenario ranking, market comparison and end-to-end validation remain open. CI pending.
