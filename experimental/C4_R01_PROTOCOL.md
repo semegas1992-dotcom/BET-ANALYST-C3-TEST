@@ -1,0 +1,2 @@
+# R01 — proposed experiment, not adopted
+Audit original C2/C3 specifications before activation. Compare isolated A KRAFT, B KRAFT+C1/C2/C3, C B+R01 on identical frozen D0, without odds or outcomes. Measure premature validation, unjustified abstention, decision changes and necessary checks. Documentary sufficiency and roster robustness remain separate and NOT_ESTABLISHED in application. No early lock enabled.

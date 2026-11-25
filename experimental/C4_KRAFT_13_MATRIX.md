@@ -46,3 +46,5 @@ Update: isolated synthetic matched-opponent/context descriptive contrast prototy
 Update: optional supplied/unverified matched-opposition stage linked to report, sport-specific observation prompts linked to trajectory fingerprint, T01 byte receipt with strict JSON duplicate-key rejection. No original T01 mapping, no independent authentication, no forecast or dominance. Unit tests added; execution pending. No full action certified.
 
 TERRAIN feedback: added separate historical fingerprint/current capacity review, role-specific market review prompts and available same-role candidates without equivalence or numeric effect. Integrated supplemental stage; existing global gates unchanged. Synthetic tests added, execution pending. T01 mapping and individual market propagation remain open.
+
+R01: supplemental market dependency routing with direct subject and potential role links, record IDs and trajectory fingerprint. Separate documentary/roster fields remain NOT_ESTABLISHED; no early lock or change to existing gates. Proposed A/B/C protocol recorded, original C2/C3 audit and independent trials pending. Tests added; execution pending.
