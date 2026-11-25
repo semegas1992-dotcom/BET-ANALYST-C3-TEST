@@ -22,3 +22,13 @@ class TennisD0Tests(unittest.TestCase):
     def test_duplicate(self):
         d=self.fixture();d["observations"].append(copy.deepcopy(d["observations"][0]))
         with self.assertRaises(ValueError):build(d)
+
+    def test_forbidden(self):
+        d=self.fixture();d["event"]["odds"]=2
+        with self.assertRaises(ValueError):build(d)
+    def test_bad_score(self):
+        d=self.fixture();d["observations"][0]["row"]["score"]="6-4"
+        with self.assertRaises(ValueError):build(d)
+    def test_bad_id(self):
+        d=self.fixture();d["event"]["players"][1]="ATP:abc"
+        with self.assertRaises(ValueError):build(d)

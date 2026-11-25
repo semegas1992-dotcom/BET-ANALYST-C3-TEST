@@ -1,0 +1,24 @@
+name: Tennis D0 offline reproducibility
+on:
+  workflow_dispatch:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/tennis_d0.py','experimental/test_tennis_d0.py','experimental/export_tennis_d0.py','.github/workflows/tennis-d0.yml']
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v
+      - run: |
+          python experimental/export_tennis_d0.py
+          cp tennis-d0-demo.json first.json
+          python experimental/export_tennis_d0.py
+          cmp first.json tennis-d0-demo.json
+          sha256sum tennis-d0-demo.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tennis-d0-demo
+          path: tennis-d0-demo.json
+          retention-days: 1
