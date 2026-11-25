@@ -1,0 +1,2 @@
+# C3.939 — technical closure
+2026-11-25. Run 45555576224, artifact 14995731832, SHA256 b9827c1eb1bcbcdc992baf671bab2603f13d29a86cea71dad9234e64bf99a5d1. CI PASS 2700 checks; fast run 45555576299: 214 tests. Local archive and input hash verified, 18 nonempty chronological histories, 309 consistent period rows checked for score sums, 9 dossier hashes and linked history hashes independently verified, internal references matched. Technical closure only. External accuracy, availability timestamps and rights remain unverified. Engine access remains false.
