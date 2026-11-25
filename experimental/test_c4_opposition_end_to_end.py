@@ -7,17 +7,17 @@ from c4_market_scope import RULES
 from d0_contract import digest
 class OppositionEndToEndTests(unittest.TestCase):
     def test_report_chain(self):
-        for mode in ("zero","positive","negative","mixed","incomplete"):
+        for mode in ("zero","positive","negative","mixed","incomplete","contradictory"):
             with self.subTest(mode=mode):self.check_chain(mode)
     def check_chain(self,mode):
         for sport,metric in (("football","goals_for"),("nba","points_for"),("tennis","first_serve_won")):
             with self.subTest(sport=sport):
                 d,e,records,essential,x=dossier(sport)
                 # Expand the existing fictional NBA/tennis observations to three per participant.
-                if sport!="football":
+                if sport!="football" or mode=="contradictory":
                     for o in list(d["observations"]):
                         old=o["id"]
-                        for n in (1,2):
+                        for n in (1,2,3,4,5) if mode=="contradictory" else (1,2):
                             new=old+str(n)
                             d["observations"].append(dict(deepcopy(o),id=new))
                             for key in ("observations","comparables","indicators"):
@@ -36,10 +36,15 @@ class OppositionEndToEndTests(unittest.TestCase):
                         comp["record_ids"].append(rid)
                     i=next(i for i in x["indicators"] if i["observation_id"]==oid and i["metric"]==metric)
                     rows.append(dict(sport=sport,metric=metric,context="same",opponent="X",side="A" if link["participant"]==e["participants"][0] else "B",observation_id=oid,value=i["value"]))
+                if mode=="contradictory":
+                    for side in ("A","B"):
+                        for n,row in enumerate([r for r in rows if r["side"]==side]):
+                            rec=next(v for v in records if v["id"]==row["observation_id"]+":opponent_id")
+                            rec["measurement"]=rec["excerpt"]="X" if n<3 else "Y"
                 if mode!="zero":
                     arows=[r for r in rows if r["side"]=="A"]
                     for n,row in enumerate(arows):
-                        delta=2 if mode=="positive" else -1 if mode=="negative" else (4 if n==0 else -1) if mode=="mixed" else 0
+                        delta=(2 if n<3 else -1) if mode=="contradictory" else 2 if mode=="positive" else -1 if mode=="negative" else (4 if n==0 else -1) if mode=="mixed" else 0
                         row["value"]+=delta
                         i=next(i for i in x["indicators"] if i["observation_id"]==row["observation_id"] and i["metric"]==metric)
                         i["value"]=row["value"]
@@ -53,6 +58,8 @@ class OppositionEndToEndTests(unittest.TestCase):
                 result=run(d,e,records,essential,[1],"fixture",{},1,1,{},[],x,market_requests=[dict(contract=c,thresholds=[1.5,2.5])],matched_rows=rows)
                 stages=result["stages"];op=stages["matched_opposition"]
                 report=render(result)
+                if mode=="contradictory":
+                    self.assertEqual({v["contrast"] for v in op["documented"]["result"]["strata"]},{2,-1})
                 self.assertEqual(op["documented"]["coverage"]["included"],len(rows)-(mode=="incomplete"))
                 self.assertEqual(op["envelope"]["metrics"][metric]["direction"],{"positive":"POSITIVE","negative":"NEGATIVE"}.get(mode,"UNRESOLVED"))
                 self.assertEqual(report["sections"][3]["opposition_context"],op["envelope"]["scenario_context"])
