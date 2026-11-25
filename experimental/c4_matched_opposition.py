@@ -74,7 +74,7 @@ def documented_contrast(rows,d,event,extra,records,min_n=3):
         if claims["opponent_id"][0]==links[oid]["participant"]:raise ValueError("self opposition")
         normalized={**row,"opponent":claims["opponent_id"][0],"context":digest([claims["format"][0],claims["conditions"][0]])}
         accepted.append(normalized)
-        trace.append({"observation_id":oid,"historical_event_id":historical,"claims":claims})
+        trace.append({"observation_id":oid,"historical_event_id":historical,"claims":claims,"metric":row["metric"],"participant":links[oid]["participant"],"side":row["side"],"unit":next(i["unit"] for i in extra["indicators"] if i["observation_id"]==oid and i["metric"]==row["metric"])})
     result=contrast(accepted,min_n)
     return {"result":result,"trace":trace,"excluded":rejected,"coverage":{"included":len(accepted),"supplied":len(rows)},"scope":"EXACT_SYNTHETIC_DOCUMENTARY_STRATA","representativeness":"NOT_ESTABLISHED","forecast":None,"qualification":"BLOCKED"}
 
