@@ -28,3 +28,5 @@ Update: b18bfff failed both workflows (343 tests, four errors): descriptive indi
 Update: 5130f5c both workflows passed, 344 tests. Local dependencies now retain original statistical issues; separate structural replay checks role, evidence, issues and phase coverage. Phase-specific observation prompts and branch labels added, not calibrated trajectories. Report includes stage and event fingerprints. CI pending. Event-market compatibility remains open; no full action certified.
 
 Merge 08431f2 + 90d5b96: both parent histories retained; linked contradictions, phase triggers, branch labels, audit stage and audit list, both tamper tests preserved. CI pending. Event-market and full trajectories remain open.
+
+Update: merge 4afa28c failed both workflows (345 tests, one failure). Positive NBA/tennis fixtures lacked rebound/return measurements; added fictional measurements without relaxing gates. Joint logical assignments and event-bound match-total over half-unit nesting added with separate structural audits. No sporting feasibility, estimates, commercial rules or full market coverage established. CI pending; no full action certified.

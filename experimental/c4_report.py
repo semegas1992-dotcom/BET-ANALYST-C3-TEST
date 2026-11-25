@@ -8,8 +8,8 @@ def render(result):
         {"number":1,"title":"Synthèse rapide","status":"INCOMPLETE","detail":"Synthetic replay; no verified sporting conclusion"},
         {"number":2,"title":"Repères et données déterminantes","evidence":result["stage_sha256"]["E1"],"missing":stages["E1"]["missing_or_unresolved"]},
         {"number":3,"title":"Analyse sportive","evidence":result["stage_sha256"]["E2"],"context":context.get("summary",{}),"status":"DESCRIPTIVE_ONLY"},
-        {"number":4,"title":"Scénarios envisagés","evidence":result["stage_sha256"]["E3"],"scenarios":stages["E3"]["scenarios"]},
+        {"number":4,"title":"Scénarios envisagés","evidence":result["stage_sha256"]["E3"],"scenarios":stages["E3"]["scenarios"],"trajectories":stages.get("trajectories",{})},
         {"number":5,"title":"Projection du déroulement","sequences":context.get("sequences",[]),"scoped_arguments":stages.get("specific_dependencies",{}).get("sequences",[]),"status":"UNVERIFIED_TEMPLATES"},
-        {"number":6,"title":"Marchés et lignes éventuelles","evidence":result["stage_sha256"]["E5"],"status":"NOT_EVALUATED"},
+        {"number":6,"title":"Marchés et lignes éventuelles","evidence":result["stage_sha256"]["E5"],"event_contracts":stages["E5"].get("event_contracts",[]),"status":"NOT_EVALUATED"},
         {"number":7,"title":"Avis sportif final","status":"NOT_ESTABLISHED","data_quality":"SYNTHETIC_ONLY","sporting_reasoning":"UNVERIFIED","market_arguments":"NOT_EVALUATED"}],
         "limitations":result["limitations"],"engine_access":False,"publication":"BLOCKED","qualification":"BLOCKED"}

@@ -1,4 +1,6 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
+from c4_trajectories import build as trajectories, audit as trajectory_audit
+from c4_event_contract import compare as event_compare, audit as event_audit
 from c4_dependency_audit import audit as dependency_audit
 from c4_specific_dependencies import evaluate as specific
 from c4_context_analysis import enrich
@@ -13,7 +15,7 @@ from c4_e4_trace import audit as envelope_audit
 from c4_e5_descriptive import compare
 from c4_e5_inventory import inventory
 from d0_contract import digest,stamp,validate
-def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atypical,requests,extra=None):
+def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atypical,requests,extra=None,event_requests=()):
     fingerprint=validate(d)
     participants=["home","away"] if d["sport"]=="football" else d["participants"]
     if event["sport"]!=d["sport"] or event["participants"]!=participants or stamp(event["kickoff"])!=stamp(d["kickoff"]):raise ValueError("event mismatch")
@@ -32,10 +34,17 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         if c["envelope_report_sha256"]!=digest(env):raise ValueError("envelope mismatch")
         comparisons.append(c)
     stages={"E1":doc,"E2":stats,"E3":hypotheses,"E4":env,"E5":{"inventory":inventory(d["sport"]),"comparisons":comparisons}}
+    stages["E5"]["event_contracts"]=[]
+    for request in event_requests:
+        c=event_compare(event,request["contract"],request["thresholds"])
+        audits.append(event_audit(event,c))
+        stages["E5"]["event_contracts"].append(c)
     if extra is not None:
         stages["context"]=context_contract(d,event,records,extra,hypotheses)
         stages["specific_dependencies"]=specific(d,event,extra,doc,hypotheses)
         stages["dependency_audit"]=dependency_audit(d,event,extra,doc,hypotheses,stages["specific_dependencies"])
         audits.append(stages["dependency_audit"])
+        stages["trajectories"]=trajectories(stages["specific_dependencies"])
+        audits.append(trajectory_audit(stages["specific_dependencies"],stages["trajectories"]))
         stages["context_analysis"]=enrich(d,event,extra,stages["context"],doc,hypotheses)
     return {"schema":"C4_INTEGRATED_SYNTHETIC_V1","input_sha256":fingerprint,"event_sha256":digest(event),"stage_sha256":{k:digest(v) for k,v in stages.items()},"stages":stages,"audits":audits+[review],"documentary_gate":doc["synthetic_documentary_gate"],"limitations":["Event identity only matched to synthetic labels and kickoff","Documentary records not authenticated or linked to individual observations","No verified tactical or sequence projection","No event market evaluation"],"engine_access":False,"publication":"BLOCKED","qualification":"BLOCKED","sporting_analysis_complete":False}

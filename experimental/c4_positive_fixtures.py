@@ -5,6 +5,9 @@ from c4_e1 import LOTS
 from d0_contract import digest
 def dossier(sport):
     d=fixture() if sport=="football" else fixture_other(sport)
+    for o in d["observations"]:
+        if sport=="nba":o["stats"].update(rebounds=42,assists=24)
+        if sport=="tennis":o["stats"].update(return_points_won=18,return_points_played=50)
     ps=["home","away"] if sport=="football" else d["participants"]
     e=dict(id="fictional-"+sport,origin="synthetic",sport=sport,participants=ps,kickoff=d["kickoff"],competition="fictional league",category="fixture",venue="fictional venue",format="fixture",status="scheduled")
     records=[]
