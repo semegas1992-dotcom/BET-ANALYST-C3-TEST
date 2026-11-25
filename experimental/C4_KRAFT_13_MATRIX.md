@@ -52,3 +52,5 @@ R01: supplemental market dependency routing with direct subject and potential ro
 R01 consolidation: local Python unittest on manually reproduced routing module passed (1 parameterized test, 3 sports, 9 market cases). Full repository suite not run. Added explicit unverified trigger requirements to dependency links; post-change execution pending. No early lock, no T01 admission.
 
 2026-11-25: ca0da48 integrated scoped uncertainty; 98c2931 T01 manifest validator; f02bd06 targeted regression tests. Local backup unittest rerun: 8 passed. Exact repository full multisport integration not verified. Generic fixtures do not certify sport-specific behavior. R01 experimental; KRAFT V3.0 unchanged; real admission blocked.
+
+2026-11-25: user screenshot confirms successful workflows NBA history experimental #153 (80s) and NBA fast offline tests #60 (9s) on 7e984f3. Android screenshot shows matching expected hash and one football history entry, gates blocked. Exact test coverage and restoration execution not established. KRAFT V3.0 unchanged; R01 experimental.
