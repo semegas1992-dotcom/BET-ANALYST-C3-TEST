@@ -26,5 +26,15 @@ class ContractTests(unittest.TestCase):
             with self.assertRaises(ValueError):analyze(d)
     def test_p2_not_bypassed(self):
         r=analyze(fixture())
-        self.assertIn("home:observation_audit",r["p2_rejections"])
+        self.assertTrue(r["p2_pass"])
+        self.assertEqual(r["facts"]["home"]["independent_check"]["checks"],32)
         self.assertFalse(r["engine_access"])
+
+    def test_missing_sample(self):
+        d=fixture();d["observations"][0]["stats"]["shots_for"]=None
+        self.assertFalse(analyze(d)["p2_pass"])
+    def test_audit_detects_tampering(self):
+        from football_demo_audit import audit_side
+        d=fixture();r=analyze(d);v=r["facts"]["home"]
+        v["advanced_season"]["shots_for"]["sum"]+=1
+        self.assertTrue(audit_side(d["observations"],"home",v)["issues"])

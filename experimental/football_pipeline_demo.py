@@ -1,5 +1,6 @@
 """Synthetic descriptive prototype; not a KRAFT implementation or betting engine."""
 from d0_contract import validate,digest
+from football_demo_audit import audit_side
 from football_qualification_v5 import rejection_reasons
 def analyze(d):
     fingerprint=validate(d)
@@ -16,7 +17,6 @@ def analyze(d):
                 if any(type(v) is not int or v<0 for v in vals):raise ValueError("invalid statistic")
                 fields[k]={"n":len(vals),"eligible":len(rr),"sum":sum(vals),"mean":sum(vals)/len(vals) if vals else None}
             sides[side][period]=fields
-        # No independent observation audit implemented here: never assert P2 success.
-        sides[side]["independent_check"]={"checks":0,"issues":["independent audit pending"]}
+        sides[side]["independent_check"]=audit_side(d["observations"],side,sides[side])
     reasons=rejection_reasons(sides)
-    return {"input_sha256":fingerprint,"engine_access":False,"synthetic":True,"facts":sides,"p2_rejections":reasons,"scenarios":{"A":"home advantage hypothesis","B":"balanced hypothesis","C":"away advantage hypothesis"},"scenario_status":"unranked; not validated","market_comparison":{"status":"blocked","reason":"P2 and KRAFT implementation pending"},"decision":"ABSTENTION"}
+    return {"input_sha256":fingerprint,"engine_access":False,"synthetic":True,"facts":sides,"p2_rejections":reasons,"scenarios":{"A":"home advantage hypothesis","B":"balanced hypothesis","C":"away advantage hypothesis"},"scenario_status":"unranked; KRAFT mapping pending","p2_pass":not reasons,"market_comparison":{"status":"blocked","reason":"P2 or KRAFT implementation pending"},"decision":"ABSTENTION","decision_scope":"technical hold, not sporting NO BET"}
