@@ -1,0 +1,2 @@
+# Common D0 comparison
+Preparation only. Freeze identical D0, cutoff, provenance and SHA-256. Run application and ChatGPT independently, with KRAFT V3.0 baseline and experimental controls separately identified. No odds or results. Freeze both outputs before comparing factual traceability, mechanisms, roster dependencies, trajectories, market-specific evidence, uncertainty and abstention. Missing capabilities are NOT_EVALUATED. Start only after synthetic integration coverage and documentary admission are verified. R01 remains experimental. No comparison performed.
