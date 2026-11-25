@@ -48,3 +48,5 @@ Update: optional supplied/unverified matched-opposition stage linked to report, 
 TERRAIN feedback: added separate historical fingerprint/current capacity review, role-specific market review prompts and available same-role candidates without equivalence or numeric effect. Integrated supplemental stage; existing global gates unchanged. Synthetic tests added, execution pending. T01 mapping and individual market propagation remain open.
 
 R01: supplemental market dependency routing with direct subject and potential role links, record IDs and trajectory fingerprint. Separate documentary/roster fields remain NOT_ESTABLISHED; no early lock or change to existing gates. Proposed A/B/C protocol recorded, original C2/C3 audit and independent trials pending. Tests added; execution pending.
+
+R01 consolidation: local Python unittest on manually reproduced routing module passed (1 parameterized test, 3 sports, 9 market cases). Full repository suite not run. Added explicit unverified trigger requirements to dependency links; post-change execution pending. No early lock, no T01 admission.

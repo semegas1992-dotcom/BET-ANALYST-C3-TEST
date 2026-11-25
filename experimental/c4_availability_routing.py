@@ -9,6 +9,7 @@ def route(event, review, trajectories, markets):
         for dep in review["dependencies"]:
             direct=subject==dep["person_id"]
             if direct or family in dep["families_to_review"]:
-                links.append({"person_id":dep["person_id"],"participant":dep["participant"],"role":dep["role"],"record_ids":dep["record_ids"],"reason":"DIRECT_SUBJECT" if direct else "POTENTIAL_ROLE_DEPENDENCY","effect":None})
+                # A family match is only a review prompt, never a proven effect.
+                links.append({"person_id":dep["person_id"],"participant":dep["participant"],"role":dep["role"],"record_ids":dep["record_ids"],"reason":"DIRECT_SUBJECT" if direct else "POTENTIAL_ROLE_DEPENDENCY","effect":None,"trigger":{"availability_review_required":True,"sporting_effect_evidence_required":True,"status":"UNVERIFIED"}})
         rows.append({"contract":c,"dependencies":links,"documentary_sufficiency":"NOT_ESTABLISHED","roster_robustness":"NOT_ESTABLISHED","status":"NOT_EVALUATED"})
     return {"event_sha256":digest(event),"review_sha256":digest(review),"trajectory_sha256":digest(trajectories),"markets":rows,"qualification":"BLOCKED"}
