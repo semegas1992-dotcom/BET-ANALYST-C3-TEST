@@ -48,3 +48,31 @@ def linked_contrast(rows, d, event, extra, records, min_n=3):
         context_issues.append({"observation_id":oid,"opponent":row["opponent"],"context":row["context"],"status":"UNVERIFIED","issues":["OPPONENT_IDENTITY_UNVERIFIED","HISTORICAL_FORMAT_UNVERIFIED","CONTEXT_EQUIVALENCE_UNVERIFIED","REPRESENTATIVENESS_UNESTABLISHED"]})
         evidence.append({"observation_id":oid,"metric":row["metric"],"unit":i["unit"],"record_ids":ids})
     return {"result":contrast(rows,min_n),"evidence":evidence,"comparability":{"status":"NOT_ESTABLISHED","observations":context_issues,"sporting_estimate":None},"input_sha256":digest(rows),"provenance":"SYNTHETIC_MEASUREMENT_LINKED_CONTEXT_UNVERIFIED","qualification":"BLOCKED"}
+
+def documented_contrast(rows,d,event,extra,records,min_n=3):
+    """Exact synthetic strata from scoped documentary claims; no source authentication."""
+    from d0_contract import digest,stamp
+    base=linked_contrast(rows,d,event,extra,records,min_n)
+    links={o["observation_id"]:o for o in extra["observations"]}
+    comps={o["observation_id"]:o for o in extra["comparables"]}
+    rec={r["id"]:r for r in records}
+    fields=("opponent_id","format","conditions")
+    accepted=[]; rejected=[]; trace=[]
+    for row in rows:
+        oid=row["observation_id"]; historical=links[oid]["historical_event_id"]
+        claims={}
+        for field in fields:
+            key=oid+":"+field+":historical:label"
+            matches=[rec[j] for j in comps[oid]["record_ids"] if rec[j].get("claim_key")==key]
+            if len(matches)==1:
+                m=matches[0]; v=m.get("measurement")
+                if m.get("topic")=="baseline" and m.get("source")=="synthetic_fixture" and m.get("opened") is True and m.get("scope_checked") is True and m.get("coherence_checked") is True and isinstance(v,str) and v.strip() and m.get("excerpt")==v:
+                    claims[field]=(v,m["id"])
+        if len(claims)!=len(fields):
+            rejected.append({"observation_id":oid,"missing":sorted(set(fields)-set(claims))});continue
+        if claims["opponent_id"][0]==links[oid]["participant"]:raise ValueError("self opposition")
+        normalized={**row,"opponent":claims["opponent_id"][0],"context":digest([claims["format"][0],claims["conditions"][0]])}
+        accepted.append(normalized)
+        trace.append({"observation_id":oid,"historical_event_id":historical,"claims":claims})
+    result=contrast(accepted,min_n)
+    return {"result":result,"trace":trace,"excluded":rejected,"coverage":{"included":len(accepted),"supplied":len(rows)},"scope":"EXACT_SYNTHETIC_DOCUMENTARY_STRATA","representativeness":"NOT_ESTABLISHED","forecast":None,"qualification":"BLOCKED"}
