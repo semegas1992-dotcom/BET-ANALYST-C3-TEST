@@ -20,7 +20,11 @@ def build(d,event,records,extra,hypotheses):
         evidence(x["record_ids"],"production")
         if any(stamp(rec[j]["available_at"])<stamp(obs[i]["event_end"]) for j in x["record_ids"]):raise ValueError("observation evidence chronology")
         seen.add((e,p));links[i]=x
+    people=set()
     for x in extra["configurations"]:
+        k=(x["participant"],x["person_id"])
+        if k in people:raise ValueError("duplicate configuration")
+        people.add(k)
         if x["participant"] not in ps or not words(x["person_id"]) or x["availability"] not in ("available","uncertain","absent","unknown") or not words(x["role"]):raise ValueError("configuration")
         evidence(x["record_ids"],"availability")
         if x["availability"]=="absent" and x.get("projected_minutes") is not None:raise ValueError("absent projection")
@@ -28,7 +32,11 @@ def build(d,event,records,extra,hypotheses):
     for x in extra["comparables"]:
         if x["observation_id"] not in links or any(not words(x.get(k)) for k in ("similarity","difference","lesson","counterexample")):raise ValueError("comparable")
         evidence(x["record_ids"],"baseline")
+    measures=set()
     for x in extra["indicators"]:
+        k=(x["observation_id"],x["metric"])
+        if k in measures:raise ValueError("duplicate indicator")
+        measures.add(k)
         f=x["metric"];v=x["value"]
         if x["observation_id"] not in links or f not in METRICS[d["sport"]] or x["unit"]!=METRICS[d["sport"]][f] or type(v) not in (int,float) or not isfinite(v) or v<0:raise ValueError("indicator")
         evidence(x["record_ids"],"production")
