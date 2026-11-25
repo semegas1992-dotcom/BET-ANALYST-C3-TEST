@@ -1,6 +1,6 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
 from c4_scoped_uncertainty import build as scoped_uncertainty
-from c4_matched_opposition import contrast
+from c4_matched_opposition import contrast, linked_contrast
 from c4_trajectory_prompts import build as trajectory_prompts
 from c4_availability_routing import route as availability_route
 from c4_availability_review import review as availability_review
@@ -42,7 +42,7 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         if c["envelope_report_sha256"]!=digest(env):raise ValueError("envelope mismatch")
         comparisons.append(c)
     stages={"E1":doc,"E2":stats,"E3":hypotheses,"E4":env,"E5":{"inventory":inventory(d["sport"]),"comparisons":comparisons}}
-    if matched_rows:
+    if matched_rows and extra is None:
         if any(row["sport"]!=d["sport"] for row in matched_rows):raise ValueError("matched sport")
         stages["matched_opposition"]={"input_sha256":digest(matched_rows),"result":contrast(matched_rows),"provenance":"SUPPLIED_UNVERIFIED"}
     stages["E5"]["event_contracts"]=[]
@@ -52,6 +52,8 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         stages["E5"]["event_contracts"].append(c)
     if extra is not None:
         stages["context"]=context_contract(d,event,records,extra,hypotheses)
+        if matched_rows:
+            stages["matched_opposition"]=linked_contrast(matched_rows,d,event,extra,records)
         stages["specific_dependencies"]=specific(d,event,extra,doc,hypotheses)
         stages["dependency_audit"]=dependency_audit(d,event,extra,doc,hypotheses,stages["specific_dependencies"])
         audits.append(stages["dependency_audit"])
