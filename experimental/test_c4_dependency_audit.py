@@ -19,3 +19,8 @@ class DependencyAuditTests(unittest.TestCase):
             dep=evaluate(d,e,x,doc,h)
             dep["sequences"][0]["issues"]=["FAKE"]
             with self.assertRaises(ValueError):audit(d,e,x,doc,h,dep)
+
+            dep=evaluate(d,e,x,doc,h)
+            dep["sequences"].pop()
+            with self.assertRaises(ValueError):audit(d,e,x,doc,h,dep)
+            self.assertTrue(all(a["passed"] for a in result["audits"]))

@@ -21,6 +21,7 @@ def audit(d,event,extra,doc,hypotheses,report):
             for oid in fact["measurement"]["ids"]:
                 if oid not in links:issues.add("UNLINKED:"+oid)
                 else:refs.update(links[oid]["record_ids"])
+        if any(refs.intersection(c["record_ids"]) for c in doc["contradictions"]):issues.add("LINKED_CONTRADICTION")
         if m["participants"]!=ordered or m["roles"]!=roles[d["sport"]][label] or m["issues"]!=sorted(issues) or m["record_ids"]!=sorted(refs) or m["status"]!=("BLOCKED" if issues else "UNVERIFIED_HYPOTHESIS"):raise ValueError("dependency replay")
     scenarios={s["id"]:s for s in hypotheses["scenarios"]}
     expected={(i,p) for i in scenarios for p in SEQUENCES[d["sport"]]}
