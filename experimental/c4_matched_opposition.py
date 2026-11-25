@@ -22,6 +22,7 @@ def contrast(rows, min_n=3):
         eligible=min(len(g["A"]),len(g["B"]))>=min_n
         output.append({"stratum":list(key),"counts":{s:len(v) for s,v in g.items()},
                        "contrast":mean(g["A"])-mean(g["B"]) if eligible else None,
+                       "stability":stability(g) if eligible else None,
                        "status":"DESCRIPTIVE_MATCHED" if eligible else "INSUFFICIENT"})
     return {"strata":output,"forecast":None,"dominant_trajectory":None,"qualification":"BLOCKED"}
 
@@ -76,3 +77,14 @@ def documented_contrast(rows,d,event,extra,records,min_n=3):
         trace.append({"observation_id":oid,"historical_event_id":historical,"claims":claims})
     result=contrast(accepted,min_n)
     return {"result":result,"trace":trace,"excluded":rejected,"coverage":{"included":len(accepted),"supplied":len(rows)},"scope":"EXACT_SYNTHETIC_DOCUMENTARY_STRATA","representativeness":"NOT_ESTABLISHED","forecast":None,"qualification":"BLOCKED"}
+
+def stability(g):
+    """Leave-one-out sensitivity, not a confidence interval."""
+    a,b=g["A"],g["B"]
+    full=mean(a)-mean(b)
+    values=[mean(a[:i]+a[i+1:])-mean(b) for i in range(len(a))]
+    values += [mean(a)-mean(b[:i]+b[i+1:]) for i in range(len(b))]
+    sign=lambda v:(v>0)-(v<0)
+    return {"minimum":min(values),"maximum":max(values),"recalculations":len(values),
+            "sign_preserved":all(sign(v)==sign(full) for v in values),
+            "scope":"LEAVE_ONE_OUT_DESCRIPTIVE_NOT_CONFIDENCE_INTERVAL"}
