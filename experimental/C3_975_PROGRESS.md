@@ -1,0 +1,2 @@
+# C3.972–975
+Prototype preview-only storage and backup contract. No raw archives, no production storage keys. Restore validates before writing. Backup is not authenticated; restored metadata is not proof of source integrity. C3.972 offline browser/service worker and Android testing pending. C3.973–974 isolated storage module implemented, UI integration pending. C3.975 tests added, CI pending. No main changes.
