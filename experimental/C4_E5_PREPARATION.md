@@ -1,0 +1,2 @@
+# E4 replay and E5 inventory
+E4 aggregation replay independently checks variants, hashes, bounds, threshold classification and baseline. It reuses E2 inputs, not an independent data source. Baseline is first requested window, not an opposition-adjusted estimate. E5 inventory follows KRAFT actions 12–13; no event-specific selection, ranking or threshold recommendation because matching validated sporting evidence is unavailable. New tests pending. Synthetic only.
