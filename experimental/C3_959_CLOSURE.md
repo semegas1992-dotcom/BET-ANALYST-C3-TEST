@@ -1,0 +1,2 @@
+# C3.959 technical closure
+Runs 45567162711 and 45567162781: 239 tests pass. Artifact 15000561579 downloaded and locally checked: ZIP e384cbfb87eda062228331f6771f92fc79e745cf8b1097dac4c1ff032db3bdf0; JSON f72405248f417d19b2ce35c714a7c23d2dd1e36c910190c12b8c7c29327f8b4d. Input/output/evidence canonical hashes match. CI replay byte identical. 8 arithmetic checks, no issues, both sample gates false. Synthetic structural scope only; real rights and availability blocked.

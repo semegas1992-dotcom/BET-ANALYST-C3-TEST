@@ -1,0 +1,6 @@
+const {test}=require("node:test"),assert=require("node:assert/strict"),{inspect}=require("./quarantine-import.js");
+const fixture=(sport="tennis")=>({schema:"D0_EXPERIMENTAL_V1",sport,origin:"synthetic",engine_access:false,cutoff:"2026-01-02T00:00:00Z",kickoff:"2026-01-03T00:00:00Z",observations:[{id:"a",source:"synthetic_fixture",event_end:"2026-01-01T00:00:00Z",available_at:"2026-01-01T01:00:00Z",captured_at:"2026-01-01T02:00:00Z"}]});
+for(const s of ["football","nba","tennis"])test(s,()=>{const r=inspect(JSON.stringify(fixture(s)));assert.equal(r.sport,s);assert.equal(r.engine_access,false);assert.equal(r.qualification,"BLOCKED")});
+for(const [name,mutate] of [["real",d=>d.origin="archive"],["unlock",d=>d.observations[0].engine_access=true],["odds",d=>d.observations[0].odds=2],["duplicate",d=>d.observations.push(d.observations[0])],["leak",d=>d.observations[0].captured_at=d.kickoff],["source",d=>d.observations[0].source="unknown"],["publication",d=>d.publication="ALLOWED"]])test(name,()=>{const d=fixture();mutate(d);assert.throws(()=>inspect(JSON.stringify(d)))});
+test("oversize",()=>assert.throws(()=>inspect(" ".repeat(1048577))));
+test("prototype",()=>assert.throws(()=>inspect('{"__proto__":{}}')));

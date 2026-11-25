@@ -1,0 +1,13 @@
+name: PWA quarantine import offline tests
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/pwa/**','.github/workflows/pwa-quarantine.yml']
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --test experimental/pwa/quarantine-import.test.cjs
