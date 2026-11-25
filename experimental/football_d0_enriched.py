@@ -8,7 +8,10 @@ from football_crosscheck import name
 from open_matchday_audit import FOLDERS,integer
 from football_qualification_v5 import rejection_reasons,select_diverse,diversity_audit
 
-def join(primary,secondary,cutoff):
+from football_source_aliases import identity
+
+def join(primary,secondary,cutoff,code=None):
+    def name(v):return identity(code,v)
     idx={}
     for row in secondary:
         idx.setdefault((row.get("date"),name(row.get("home")),name(row.get("away"))),[]).append(row)
@@ -104,8 +107,10 @@ def main():
             if len(raw)>5000000:raise ValueError("size")
             secondary=list(csv.DictReader(io.StringIO(raw.decode("utf-8-sig"))))
             primary=matches(fetch("competitions/"+code+"/matches",{"season":2026,"status":"FINISHED"},key,trace))
-            accepted,counts,missing=join(primary,secondary,now)
-            report["leagues"][code]={"counts":counts,"missing":missing,"accounting_ok":sum(counts.values())==len(primary),"source":url,"sha256":hashlib.sha256(raw).hexdigest()}
+            baseline,baseline_counts,_=join(primary,secondary,now)
+            accepted,counts,missing=join(primary,secondary,now,code)
+            if not baseline.keys()<=accepted.keys():raise ValueError('alias regression')
+            report["leagues"][code]={"counts":counts,"baseline_counts":baseline_counts,"additional_anchors":len(accepted)-len(baseline),"missing":missing,"accounting_ok":sum(counts.values())==len(primary),"source":url,"sha256":hashlib.sha256(raw).hexdigest()}
             for e in sorted(events,key=lambda m:stamp(m["utcDate"])):
                 if e["competition"]["code"]!=code or stamp(e["utcDate"])<=datetime.now(timezone.utc):continue
                 sides={}
@@ -122,7 +127,7 @@ def main():
                     report["dossiers"].append(dossier)
                 else:
                     report["rejected_candidates"]+=1
-                    report["rejections"].append({"id":e["id"],"competition":code,"reasons":reasons})
+                    report["rejections"].append({"id":e["id"],"competition":code,"reasons":reasons,"sample_counts":{side:{p:{k:{"n":v["n"],"eligible":v["eligible"]} for k,v in data[p].items() if k.startswith(("shots_","target_"))} for p in ("advanced_season","advanced_last5")} for side,data in sides.items()}})
     except Exception as e:report["error"]=type(e).__name__
     report["trace"]=trace
     report["dossiers"]=[d for d in report["dossiers"] if stamp(d["kickoff"])>datetime.now(timezone.utc)]
