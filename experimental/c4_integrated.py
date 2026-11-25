@@ -1,4 +1,5 @@
 """Integrated synthetic replay, not a completed sporting analysis."""
+from c4_scoped_uncertainty import build as scoped_uncertainty
 from c4_matched_opposition import contrast
 from c4_trajectory_prompts import build as trajectory_prompts
 from c4_availability_routing import route as availability_route
@@ -56,6 +57,7 @@ def run(d,event,records,essential,windows,reason,context,min_n,min_coverage,atyp
         audits.append(stages["dependency_audit"])
         stages["trajectories"]=trajectories(stages["specific_dependencies"])
         audits.append(trajectory_audit(stages["specific_dependencies"],stages["trajectories"]))
+        stages["scoped_uncertainty"]=scoped_uncertainty(stages["specific_dependencies"],stages["trajectories"])
         stages["trajectory_prompts"]=trajectory_prompts(d["sport"],stages["trajectories"])
         stages["interactions"]=interactions(d["sport"],stages["specific_dependencies"],stages["trajectories"])
         audits.append(interaction_audit(stages["specific_dependencies"],stages["trajectories"],stages["interactions"]))
