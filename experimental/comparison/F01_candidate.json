@@ -9,7 +9,8 @@
     "away": "Manchester City",
     "competition": "Premier League",
     "kickoff": "2026-11-29T16:30:00Z",
-    "venue": "Emirates Stadium"
+    "venue": "Emirates Stadium",
+    "official_id": "2645305"
   },
   "sources": [
     {
@@ -21,6 +22,11 @@
       "url": "https://www.mancity.com/news/mens/arsenal-v-city-match-preview-pl-29-nov-63931129",
       "published": "2026-11-25",
       "scope": "fixture, venue, press conference planned"
+    },
+    {
+      "url": "https://www.premierleague.com/en/match/2645305/essenal-vs-manchester-city/overview",
+      "scope": "official event identity",
+      "consulted_date": "2026-11-25"
     }
   ],
   "cutoff": null,
@@ -28,7 +34,6 @@
   "missing": [
     "verified observation records with timestamps and definitions",
     "availability and roles",
-    "official unique event identifier",
     "admission contract"
   ],
   "engine_access": false,
@@ -96,7 +101,18 @@
     "aggregates": "not individual observations; no expansion",
     "historical_evidence": "requires event_end, available_at, captured_at and metric definitions",
     "admission": "real origin rejected by current d0_contract",
-    "historical_candidates": "gf/ga integer goals per completed match from team perspective; separate competition and venue; no admitted observations until timestamps and source validation"
+    "historical_candidates": "gf/ga integer goals per completed match from team perspective; separate competition and venue; no admitted observations until timestamps and source validation",
+    "mechanism_requirements": {
+      "volume": [
+        "creator",
+        "defender"
+      ],
+      "target": [
+        "finisher",
+        "defender"
+      ],
+      "note": "goals alone cannot establish shooting volume or quality; no synthetic relabeling"
+    }
   },
   "historical_candidates": {
     "source": "https://www.skysports.com/football/arsenal-vs-manchester-city/stats/556659",
