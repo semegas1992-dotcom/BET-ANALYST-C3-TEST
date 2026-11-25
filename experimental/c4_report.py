@@ -1,10 +1,11 @@
 """Seven-section synthetic evidence report; never a sporting conclusion."""
 from d0_contract import digest
+from c4_quick_summary import build as quick_summary
 def render(result):
     stages=result["stages"]
     if result["stage_sha256"]!={k:digest(v) for k,v in stages.items()}:raise ValueError("stage integrity")
     context=stages.get("context_analysis",{})
-    return {"schema":"C4_KRAFT_REPORT_SYNTHETIC_V1","input_sha256":result["input_sha256"],"stage_sha256":result["stage_sha256"],"event_sha256":result["event_sha256"],"audits":result["audits"],"sections":[
+    return {"schema":"C4_KRAFT_REPORT_SYNTHETIC_V1","input_sha256":result["input_sha256"],"stage_sha256":result["stage_sha256"],"event_sha256":result["event_sha256"],"audits":result["audits"],"quick_summary":quick_summary(result),"sections":[
         {"number":1,"title":"Synthèse rapide","status":"INCOMPLETE","detail":"Synthetic replay; no verified sporting conclusion"},
         {"number":2,"title":"Repères et données déterminantes","evidence":result["stage_sha256"]["E1"],"missing":stages["E1"]["missing_or_unresolved"]},
         {"number":3,"title":"Analyse sportive","evidence":result["stage_sha256"]["E2"],"context":context.get("summary",{}),"status":"DESCRIPTIVE_ONLY"},
