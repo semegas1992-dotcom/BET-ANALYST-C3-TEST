@@ -1,0 +1,15 @@
+name: NBA fast offline tests
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/**', '.github/workflows/nba-fast-tests.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest discover -s experimental -v

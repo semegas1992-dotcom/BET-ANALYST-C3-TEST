@@ -24,3 +24,25 @@ class IndependentTests(unittest.TestCase):
     def test_lock(self):
         r=audit_batch({"cutoff":self.cutoff,"engine_access":True,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","histories":{},"dossiers":[]})
         self.assertEqual(r["status"],"FAIL")
+    def test_chronology(self):
+        self.rows[1]["datetime"]="2026-01-02T12:00:00Z"
+        self.assertIn("chronology",audit_history(self.h,self.cutoff)["issues"])
+    def test_period_score(self):
+        self.rows[0]["periods"]["pf"][0]=26
+        self.assertIn("period_score:0",audit_history(self.h,self.cutoff)["issues"])
+    def test_empty_history(self):
+        self.h["games"]=[]
+        self.assertIn("empty_history",audit_history(self.h,self.cutoff)["issues"])
+    def test_dossier_identity_and_digest(self):
+        import hashlib,json
+        e={"season":2025,"home_id":1,"away_id":2,"tipoff":"2026-01-04T12:00:00Z"}
+        d={"event":e,"history_refs":["2025:1","2025:2"],"engine_access":False}
+        b={"cutoff":self.cutoff,"engine_access":False,"publication":"BLOCKED_RIGHTS_NOT_CONFIRMED","histories":{"2025:1":self.h,"2025:2":self.h},"dossiers":[d]}
+        r=audit_batch(b)
+        self.assertEqual(r["status"],"PASS")
+        item=r["dossiers"][0];digest=item.pop("sha256")
+        self.assertEqual(digest,hashlib.sha256(json.dumps(item,sort_keys=True,separators=(",",":"),allow_nan=False).encode()).hexdigest())
+        d["history_refs"].reverse()
+        self.assertIn("dossier history identity",audit_batch(b)["issues"])
+        d["history_refs"]=[]
+        self.assertIn("dossier history identity",audit_batch(b)["issues"])
