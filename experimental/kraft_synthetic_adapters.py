@@ -1,5 +1,5 @@
 """Descriptive synthetic adapters. No forecasts or sporting recommendations."""
-from d0_contract import validate
+from d0_contract import validate,stamp
 from statistics import mean
 FIELDS={"nba":("points_for","points_against","rebounds","assists"),"tennis":("service_points_won","service_points_played","return_points_won","return_points_played")}
 def build(d):
@@ -21,7 +21,7 @@ def build(d):
                 if w is not None and n is not None and w>n:raise ValueError("denominator")
     for p in participants:
         rows=[o for o in d["observations"] if o["participant"]==p]
-        rows.sort(key=lambda o:(o["event_end"],o["id"]))
+        rows.sort(key=lambda o:(stamp(o["event_end"]),o["id"]))
         for window,rr in (("all",rows),("last5",rows[-5:])):
             metrics=list(fields)
             if sport=="tennis":metrics+=["service_rate","return_rate"]

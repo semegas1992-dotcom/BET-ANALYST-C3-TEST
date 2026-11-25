@@ -15,6 +15,7 @@ def validate(d):
     if not d["observations"]:raise ValueError("empty")
     seen=set()
     for o in d["observations"]:
+        if not isinstance(o["id"],str) or not o["id"].strip():raise ValueError("id")
         if o["id"] in seen:raise ValueError("duplicate")
         seen.add(o["id"])
         if not stamp(o["event_end"])<=stamp(o["available_at"])<=stamp(o["captured_at"])<=cutoff:raise ValueError("temporal leakage")

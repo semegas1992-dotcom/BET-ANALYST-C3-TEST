@@ -1,15 +1,20 @@
 """Synthetic descriptive prototype; not a KRAFT implementation or betting engine."""
-from d0_contract import validate,digest
+from d0_contract import validate,digest,stamp
 from football_demo_audit import audit_side
 from kraft_phase_guard import validate_phase
 from football_qualification_v5 import rejection_reasons
 def analyze(d):
     fingerprint=validate(d)
     if d["sport"]!="football":raise ValueError("sport")
+    for o in d["observations"]:
+        if o["side"] not in ("home","away"):raise ValueError("side")
+        for x,y in (("target_for","shots_for"),("target_against","shots_against")):
+            v,w=o["stats"].get(x),o["stats"].get(y)
+            if v is not None and w is not None and v>w:raise ValueError("target exceeds shots")
     sides={}
     for side in ("home","away"):
         rows=[o for o in d["observations"] if o["side"]==side]
-        rows.sort(key=lambda o:(o["event_end"],o["id"]))
+        rows.sort(key=lambda o:(stamp(o["event_end"]),o["id"]))
         sides[side]={}
         for period,rr in (("advanced_season",rows),("advanced_last5",rows[-5:])):
             fields={}

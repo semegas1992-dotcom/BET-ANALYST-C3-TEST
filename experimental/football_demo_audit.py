@@ -1,7 +1,8 @@
+from d0_contract import stamp
 """Independent descriptive recomputation from synthetic observations."""
 from statistics import mean
 def audit_side(observations,side,reported):
-    rows=sorted((o for o in observations if o["side"]==side),key=lambda o:(o["event_end"],o["id"]),reverse=True)
+    rows=sorted((o for o in observations if o["side"]==side),key=lambda o:(stamp(o["event_end"]),o["id"]),reverse=True)
     issues=[];checks=0
     for period,rr in (("advanced_season",rows),("advanced_last5",rows[:5])):
         for field in ("shots_for","shots_against","target_for","target_against"):

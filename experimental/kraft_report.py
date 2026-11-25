@@ -1,3 +1,4 @@
+from d0_contract import stamp
 """Synthetic structured report, not a sporting prediction."""
 from football_pipeline_demo import analyze
 from kraft_phase_guard import validate_phase
@@ -8,7 +9,7 @@ def build_report(d):
     for side,s in r["facts"].items():
         for period in ("advanced_season","advanced_last5"):
             for field,metric in s[period].items():
-                rows=sorted((o for o in d["observations"] if o["side"]==side),key=lambda o:(o["event_end"],o["id"]))
+                rows=sorted((o for o in d["observations"] if o["side"]==side),key=lambda o:(stamp(o["event_end"]),o["id"]))
                 if period=="advanced_last5":rows=rows[-5:]
                 evidence[f"{side}:{period}:{field}"]={"status":"Contrôlée" if not s["independent_check"]["issues"] else "Provisoire","scope":"synthetic arithmetic only","source":"synthetic_fixture","cutoff":d["cutoff"],"observation_ids":[o["id"] for o in rows if o["stats"].get(field) is not None],"metric":metric}
     missing={"status":"Non recherchée","reason":"synthetic experiment; external collection excluded"}
