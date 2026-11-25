@@ -14,9 +14,9 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(len(r["reference_sha256"]),64)
     def test_other_sports(self):
         for sport in ("nba","tennis"):
-            d=fixture();d["sport"]=sport
-            r=run(d);self.assertIsNone(r["report"])
-            self.assertEqual(r["status"],"ADAPTER_NOT_IMPLEMENTED")
+            from test_kraft_synthetic_adapters import fixture_other
+            r=run(fixture_other(sport));self.assertEqual(len(r["report"]["sections"]),7)
+            self.assertEqual(r["status"],"DESCRIPTIVE_PROTOTYPE")
     def test_reject(self):
         for key,val in (("origin","real"),("engine_access",True),("publication","OPEN"),("Odds",2)):
             d=fixture();d[key]=val

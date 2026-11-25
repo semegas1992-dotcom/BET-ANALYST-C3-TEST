@@ -1,6 +1,7 @@
 """Synthetic-only integration boundary; not a sporting engine."""
 from d0_contract import validate,digest
 from kraft_report import build_report
+from kraft_synthetic_adapters import build as build_other
 from kraft_phase_guard import FORBIDDEN
 from copy import deepcopy
 from pathlib import Path
@@ -19,7 +20,7 @@ def run(d):
     snapshot=deepcopy(d)
     fingerprint=validate(snapshot)
     sport=snapshot["sport"]
-    report=build_report(snapshot) if sport=="football" else None
+    report=build_report(snapshot) if sport=="football" else build_other(snapshot)
     if report is not None:
         guard(report)
         if report["input_sha256"]!=fingerprint or len(report["sections"])!=7:
