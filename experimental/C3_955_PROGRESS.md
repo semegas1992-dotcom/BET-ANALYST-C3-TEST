@@ -1,0 +1,2 @@
+# C3.950–955
+223 tests confirmed run 45556168399. Original ATP/WTA repository web access and connector 2024 CSV fetch returned 404 on 2026-11-25. No real coverage measured. Conservative standard set scores only, historical extended sets and match tiebreaks not supported; rejected rather than inferred. Service/return arithmetic and experimental 5 sample / 80% gate are synthetic only, not KRAFT rules. No timestamps inferred. Engine and publication locked.
