@@ -2,7 +2,7 @@ name: D0 contract synthetic pipeline
 on:
   push:
     branches: [c3-nba-history]
-    paths: ['experimental/d0_contract.py','experimental/football_pipeline_demo.py','experimental/test_d0_pipeline_demo.py','.github/workflows/d0-contract-demo.yml']
+    paths: ['experimental/kraft_report.py','experimental/test_kraft_report.py','experimental/d0_contract.py','experimental/football_pipeline_demo.py','experimental/test_d0_pipeline_demo.py','.github/workflows/d0-contract-demo.yml']
   workflow_dispatch:
 permissions:
   contents: read
