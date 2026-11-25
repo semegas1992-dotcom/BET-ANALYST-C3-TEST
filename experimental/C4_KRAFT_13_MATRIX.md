@@ -50,3 +50,5 @@ TERRAIN feedback: added separate historical fingerprint/current capacity review,
 R01: supplemental market dependency routing with direct subject and potential role links, record IDs and trajectory fingerprint. Separate documentary/roster fields remain NOT_ESTABLISHED; no early lock or change to existing gates. Proposed A/B/C protocol recorded, original C2/C3 audit and independent trials pending. Tests added; execution pending.
 
 R01 consolidation: local Python unittest on manually reproduced routing module passed (1 parameterized test, 3 sports, 9 market cases). Full repository suite not run. Added explicit unverified trigger requirements to dependency links; post-change execution pending. No early lock, no T01 admission.
+
+2026-11-25: ca0da48 integrated scoped uncertainty; 98c2931 T01 manifest validator; f02bd06 targeted regression tests. Local backup unittest rerun: 8 passed. Exact repository full multisport integration not verified. Generic fixtures do not certify sport-specific behavior. R01 experimental; KRAFT V3.0 unchanged; real admission blocked.
