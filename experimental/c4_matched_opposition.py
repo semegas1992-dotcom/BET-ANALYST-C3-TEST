@@ -11,7 +11,7 @@ def contrast(rows, min_n=3):
         if row["sport"] not in ("football","nba","tennis"): raise ValueError("sport")
         side=row["side"]
         if side not in ("A","B"): raise ValueError("side")
-        identity=(side,row["observation_id"])
+        identity=(row["sport"],side,row["observation_id"],row["metric"])
         if identity in seen: raise ValueError("duplicate")
         seen.add(identity)
         value=row["value"]
