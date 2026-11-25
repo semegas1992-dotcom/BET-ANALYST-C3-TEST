@@ -34,3 +34,5 @@ Update: merge 4afa28c failed both workflows (345 tests, one failure). Positive N
 Update: f1f162c both workflows passed. Added 18 fictional market scope families across sports, subject and period checks, threshold nesting and per-trajectory uncertainty propagation. Replay and integer nesting audit; independent contract validation, actual estimates, interaction plausibility and commercial settlement remain open. CI pending; no full action certified.
 
 Update: ddb352b both workflows passed. Added joint mechanism interaction records with evidence and phase triggers, explicit undetermined plausibility and withheld estimates, separate market scope/uncertainty audit and multisport tamper tests. No calibrated opposition effect, no real data admission. CI pending. No full action certified.
+
+Update: 399c7f7 both workflows passed. T01 quarantine protocol and byte integrity/temporal intake checks added; original T01 JSON not received, no admission. User feedback: summary-first presentation, separate sporting and operational conclusions, detailed audit retained. No new opposition-adjusted estimate demonstrated. CI pending; no full action certified.
