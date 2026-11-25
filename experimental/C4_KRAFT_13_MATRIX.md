@@ -20,3 +20,5 @@ Cross-cutting: seven report sections, separate qualitative assessments, actualiz
 Update: b98f998 offline passed; new contextual summaries and dependency gates pending CI. No full action certified. Global conservative gating is not specific causal attribution; no real-data admission.
 
 Update: 3fe7854 both workflows passed. Audit now checks participant and metric completeness and tolerates floating-point rounding. Seven-section synthetic report with stage integrity check added. Complete positive documentary fixtures, specific mechanism dependencies and substantive sequence arguments remain open. No full action certified. New CI pending.
+
+Update: positive fictional dossiers for all three sports populate all E1 topics, observation links, configurations, comparables and supplemental indicators. Positive and negative integrated report tests added; CI pending. Topic coverage is not claim completeness. Specific causal dependencies and substantive sequence reasoning remain open.
