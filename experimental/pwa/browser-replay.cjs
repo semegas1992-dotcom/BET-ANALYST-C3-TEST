@@ -5,13 +5,14 @@ const browser=await chromium.launch({headless:true});
 try{
 const ctx=await browser.newContext({serviceWorkers:"allow",acceptDownloads:true});
 const page=await ctx.newPage();const errors=[];page.on("pageerror",e=>errors.push(e.message));
-const url="http://127.0.0.1:8765/experimental/pwa/index.html";
+const url="http://127.0.0.1:8765/experimental/pwa/";
 await page.goto('http://127.0.0.1:8765/');await page.evaluate(async()=>{await caches.open('bet-analyst-experimental-pwa-v1');await caches.open('production-sentinel')});await page.goto(url);await page.evaluate(()=>navigator.serviceWorker.ready.then(()=>true));await page.reload();await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
 const keys=["BET_ANALYST_C1_HISTORY","BET_ANALYST_C3_1_DRAFT","BET_ANALYST_V1_DRAFT"];
 await page.evaluate(keys=>keys.forEach(k=>localStorage.setItem(k,"sentinel:"+k)),keys);
-assert(await page.evaluate(async()=>{const k=await caches.keys();return !k.includes('bet-analyst-experimental-pwa-v1')&&k.includes('production-sentinel')&&k.includes('bet-analyst-experimental-pwa-v2')}));
+assert(await page.evaluate(async()=>{const k=await caches.keys();return !k.includes('bet-analyst-experimental-pwa-v1')&&k.includes('production-sentinel')&&k.includes('bet-analyst-experimental-pwa-v3')}));
 await ctx.setOffline(true);const response=await page.reload();assert(response.fromServiceWorker());
 assert.equal(await page.evaluate(()=>navigator.onLine),false);
+const alias=await page.goto(url+"index.html");assert(alias.fromServiceWorker());const root=await page.goto(url);assert(root.fromServiceWorker());
 const raw=JSON.stringify({schema:"D0_EXPERIMENTAL_V1",sport:"football",origin:"synthetic",engine_access:false,cutoff:"2026-01-02T00:00:00Z",kickoff:"2026-01-03T00:00:00Z",observations:[{id:"test",source:"synthetic_fixture",event_end:"2026-01-01T00:00:00Z",available_at:"2026-01-01T01:00:00Z",captured_at:"2026-01-01T02:00:00Z"}]});
 const hash=crypto.createHash("sha256").update(raw).digest("hex");
 await page.locator("#file").setInputFiles({name:"fixture.json",mimeType:"application/json",buffer:Buffer.from(raw)});
@@ -25,6 +26,6 @@ await page.locator("#backup").setInputFiles({name:"backup.json",mimeType:"applic
 await page.locator("#backup").setInputFiles({name:"bad.json",mimeType:"application/json",buffer:Buffer.from('{"schema":"bad"}')});await page.locator("#restore").click();await page.waitForFunction(()=>document.querySelector("#result").textContent.includes("refusée"));
 assert.equal(await page.evaluate(()=>PreviewBackup.load(localStorage).length),1);
 assert(await page.evaluate(keys=>keys.every(k=>localStorage.getItem(k)==="sentinel:"+k),keys));assert.deepEqual(errors,[]);
-const result={status:"PASS",browser:browser.version(),cache_cleanup:true,foreign_cache_preserved:true,offline_reload:true,service_worker_response:true,synthetic_import:true,export_restore:true,invalid_restore_refused:true,history_keys_unchanged:keys,android:"NOT_TESTED"};fs.writeFileSync("browser-evidence.json",JSON.stringify(result,null,2));console.log(result);
+const result={status:"PASS",browser:browser.version(),cache_cleanup:true,foreign_cache_preserved:true,root_offline:true,index_alias_offline:true,offline_reload:true,service_worker_response:true,synthetic_import:true,export_restore:true,invalid_restore_refused:true,history_keys_unchanged:keys,android:"NOT_TESTED"};fs.writeFileSync("browser-evidence.json",JSON.stringify(result,null,2));console.log(result);
 }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
