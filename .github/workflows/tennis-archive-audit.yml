@@ -15,8 +15,15 @@ jobs:
           curl --fail --location --retry 2 --max-time 60 https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/83733587353df8a41f2fd4f516147d5aa83f5a8d/atp/atp_matches_2024.csv -o atp.csv
           curl --fail --location --retry 2 --max-time 60 https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/83733587353df8a41f2fd4f516147d5aa83f5a8d/wta/wta_matches_2024.csv -o wta.csv
           python experimental/tennis_archive_audit.py
+          for tour in atp wta; do
+            curl --fail --location --retry 2 --max-time 60 "https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/83733587353df8a41f2fd4f516147d5aa83f5a8d/${tour}/${tour}_matches_2024.csv" -o "${tour}.second.csv"
+            sha256sum "${tour}.csv" "${tour}.second.csv"
+          done
+          python experimental/tennis_archive_verify.py
       - uses: actions/upload-artifact@v4
         with:
           name: tennis-audit
-          path: tennis-audit.json
+          path: |
+            tennis-audit.json
+            tennis-verification.json
           retention-days: 1

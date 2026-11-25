@@ -14,7 +14,7 @@ def run():
         original=list(csv.DictReader(io.StringIO(raw.decode("utf-8-sig"))))
         rejected=Counter()
         for r in parsed["rejected"]:
-            surface=original[r["row"]-2].get("surface") or "unknown"
+            surface=(original[r["row"]-2].get("surface") or "unknown").strip().lower()
             rejected[(surface,r["reason"])]+=1
         accepted=0
         for r in parsed["rows"]:
