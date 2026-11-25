@@ -1,0 +1,2 @@
+# C3.955 technical closure
+Run 45563112745 success; artifact 14998707165 locally verified SHA256 dc91f5f4b37da7225b767faebc97adfab2c98e96272d57e1fb247e6f4c7022fe. Both JSON tour reports identical, verification PASS. Pinned revision 83733587353df8a41f2fd4f516147d5aa83f5a8d. CI double download and hashes matched. ATP 3076 raw / 2908 usable / 168 rejected / 23452 checks; WTA 2689 / 2510 / 179 / 20096. No issues. Technical closure only: no local raw CSV hash, external completeness, historical availability or rights qualification. Engine and publication blocked.

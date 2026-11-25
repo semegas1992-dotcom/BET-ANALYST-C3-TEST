@@ -1,2 +1,1 @@
-# C3.940–959 Tennis — started
-Budget zero; KRAFT V3.0 unchanged. Candidate sources for qualification: ATP/WTA official sites and Jeff Sackmann historical repositories (ATP/WTA). No rights or live availability assumed. Start with synthetic validation; no external collection until source qualification. Next: source inventory, identity, surface, format, retirement, service/return denominators, temporal checks, independent audit.
+C3.956–959 synthetic D0 contract, temporal guard, evidence hashes, sample and independent arithmetic audit implemented. Six tests pending CI. Real archives not admitted. KRAFT unchanged.
