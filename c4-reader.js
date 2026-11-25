@@ -18,6 +18,15 @@ function render(r,el,doc){
  for(const m of q.markets)add('p','Marché non évalué : '+JSON.stringify(m.contract));
  add('p','Données manquantes : '+JSON.stringify(q.missing??null));
  add('p','Limites : '+JSON.stringify(q.limitations??null));
+ const envelopes=r.sections[4].descriptive_envelopes??{};
+ if(Object.keys(envelopes).length){
+   add('h4','Contrastes historiques — descriptifs uniquement');
+   for(const [metric,v] of Object.entries(envelopes)){
+     const direction={POSITIVE:'positive',NEGATIVE:'négative',UNRESOLVED:'non résolue'}[v.direction]??'non renseignée';
+     add('p',metric+' : '+direction+' ; plage '+JSON.stringify(v.envelope)+' ; couverture '+(v.complete===true?'complète':'incomplète'));
+   }
+   add('p','Ces contrastes ne sont ni des prévisions ni des probabilités.');
+ }
  const d=add('details','');add('summary','Analyse approfondie — données déclaratives',d);
  for(const s of r.sections){add('h4',String(s.title??s.number),d);add('pre',JSON.stringify(s,null,2),d)}
 }
