@@ -12,5 +12,6 @@ def build(documented,e2,e3,e4):
         vals=[v for s in eligible for v in (s["contrast"],s["stability"]["minimum"],s["stability"]["maximum"])]
         complete=len(eligible)==len(ss) and documented["coverage"]["included"]==documented["coverage"]["supplied"]
         metrics[metric]={"envelope":[min(vals),max(vals)] if vals else [None,None],"complete":complete,"strata":deepcopy(ss),"direction":"POSITIVE" if complete and vals and min(vals)>0 else "NEGATIVE" if complete and vals and max(vals)<0 else "UNRESOLVED"}
-    routes={k:sorted(set(ref[2] for ref in m["refs"]) & set(metrics)) for k,m in e3["mechanisms"].items() if "refs" in m}
-    return {"documented_sha256":digest(documented),"e2_sha256":digest(e2),"e3_sha256":digest(e3),"e4_sha256":digest(e4),"metrics":metrics,"mechanism_metric_candidates":routes,"forecast":None,"market_decision":"NOT_EVALUATED","qualification":"BLOCKED"}
+    routes={k:sorted({fact["ref"][2] for fact in m["facts"]} & set(metrics)) for k,m in e3["mechanisms"].items()}
+    scenarios={s["id"]:{"metrics":sorted({f for k in s["mechanism_ids"] for f in routes[k]}),"status":s["status"],"predictive_effect":None} for s in e3["scenarios"]}
+    return {"documented_sha256":digest(documented),"e2_sha256":digest(e2),"e3_sha256":digest(e3),"e4_sha256":digest(e4),"metrics":metrics,"mechanism_metric_candidates":routes,"scenario_context":scenarios,"forecast":None,"market_decision":"NOT_EVALUATED","qualification":"BLOCKED"}
