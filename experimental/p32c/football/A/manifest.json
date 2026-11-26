@@ -1,0 +1,14 @@
+{
+  "preview_commit": "f8e62500d628fe897d68f1039d8187d514c96032",
+  "engine_git_blob": "33ccbe39e6de3ef09d187126efc188979182c412",
+  "engine_sha256": "36b6730b639159011654c0dce1237d0ebdb9ba7b3032424e2af0f2557cf7af27",
+  "report_sha256": "30b5b5258c0e19bd1bba6c70c00ea1b320753801c60c303b52958e030b1ef2f4",
+  "d0_sha256": "03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24",
+  "dossier_sha256": "850c9979a73d13e74375098ce5b2e9dc9594615236349ced6ad670c922a2e10a",
+  "browser": "134.0.6998.35",
+  "run_id": "45867539279",
+  "workflow_sha": "d1b366d443507dab358be9fd091ed1943356488c",
+  "artifact_id": 15140613478,
+  "artifact_sha256": "5d5ec2f16d7fe49326684e4fe4062511917286b9ed73698eedc0908e701ddf6a",
+  "archive_source": "CI log raw JSON; independent byte hash verification pending"
+}
