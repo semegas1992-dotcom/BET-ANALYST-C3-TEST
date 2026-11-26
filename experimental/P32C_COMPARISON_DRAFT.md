@@ -7,3 +7,5 @@ Freeze B before comparison. Compare evidence, missing data, scenarios, markets, 
 No real admission; no new grading protocol; use existing comparison rules where applicable. Resolve physical UTM confirmation before formal closure of P3.2-B.
 
 P3.2-B physical UTM reserve resolved by explicit user confirmation. Preparation authorized. Registered dossier IDs: P27C-football, P27C-nba, P27C-tennis. Independent execution and comparison not yet performed.
+
+Activation: P3.2-B physical UTM reserve resolved by explicit user confirmation. P3.2-C authorized; independence must be preserved. No comparison executed yet.
