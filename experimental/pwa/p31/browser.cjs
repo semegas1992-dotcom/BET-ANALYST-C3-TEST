@@ -9,7 +9,7 @@ for(const offline of [false,true]){
  await ctx.setOffline(offline);await page.reload();
  for(const sport of ['football','nba','tennis']){
   await page.selectOption('#sport',sport);await page.click('#load');
-  await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('Rejeu précalculé'));
+  await page.waitForFunction(s=>document.querySelector('#status').textContent.includes('Rejeu précalculé — '+s+' —')&&!document.querySelector('#load').disabled,sport);
   assert(await page.locator('#c4-output').textContent().then(s=>s.includes('Conclusion sportive : non établie')));
   assert.equal(await page.locator('#c4-output details h4').count(),7);
   console.log('P31_BROWSER',sport,offline?'offline':'online','PASS');
