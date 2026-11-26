@@ -24,7 +24,7 @@ def capture(season,cutoff,fetch=None,clock=None,cache_dir=None):
                 except HTTPError as exc:
                     if (exc.code!=429 and not 500<=exc.code<600) or attempt==2: raise
                     time.sleep(60*2**attempt)
-    cache=Path(cache_dir)/("bl1-"+str(season)+".json") if cache_dir else None
+    cache=Path(cache_dir)/("bl1-"+str(season)+"-"+limit.strftime("%Y%m%dT%H%M%SZ")+".json") if cache_dir else None
     if cache and cache.exists():
         saved=json.loads(cache.read_text())
         captured=stamp(saved["captured_at"])
