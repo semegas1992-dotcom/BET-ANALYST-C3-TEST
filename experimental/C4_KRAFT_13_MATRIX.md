@@ -171,3 +171,5 @@ P3.2-A v2: preview 85e347ff83a52bec15137865060e1581dbeb9b10; CI 45848106405 succ
 P3.2-A v2 CLOSED: user explicitly confirms all six physical criteria including three sports, full analysis, original data and offline reload. CI 12/12 and Pages success. Stable preview reference 85e347ff83a52bec15137865060e1581dbeb9b10. P3.2-B authorized, synthetic only, no G0/KRAFT changes.
 
 P3.2-B initial implementation: on-demand Python CLI for three registered frozen synthetic dossiers, reusing replay/run/render and fixture adapter. Parity, repeated execution and rejection tests added. CI pending. No Android runtime integration yet; no real admission, G0/KRAFT/DM unchanged.
+
+P3.2-B.1 verified: CI 45851593870 and 45851593885 each 423/423, four dynamic tests pass. P3.2-B.3 initial loopback-only HTTP bridge and mobile HTML client added, standard-library Python, no paid backend; integration tests pending. Android requires local Python runtime, physical feasibility unconfirmed; existing stable PWA untouched. DM integration deferred per transversal decision; no DM development.
