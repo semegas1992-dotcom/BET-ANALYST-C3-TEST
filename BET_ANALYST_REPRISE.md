@@ -26,3 +26,7 @@ A browser CI 45867539279 success; first run 45867481713 failed on Ubuntu 26.04/P
 
 ## Vigilance stratégique permanente — décision utilisateur du 26/11/2026
 Complément de pilotage, sans modification de G0, KRAFT V3.0, IO V1.0 ni des protocoles. Avant chaque étape importante, examiner valeur ajoutée concrète, nécessité, acquis réutilisables et chemin plus court à fiabilité équivalente. Éviter boucles, validations redondantes et accumulation de jalons sans bénéfice opérationnel. Terminer les comparaisons NBA et Tennis prévues, puis résoudre les écarts significatifs plutôt que multiplier les essais similaires. Recommander explicitement la transition opérationnelle dès que les preuves et contrôles nécessaires sont suffisants, sans attendre la perfection théorique. Aucune modification majeure sans validation humaine, aucune admission réelle non autorisée. Objectif final: application Android fonctionnelle, non expérimentation permanente.
+
+
+## P3.2-C — consolidation multisport 26/11/2026
+CI NBA 45869752788 et Tennis 45869758359 réussies; rapports A et B archivés. D0 commun vérifié par égalité JSON pour les trois sports; entrées auxiliaires non équivalentes. Comparaison descriptive terminée: experimental/p32c/CONSOLIDATION.md. Réserve: recalcul indépendant des octets ZIP et identité exacte des archives NBA/Tennis non démontré; ne pas déclarer clôture intégrité. Prochaine étape: T01 en quarantaine selon protocole existant, admission BLOCKED jusqu'aux contrôles documentaires et revue. Aucun nouveau cycle synthétique ni modification G0/KRAFT.
