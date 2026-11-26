@@ -201,3 +201,5 @@ P3.2-C operational preparation: input-only freeze workflow verifies existing reg
 P32C freeze CI 45863309760 SUCCESS, artifact 15138892921; all 3 registered dossier and D0 digests verified. Other CI 45863309559 and 45863309575 SUCCESS. Football B input-only packet staged; independent session required, A output not retrieved. No comparison yet.
 
 P32C freeze CI 45863309760 SUCCESS; fast 45863309559 SUCCESS; history 45863309575 SUCCESS. Artifact 15138892921, SHA256 34db2df82a1b40b764e4e3f3ddbc62138b4612ecee44334a46200a3a946d4c1f. Football D0 03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24. Single input-only Football B text packet prepared; no A report accessed or generated in this step. Independent session pending.
+
+Migration 26/11: Football B original frozen at experimental/p32c/football/B/P32C_FOOTBALL_B_RAPPORT.txt; 17332 bytes SHA256 4274bc24e931590242bd2bca9f0d9fe144367b8744d10da1624ae0abbc62310b, exact Git blob 7a6f9ce3dcbd99df3c1787a0cbdf939c6427a9ab. Master BET_ANALYST_REPRISE.md. A/B comparison not executed. P32C remains 40% (2/5 milestones).

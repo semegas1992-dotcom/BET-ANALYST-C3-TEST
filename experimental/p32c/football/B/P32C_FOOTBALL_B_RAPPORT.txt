@@ -1,0 +1,324 @@
+BET ANALYST V3 — P3.2-C — Football
+
+Rapport indépendant — Branche B
+
+Dossier P27C-football | KRAFT V3.0 | Pré-match synthétique figé
+
+Source unique :
+https://raw.githubusercontent.com/semegas1992-dotcom/BET-ANALYST-C3-TEST/1c4d998856a4d035a34c9611e45f33d8f7ffd43d/experimental/P32C_FOOTBALL_B_INPUT.txt
+
+1. Synthèse rapide
+
+La confrontation oppose deux participants anonymes, home et away, dans
+un dossier artificiel. La référence temporelle est le 10 janvier 2026 à
+12 h UTC, trois heures avant le coup d’envoi prévu. Les volumes
+disponibles sont parfaitement symétriques : chaque participant produit
+10 tirs dont 4 cadrés et concède 8 tirs dont 3 cadrés par observation.
+Aucun avantage relatif n’est démontré. Cette symétrie documentaire ne
+prouve ni égalité réelle des forces ni match serré. Les trajectoires
+restent non départagées ; aucune direction de score ou de résultat ne
+bénéficie d’un fondement suffisant. La lacune essentielle concerne la
+transformation des volumes de tirs en buts et la comparabilité des
+oppositions. Aucun marché n’est soutenu à ce stade.
+
+2. Repères et données déterminantes
+
+Faits du dossier. Origine synthétique, schéma D0_EXPERIMENTAL_V1, sport
+football ; accès moteur désactivé. Identités, compétition, stade, format
+précis et conditions non renseignés. Les étiquettes home et away
+désignent les côtés de la confrontation, sans certifier le lieu des
+observations antérieures.
+
+Chaque côté dispose de cinq observations, du 1er au 5 janvier 2026.
+Chaque événement se termine à 12 h UTC, est disponible à 13 h puis
+capturé à 14 h le même jour. Les dix identifiants sont distincts. Toutes
+les dates respectent la chronologie
+événement–disponibilité–capture–coupure–coup d’envoi. Les tirs cadrés ne
+dépassent jamais les tirs totaux. Aucune ligne exclue ; aucune valeur
+manquante parmi les quatre indicateurs présents. En revanche, le nombre
+de véritables matchs distincts et leur durée ne sont pas établis au-delà
+des cinq enregistrements par côté.
+
+  -------------------------------------------------------------------------
+  Indicateur            home : somme /       away : somme / Étendue par
+                               moyenne              moyenne côté
+  --------------- -------------------- -------------------- ---------------
+  Tirs produits                50 / 10              50 / 10 10–10
+
+  Tirs concédés                 40 / 8               40 / 8 8–8
+
+  Cadrés produits               20 / 4               20 / 4 4–4
+
+  Cadrés concédés               15 / 3               15 / 3 3–3
+  -------------------------------------------------------------------------
+
+Source interne : home0 à home4 et away0 à away4, lignes 8–149 du
+fichier. Dénominateur : cinq observations renseignées par côté pour
+chaque moyenne. Les cinq lignes de chaque côté contiennent exactement le
+quadruplet (10, 8, 4, 3), dans l’ordre tirs produits, concédés, cadrés
+produits, concédés.
+
+Calculs descriptifs. Différentiel moyen : +2 tirs et +1 cadré par côté.
+Taux de cadrage produit : 20/50 = 40 %. Taux de cadrage adverse concédé
+: 15/40 = 37,5 %. Écart de 2,5 points de pourcentage, identique des deux
+côtés. Ces rapports ne sont pas des taux de conversion en buts. Les
+quatre séries ont une dispersion observée nulle ; retirer une
+observation quelconque laisse les moyennes inchangées (n = 4). Cette
+stabilité est une propriété du jeu artificiel, non une mesure de
+fiabilité prédictive.
+
+Lots documentaires. A (contexte et résultats) : partiel, aucun résultat,
+classement, niveau saisonnier, enjeu ou repos confirmé. B (production et
+concession) : quatre indicateurs entièrement extraits et contrôlés en
+interne ; buts, xG/xGA, qualité et localisation des occasions absents. C
+(participants) : aucune disponibilité, composition, minute, identité,
+rôle ou performance individuelle. Les données absentes ne valent pas
+zéro. Aucune contradiction interne relevée sur les champs présents ;
+aucune confirmation indépendante recherchée conformément au verrou
+expérimental. La collecte du fichier est complète, la couverture
+sportive ne l’est pas.
+
+Empreinte D0 annoncée par le paquet :
+03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24. Cette
+valeur est reprise comme identifiant déclaré, sans prétendre à une
+vérification cryptographique de la sérialisation canonique.
+
+3. Analyse sportive
+
+Forme et dynamique. La fenêtre du 1er au 5 janvier est retenue parce
+qu’elle constitue l’intégralité des références autorisées. Aucun
+changement de volume ni tendance temporelle ne distingue les côtés. Les
+résultats et la qualité des prestations restent inconnus ; aucune
+conclusion sur la forme sportive globale, la fatigue ou le niveau de
+fond n’est possible.
+
+Opposition des forces. Chaque côté a produit 10 tirs face à des
+oppositions non identifiées, tandis que son futur adversaire en a
+concédé 8 dans ses propres références. De même, les 4 cadrés produits
+font face à une référence adverse de 3 cadrés concédés. L’interaction
+suggère deux capacités historiques de production opposées à deux
+résistances documentaires identiques. Elle ne permet pas de déterminer
+laquelle prévaudra. Les différences production/concession ne sont pas
+des écarts de niveau entre home et away, et les séries ne doivent pas
+être additionnées comme si elles provenaient des mêmes rencontres.
+
+Le cadrage indique seulement qu’une fraction des tirs est dirigée vers
+la cible ; il ne mesure ni la dangerosité exacte, ni le placement du
+gardien, ni la finition. Les tirs totaux et cadrés sont imbriqués : ils
+ne constituent pas deux confirmations indépendantes d’une supériorité.
+Aucun mécanisme tactique particulier (pressing, transitions, possession,
+phases arrêtées, défense de surface) n’est identifiable. Les
+configurations et les adversaires comparables ne sont pas documentés.
+Aucun H2H ne peut être reconstruit.
+
+4. Scénarios envisagés
+
+Les trajectoires suivantes sont conditionnelles, non classées et non
+probabilisées. Elles illustrent des mécanismes possibles, sans prétendre
+que leur fréquence est connue.
+
+Maintien d’une production réciproque. Si les volumes passés sont
+transférables et les résistances fonctionnent de manière similaire, les
+deux côtés pourraient disposer d’occasions de tir. La symétrie des
+références est compatible avec cette hypothèse. Objection : elle ne dit
+rien sur la qualité des occasions ni sur les buts. Une différence
+d’efficacité, de configuration ou de réaction au score pourrait rompre
+cette symétrie. Un match ouvert en tirs n’est pas nécessairement riche
+en buts.
+
+Ascendant d’un côté. Si un participant parvient à neutraliser davantage
+la production adverse, crée de meilleures occasions ou convertit mieux,
+un avantage peut apparaître. Ce mécanisme est compatible avec les
+données mais n’est pas attesté ; aucun élément ne désigne home ou away.
+L’adaptation adverse ou un changement d’état du score pourrait réduire
+ou amplifier cet avantage. La conséquence possible est une asymétrie des
+occasions ou des buts, dont l’ampleur reste inconnue.
+
+Production mutuellement freinée. Si les résistances adverses limitent
+les possibilités de tir, le volume pourrait être inférieur aux
+références offensives. Les concessions historiques inférieures aux
+productions rendent cette interrogation pertinente, mais ne démontrent
+pas un mécanisme de neutralisation. Une ouverture du jeu après un
+changement de score pourrait invalider cette trajectoire. Même avec peu
+de tirs, une conversion élevée reste possible.
+
+Ces trajectoires peuvent se succéder au cours d’une même rencontre.
+Aucune hiérarchie n’est défendable ; elles ne constituent pas une
+partition exhaustive des issues.
+
+5. Projection du déroulement
+
+  -----------------------------------------------------------------------
+  Séquence          Projection        Réponse ou        Limite
+                    conditionnelle    bifurcation       
+  ----------------- ----------------- ----------------- -----------------
+  Début             Si les références Une capacité de   Aucun profil de
+                    se transfèrent,   neutralisation    début de match ni
+                    chaque côté peut  différente        composition.
+                    chercher à        pourrait donner   
+                    produire des tirs un ascendant à    
+                    face à une        l’un des côtés.   
+                    résistance                          
+                    comparable sur                      
+                    les chiffres                        
+                    disponibles.                        
+
+  Évolution         Si les occasions  Un premier but    Aucun historique
+                    restent           éventuel pourrait par état du
+                    réciproques, la   modifier les      score.
+                    qualité et la     comportements :   
+                    finition          recherche         
+                    deviennent        d’égalisation ou  
+                    déterminantes     protection de     
+                    pour le score.    l’avantage, sans  
+                                      préjuger des      
+                                      réactions         
+                                      réelles.          
+
+  Fin               Si un écart       Une prise de      Aucune donnée de
+                    existe, les       risque peut       fatigue,
+                    besoins offensifs changer les       remplacement,
+                    peuvent diverger  occasions         séquence ou
+                    ; sans écart, les produites et      efficacité
+                    deux côtés        concédées.        tardive.
+                    peuvent maintenir                   
+                    ou modifier leur                    
+                    approche.                           
+  -----------------------------------------------------------------------
+
+Les seuls repères numériques justifiés sont descriptifs. À titre de
+sensibilité conceptuelle, la production historique de 10 tirs et la
+concession adverse de 8 donnent deux références distinctes ; leur milieu
+arithmétique serait 9, et celui des cadrés 3,5. Ces milieux ne sont pas
+des estimations validées : une pondération égale supposerait une
+comparabilité non établie. Les intervalles entre ces références ne
+constituent pas des bornes prédictives. Aucun total attendu de buts,
+score, minute d’événement ou probabilité n’est calculable de façon
+défendable. Aucune simulation sportive exécutée : modèle adapté absent
+et accès moteur interdit.
+
+6. Marchés et lignes éventuelles
+
+L’examen porte sur la rencontre dans son ensemble, sauf indication de
+période. Le règlement précis n’étant pas fourni, les seuils sont
+examinés au sens arithmétique du nombre de buts de la période
+considérée, sans présumer la disponibilité d’un marché ni le traitement
+d’une prolongation.
+
+  -----------------------------------------------------------------------
+  Famille / événement     Mécanisme et            Statut
+  examiné                 contre-scénario         
+  ----------------------- ----------------------- -----------------------
+  Résultat : victoire     Les volumes symétriques Non retenu
+  home, nul ou victoire   ne départagent pas les  
+  away                    victoires et ne         
+                          démontrent pas le nul ; 
+                          une efficacité          
+                          asymétrique peut        
+                          modifier le résultat.   
+
+  Double chance : home ou Aucun fondement pour    Non retenu
+  nul, away ou nul,       privilégier une         
+  victoire de l’un des    combinaison d’issues ;  
+  deux                    la protection contre    
+                          une issue ne remplace   
+                          pas une preuve          
+                          sportive.               
+
+  Handicap de buts,       Exige une lecture de    Non retenu
+  notamment ±0,5 ou ±1,5  l’écart final ;         
+                          symétrie des tirs       
+                          compatible avec de      
+                          multiples écarts de     
+                          buts.                   
+
+  Total de buts du match, Production réciproque   Exploratoire, aucune
+  plus/moins de 1,5 et    possible, mais          ligne retenue
+  2,5                     conversion et qualité   
+                          inconnues ; volume      
+                          élevé avec peu de buts  
+                          ou volume faible avec   
+                          plusieurs buts          
+                          possibles.              
+
+  Buts par équipe : au    Les cadrés attestent un Exploratoire, aucune
+  moins un but, ou au     volume historique, pas  direction retenue
+  moins deux              une capacité quantifiée 
+                          à marquer contre cet    
+                          adversaire. Une         
+                          neutralisation ou une   
+                          finition faible peut    
+                          empêcher le             
+                          franchissement.         
+
+  Les deux équipes        Suppose une lecture     Exploratoire, aucune
+  marquent : oui/non      conjointe de deux       direction retenue
+                          productions de buts.    
+                          Une équipe peut rester  
+                          muette malgré des tirs, 
+                          ou marquer malgré peu   
+                          de tirs.                
+
+  Marchés de première ou  Absence de répartition  Non retenu
+  seconde période :       temporelle ; aucune     
+  résultat ou buts        base pour placer la     
+                          production ou les buts  
+                          dans une période.       
+
+  Buteur ou passeur       Identités, rôles,       Non retenu
+                          minutes, volumes        
+                          individuels et création 
+                          absents.                
+  -----------------------------------------------------------------------
+
+Comparaison des seuils. Plus de 1,5 exige au moins deux buts, plus de
+2,5 au moins trois ; moins de 1,5 admet au plus un but, moins de 2,5 au
+plus deux. L’inclusion logique des événements ne prouve pas qu’une ligne
+soit suffisamment soutenue. L’écart entre les lignes dépend de la
+possibilité d’exactement deux buts, non quantifiable ici. Pour les
+totaux par équipe, passer d’au moins un à au moins deux buts renforce
+également l’exigence sans fournir de preuve nouvelle. Aucun seuil ne
+peut être défendu par une distribution de buts ou une estimation
+calibrée.
+
+Les totaux de buts et les deux équipes marquent sont les pistes les plus
+directement reliées à la production réciproque, mais le lien reste
+indirect et insuffisant. Les marchés de résultat et d’écart demandent en
+outre une différenciation des côtés ; les marchés de période et
+individuels ajoutent des dépendances non renseignées. Les deux équipes
+marquent implique au moins deux buts au total, mais l’inverse est faux.
+Les buts par équipe contribuent au total du match ; ces marchés ne sont
+donc pas des confirmations indépendantes. Les marchés exclus par KRAFT
+(corners, cartons, tirs et cadrés individuels) ne sont pas développés.
+
+7. Avis sportif final
+
+AUCUN MARCHÉ RETENU — NO BET À CE STADE.
+
+La lecture défendable se limite à une symétrie des quatre indicateurs
+historiques disponibles et à l’absence d’avantage relatif démontré. Elle
+ne permet pas de prédire un match équilibré, fermé, ouvert, ni un
+vainqueur. Les pistes liées aux buts demeurent exploratoires et ne
+constituent pas des sélections.
+
+-   Qualité des données : cohérence interne satisfaisante pour les
+    quatre champs présents, mais couverture sportive faible et
+    provenance exclusivement synthétique.
+-   Solidité de la lecture sportive : bonne pour le constat descriptif
+    de symétrie, faible pour toute projection de la confrontation.
+-   Solidité des arguments pour les marchés : insuffisante ; aucun seuil
+    ni direction soutenu.
+
+Les informations susceptibles de changer l’avis seraient des buts
+produits et concédés sur des références comparables, la qualité des
+occasions, le niveau des oppositions, les configurations et les données
+par période ou individuelles selon le marché. Elles ne doivent pas être
+recherchées dans le cadre de cet essai figé.
+
+Travail accompli : extraction des dix observations, contrôle de
+cohérence temporelle et numérique, calculs descriptifs et sensibilité,
+opposition, scénarios, projection conditionnelle et examen des familles
+autorisées. Aucune autre source sportive, cote, résultat, rapport de
+branche A ou comparaison interbranche consulté. Aucun modèle externe
+utilisé. Le rapport est destiné à être conservé dans cet état avant
+toute comparaison ultérieure.
