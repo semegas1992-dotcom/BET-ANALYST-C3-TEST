@@ -169,3 +169,5 @@ P3.2-A v2: user authorized revised UX. Preview commit 85e347ff83a52bec1513786506
 P3.2-A v2: preview 85e347ff83a52bec15137865060e1581dbeb9b10; CI 45848106405 success 12/12, Pages 45848104022 success. User feedback: 'Là c’est mieux clairement après avec l’utilisation on pour améliorer je pense.' All six physical checklist items explicitly unconfirmed. Positive UX direction, not full acceptance. Preserve immutable preview commit as technical reference; independent stable archive deferred until physical acceptance. P3.2-A OPEN; P3.2-B NOT STARTED. G0/KRAFT unchanged.
 
 P3.2-A v2 CLOSED: user explicitly confirms all six physical criteria including three sports, full analysis, original data and offline reload. CI 12/12 and Pages success. Stable preview reference 85e347ff83a52bec15137865060e1581dbeb9b10. P3.2-B authorized, synthetic only, no G0/KRAFT changes.
+
+P3.2-B initial implementation: on-demand Python CLI for three registered frozen synthetic dossiers, reusing replay/run/render and fixture adapter. Parity, repeated execution and rejection tests added. CI pending. No Android runtime integration yet; no real admission, G0/KRAFT/DM unchanged.
