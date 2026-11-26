@@ -5,9 +5,11 @@ from c4_trajectories import audit as trajectory_audit
 from c4_e4 import generate
 from c4_market_scope import evaluate, audit as scope_audit
 
-def compare(d,event,dependencies,trajectories,contract,packet,expected_hash,threshold):
+def _compare(d,event,dependencies,trajectories,contract,packet,expected_hash,threshold):
     def result(state):
         return dict(state=state,engine_access=False,publication="BLOCKED",qualification="BLOCKED",predictive_validity_verified=False)
+    if not dependencies.get("mechanisms") or trajectories.get("engine_access") is not False or trajectories.get("publication")!="BLOCKED" or trajectories.get("qualification")!="BLOCKED":
+        return result("REJECT")
     if d.get("origin")!="synthetic" or event.get("origin")!="synthetic" or d.get("sport")!="nba" or event.get("sport")!="nba":
         return result("REJECT")
     if packet.get("input_sha256")!=digest(d) or packet.get("event_sha256")!=digest(event) or packet.get("trajectory_sha256")!=digest(trajectories) or digest(packet)!=expected_hash:
@@ -43,3 +45,11 @@ def compare(d,event,dependencies,trajectories,contract,packet,expected_hash,thre
         lo,hi=bounds
         states.append("ABOVE" if lo>threshold else "BELOW" if hi<threshold else "UNRESOLVED")
     return result(states[0] if len(set(states))==1 and states else "UNRESOLVED")
+
+
+def compare(d,event,dependencies,trajectories,contract,packet,expected_hash,threshold):
+    """Fail closed on malformed experimental inputs; never grant access."""
+    try:
+        return _compare(d,event,dependencies,trajectories,contract,packet,expected_hash,threshold)
+    except (ValueError,TypeError,KeyError,AttributeError,OverflowError,IndexError):
+        return dict(state="REJECT",engine_access=False,publication="BLOCKED",qualification="BLOCKED",predictive_validity_verified=False)

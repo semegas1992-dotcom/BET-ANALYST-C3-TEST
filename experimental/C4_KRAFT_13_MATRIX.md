@@ -129,3 +129,5 @@ P2.4-B: isolated conditional NBA team points contract and P01-P09 unittest publi
 P2.4-C: both CI failed (45800760544, 45800760509), 413 tests each, nine P24 errors before classification. Traceback exclusion rationale: E4 atypical_ids requires dict, not list. Corrected both new callers only; oracle unchanged. Retest pending.
 
 P2.4-C: corrected commit b6d7b94 fast offline run 45827803640 job 139936366167 verified from logs: 413 tests OK in 2.262s; P01-P09 all expected=actual (ABOVE, BELOW, UNRESOLVED, ABSTENTION, UNRESOLVED, REJECT, REJECT, REJECT, ABSTENTION). Synthetic regression checkpoint passed; no predictive qualification. External hash trust, event identity and broader malformed input robustness remain to be independently tested. No runtime change in this consolidation. Zero spend.
+
+P2.5-B: run 45828587129 verified 414 tests, 9/13 adversarial cases conform, 2 failures (gate, empty mechanisms), 2 errors (bad source, null packet). Fail-closed wrapper and mandatory trajectory gates/nonempty mechanisms added. Frozen tests unchanged; retest pending. No predictive qualification; zero spend.
