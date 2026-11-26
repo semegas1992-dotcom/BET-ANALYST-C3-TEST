@@ -74,3 +74,7 @@ Lecteur 215dda3 : recherche sans accents, filtre jour Europe/Paris, tri chronolo
 
 ### Ergonomie mobile — validation CI et preview
 Captures utilisateur 26/11/2026 20:31–20:32 : OpenLiga reader tests #5 (8b66a6f), PWA Chromium #13 et NBA fast offline #201 (9bf20ad) verts. Run intermédiaire #4 rouge; journaux détaillés et cause exacte non vérifiés. Preview isolée actualisée : lecteur d7adcbc, cache v6 7e0f83c. Déploiement Pages et ergonomie physique nouvelle version non confirmés. Aucun transfert d'archive privée ni jeton; quarantaine inchangée. Budget autorisé 0 EUR.
+
+
+### Clôture ergonomie Android V6 — 26/11/2026
+Captures utilisateur 20:37 : preview V6 accessible après URL versionnée, import 216 rencontres, pagination 1/11, recherche G donnant 151 rencontres et 8 pages, dates françaises et heure Europe/Paris, quarantaine maintenue. Filtre date visible mais utilisation physique et navigation entre pages non démontrées; CI verte selon captures précédentes. Champ date sans libellé visible : amélioration mineure possible. Clôture ergonomique sur périmètre observé et CI; application principale non remplacée, aucune admission moteur. Aucun nouveau test physique requis.
