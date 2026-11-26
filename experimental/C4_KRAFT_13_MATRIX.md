@@ -197,3 +197,5 @@ P3.2-B CLOSED: user explicitly confirmed physical reload in airplane mode after 
 P3.2-B CLOSED: user explicitly confirmed corrected tracked URL reload in airplane mode, followed instructions step by step. Prior screenshots confirm NBA/Tennis completed offline; football previously confirmed. Public check 45861881185 and Pages 45861880711 passed. Snapshot f8e62500d628fe897d68f1039d8187d514c96032 retained. P3.2-C authorized, independent comparison pending; no real admission.
 
 P3.2-C operational preparation: input-only freeze workflow verifies existing registry pin, each registered dossier digest and D0 contract, records KRAFT file hash and application commit. Branch B packets exclude full dossier payload and A output. No report generated. Isolation procedural: separate fresh conversation for B, freeze B before A retrieval/comparison; public repository is not access-controlled isolation. CI pending.
+
+P32C freeze CI 45863309760 SUCCESS, artifact 15138892921; all 3 registered dossier and D0 digests verified. Other CI 45863309559 and 45863309575 SUCCESS. Football B input-only packet staged; independent session required, A output not retrieved. No comparison yet.

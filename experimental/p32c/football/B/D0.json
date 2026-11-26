@@ -1,0 +1,150 @@
+{
+  "cutoff": "2026-01-10T12:00:00Z",
+  "engine_access": false,
+  "kickoff": "2026-01-10T15:00:00Z",
+  "observations": [
+    {
+      "available_at": "2026-01-01T13:00:00Z",
+      "captured_at": "2026-01-01T14:00:00Z",
+      "event_end": "2026-01-01T12:00:00Z",
+      "id": "home0",
+      "side": "home",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-02T13:00:00Z",
+      "captured_at": "2026-01-02T14:00:00Z",
+      "event_end": "2026-01-02T12:00:00Z",
+      "id": "home1",
+      "side": "home",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-03T13:00:00Z",
+      "captured_at": "2026-01-03T14:00:00Z",
+      "event_end": "2026-01-03T12:00:00Z",
+      "id": "home2",
+      "side": "home",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-04T13:00:00Z",
+      "captured_at": "2026-01-04T14:00:00Z",
+      "event_end": "2026-01-04T12:00:00Z",
+      "id": "home3",
+      "side": "home",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-05T13:00:00Z",
+      "captured_at": "2026-01-05T14:00:00Z",
+      "event_end": "2026-01-05T12:00:00Z",
+      "id": "home4",
+      "side": "home",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-01T13:00:00Z",
+      "captured_at": "2026-01-01T14:00:00Z",
+      "event_end": "2026-01-01T12:00:00Z",
+      "id": "away0",
+      "side": "away",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-02T13:00:00Z",
+      "captured_at": "2026-01-02T14:00:00Z",
+      "event_end": "2026-01-02T12:00:00Z",
+      "id": "away1",
+      "side": "away",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-03T13:00:00Z",
+      "captured_at": "2026-01-03T14:00:00Z",
+      "event_end": "2026-01-03T12:00:00Z",
+      "id": "away2",
+      "side": "away",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-04T13:00:00Z",
+      "captured_at": "2026-01-04T14:00:00Z",
+      "event_end": "2026-01-04T12:00:00Z",
+      "id": "away3",
+      "side": "away",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    },
+    {
+      "available_at": "2026-01-05T13:00:00Z",
+      "captured_at": "2026-01-05T14:00:00Z",
+      "event_end": "2026-01-05T12:00:00Z",
+      "id": "away4",
+      "side": "away",
+      "source": "synthetic_fixture",
+      "stats": {
+        "shots_against": 8,
+        "shots_for": 10,
+        "target_against": 3,
+        "target_for": 4
+      }
+    }
+  ],
+  "origin": "synthetic",
+  "schema": "D0_EXPERIMENTAL_V1",
+  "sport": "football"
+}
