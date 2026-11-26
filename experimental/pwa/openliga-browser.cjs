@@ -1,0 +1,31 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+const {createHash}=require('node:crypto');
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{
+ const context=await browser.newContext();
+ const page=await context.newPage();
+ await page.goto('http://127.0.0.1:8765/index.html');
+ await page.evaluate(()=>navigator.serviceWorker.ready);
+ await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
+ const d={schema:'OPENLIGA_SELECTIVE_V1',source:'OpenLigaDB',license:'ODbL-1.0',original_retained:false,engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',source_sha256:'a'.repeat(64),captured_at:'2026-01-01T00:00:00Z',cutoff:'2026-01-01T01:00:00Z',matches:[{id:1,kickoff:'2026-01-02T00:00:00Z',home:'Equipe A',away:'Equipe B'}]};
+ const bytes=Buffer.from(JSON.stringify(d)),hash=createHash('sha256').update(bytes).digest('hex');
+ await context.setOffline(true);
+ await page.reload();
+ await page.locator('#ol-file').setInputFiles({name:'calendar.json',mimeType:'application/json',buffer:bytes});
+ await page.locator('#ol-hash').fill(hash);
+ await page.locator('#ol-read').click();
+ await page.waitForFunction(()=>document.querySelector('#ol-output').textContent.includes('Equipe A'));
+ assert.match(await page.locator('#ol-output').innerText(),/aucune admission/);
+ await page.locator('#ol-hash').fill('0'.repeat(64));
+ await page.locator('#ol-read').click();
+ await page.waitForFunction(()=>document.querySelector('#ol-output').textContent.includes('Import refusé'));
+ await page.locator('#ol-clear').click();
+ assert.equal(await page.locator('#ol-output').innerText(),'');
+ assert.equal(await page.locator('#ol-file').inputValue(),'');
+ assert.equal(await page.locator('#c4-file').count(),1);
+ assert.equal(await page.locator('#c3-reader').count(),1);
+ console.log('OpenLiga offline import, tamper refusal, clear and existing reader presence: PASS');
+ }finally{await browser.close()}
+})().catch(e=>{console.error(e);process.exitCode=1});
