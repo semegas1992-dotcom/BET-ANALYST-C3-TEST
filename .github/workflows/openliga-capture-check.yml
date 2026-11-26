@@ -1,0 +1,13 @@
+name: OpenLiga capture checks
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/openliga_capture.py','experimental/test_openliga_capture.py','.github/workflows/openliga-capture-check.yml']
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m unittest -v test_openliga_capture
+        working-directory: experimental
