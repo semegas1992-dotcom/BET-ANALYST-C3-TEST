@@ -58,3 +58,7 @@ Run privé 45880453678 réussi, 216 rencontres, archive sélective durable. SHA-
 
 ### Validation CI du lecteur OpenLigaDB — 26/11/2026
 Run 45880909910 : échec initial du bootstrap WebCrypto Node 22 (aucun contrôle fonctionnel exécuté). Correctif 08cc191 sans modification des assertions. Run 45881795145, job 140122668314 : SUCCESS, 10 tests réussis, 0 échec. Jalon 6 validé au niveau des tests unitaires et déclaration du cache v5; validation navigateur hors ligne, Android physique et non-régression globale restent à confirmer. Jalon 5 sélectif confirmé. Aucune admission moteur, aucune publication de données privées. Pas de clôture globale anticipée.
+
+
+### Validation navigateur OpenLigaDB
+Run 45881969775, job 140123245714 : SUCCESS. Chromium 141.0.7390.37; replay PWA PASS (cache, offline root/index/reload, export/restore, invalid restore refused, history keys unchanged); lecteur OpenLiga PASS (import synthétique hors ligne, empreinte incorrecte refusée, effacement, présence lecteurs C3/C4). Artefact replay 15147686247, rétention 14 jours. Android physique NOT_TESTED. Jalon 6 validé en CI, clôture physique et mise à disposition de la version testable restent à confirmer. Aucun accès moteur ni publication de données privées.
