@@ -1,0 +1,17 @@
+name: P32C freeze isolated inputs
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/p32c_prepare.py','.github/workflows/p32c-prepare.yml']
+permissions:
+  contents: read
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python experimental/p32c_prepare.py /tmp/p32c
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p32c-input-only
+          path: /tmp/p32c
