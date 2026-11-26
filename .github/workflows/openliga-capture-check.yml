@@ -2,7 +2,7 @@ name: OpenLiga capture checks
 on:
   push:
     branches: [c3-nba-history]
-    paths: ['experimental/openliga_capture.py','experimental/test_openliga_capture.py','c3-openliga-adapter.js','c3-5-snapshot-builder.js','.github/workflows/openliga-capture-check.yml']
+    paths: ['experimental/openliga_capture.py','experimental/test_openliga_capture.py','c3-openliga-adapter.js','.github/workflows/openliga-capture-check.yml']
   workflow_dispatch:
 jobs:
   check:
@@ -11,4 +11,41 @@ jobs:
       - uses: actions/checkout@v4
       - run: python -m unittest -v test_openliga_capture
         working-directory: experimental
-      - run: node --experimental-default-type=module --input-type=module -e "import {openLigaSnapshot} from './c3-openliga-adapter.js'; import assert from 'node:assert/strict'; const r={source:'OpenLigaDB',engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',cutoff:'2026-11-27T00:00:00Z',captured_at:'2026-11-26T00:00:00Z'}; const s=openLigaSnapshot([],r); assert.equal(s.engine_access,false); assert.equal(s.provider,'OpenLigaDB'); assert.throws(()=>openLigaSnapshot([],{...r,engine_access:true}));"
+      - run: |
+          node --experimental-default-type=module --input-type=module <<'JS'
+          import {openLigaSnapshot} from './c3-openliga-adapter.js';
+          import assert from 'node:assert/strict';
+          import {createHash} from 'node:crypto';
+          const raw=Buffer.from('[]');
+          const r={source:'OpenLigaDB',engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',cutoff:'2026-11-27T00:00:00Z',captured_at:'2026-11-26T00:00:00Z',sha256:createHash('sha256').update(raw).digest('hex')};
+          assert.equal((await openLigaSnapshot(raw,r)).engine_access,false);
+          await assert.rejects(openLigaSnapshot(Buffer.from('[1]'),r),/SOURCE_HASH_MISMATCH/);
+          await assert.rejects(openLigaSnapshot(raw,{...r,engine_access:true}));
+          JS
+      - name: Prospective real capture
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          OPENLIGA_USER_AGENT: BET-ANALYST/3 (https://github.com/semegas1992-dotcom/BET-ANALYST-C3-TEST)
+        run: |
+          mkdir -p /tmp/openliga-private
+          PYTHONPATH=experimental python - <<'PY'
+          from openliga_capture import capture
+          from datetime import datetime,timezone,timedelta
+          import json,pathlib
+          now=datetime.now(timezone.utc)
+          cutoff=(now+timedelta(minutes=10)).isoformat()
+          raw,r=capture(now.year if now.month>=7 else now.year-1,cutoff,cache_dir='/tmp/openliga-private/cache')
+          p=pathlib.Path('/tmp/openliga-private')
+          (p/'raw.json').write_bytes(raw)
+          (p/'receipt.json').write_text(json.dumps(r))
+          print(json.dumps({'sha256':r['sha256'],'cutoff':cutoff,'captured_at':r['captured_at'],'upcoming_count':len(r['upcoming']),'quarantine':r['quarantine']}))
+          PY
+          node --experimental-default-type=module --input-type=module <<'JS'
+          import {readFileSync} from 'node:fs';
+          import {openLigaSnapshot} from './c3-openliga-adapter.js';
+          import {createHash} from 'node:crypto';
+          const p='/tmp/openliga-private/';
+          const s=await openLigaSnapshot(readFileSync(p+'raw.json'),JSON.parse(readFileSync(p+'receipt.json')));
+          console.log(JSON.stringify({snapshot_sha256:createHash('sha256').update(JSON.stringify(s)).digest('hex'),source_sha256:s.source_sha256,count:s.matches.length,engine_access:s.engine_access,publication:s.publication,qualification:s.qualification}));
+          if(!s.matches.length)throw Error('NO_FUTURE_FIXTURES');
+          JS
