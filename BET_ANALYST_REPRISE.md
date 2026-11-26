@@ -82,3 +82,7 @@ Captures utilisateur 20:37 : preview V6 accessible après URL versionnée, impor
 
 ### Import simplifié expérimental
 Lecteur 4c4c735 et tests ed6f9f8 : paquet OPENLIGA_BUNDLE_V1 avec texte original sélectif et SHA interne, contrôle de cohérence uniquement, origine non authentifiée explicitement affichée. Import historique avec empreinte externe conservé. Workflow privé produit le paquet lors d'une capture manuelle autorisée; aucun calendrier ni jeton public. CI et exécution privée non vérifiées, preview non publiée, automatisation périodique non activée. G0/KRAFT inchangés, budget autorisé 0 EUR.
+
+
+### Paquet permanent — validation 26/11/2026
+Workflow privé #2 vert selon capture utilisateur; lecteur #7 vert commit ed6f9f8 selon capture. Fichier latest/calendar.bundle.json relu depuis dépôt privé, SHA-256 recalculé indépendamment sur texte UTF-8 sélectif : 841bf7058f01823e2444c5e9ca3d00371dc1a489feab040648e46916734efbad, concordance exacte, 216 rencontres, engine_access=false, publication=BLOCKED, qualification=BLOCKED. Empreinte interne non authentifiante; original intégral non conservé. PREVIEW lecteur e83ff24, cache 0c49c50 publiés; déploiement Pages et tests navigateur du paquet V7 restent à confirmer ensemble. Aucune nouvelle collecte, aucun jeton ou donnée privée publié. Budget autorisé 0 EUR; G0/KRAFT inchangés.
