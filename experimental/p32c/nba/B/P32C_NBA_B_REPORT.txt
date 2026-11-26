@@ -1,0 +1,74 @@
+BET ANALYST V3 — P3.2-C — NBA — Branche B indépendante
+Dossier P27C-nba | Rapport figé | KRAFT V3.0
+Source unique : https://raw.githubusercontent.com/semegas1992-dotcom/BET-ANALYST-C3-TEST/f4c8bfcc08fafe197bb9eaea880678e1db0bf284/experimental/P32C_NBA_B_INPUT.txt
+
+1. SYNTHÈSE RAPIDE
+Opposition synthétique A–B, étudiée en mode dossier historique figé au 2 janvier 2026 à 00:00 UTC, avant le début prévu le 3 janvier à 00:00 UTC. Les deux participants présentent exactement les mêmes valeurs disponibles : 100 points produits, 90 concédés. Aucun avantage relatif n'est démontré. Cette symétrie documentaire ne prouve ni égalité des forces réelles ni faible écart final. Les trajectoires restent non départagées ; aucun score prévisionnel ni marché suffisamment étayé. La fragilité centrale est l'absence de série, de possessions et de contexte d'opposition.
+
+2. REPÈRES ET DONNÉES DÉTERMINANTES
+Source : D0, lignes 3–41 du fichier unique. Schéma D0_EXPERIMENTAL_V1 ; sport nba ; origine synthetic ; engine_access=false. Les participants sont des identifiants anonymes, non des franchises identifiées. Lieu, domicile, compétition précise, format effectif et effectifs non renseignés. Le statut pré-match est celui de la coupure expérimentale, non une affirmation sur un événement réel.
+
+Contrôle temporel commun aux deux observations (UTC) :
+Fin de l'événement référencé : 01/01/2026 00:00
+Disponibilité : 01/01/2026 01:00
+Capture : 01/01/2026 02:00
+Coupure : 02/01/2026 00:00
+Début prévu : 03/01/2026 00:00
+Ordre chronologique compatible ; capture 22 heures avant la coupure ; coupure 24 heures avant le début prévu. Aucune ligne exclue. Ces dates ne garantissent pas le repos effectif des joueurs.
+Intégrité : SHA256 recalculé sur le D0 retranscrit en JSON compact, clés triées, UTF-8 : 41a8ea8fcc0a476152f80ec8a8397c40cdced39ed739d02a65ce0b83462b1e06. Identique à l'empreinte annoncée.
+
+Indicateur                         A          B
+Observations renseignées           1          1
+Points produits                    100        100
+Points concédés                    90         90
+Différentiel calculé               +10        +10
+Somme produite + concédée          190        190
+
+Les deux dernières lignes sont des calculs descriptifs : 100−90 et 100+90. Les écarts A moins B sont nuls pour chaque indicateur. Un enregistrement par participant ne garantit pas un match complet ni une fenêtre historique représentative ; la période d'agrégation n'est pas définie. Aucun adversaire de référence identifié. Impossible de savoir si les observations sont indépendantes. Aucune dispersion empirique exploitable.
+
+Lot contexte : identité synthétique et chronologie contrôlées ; classement, calendrier, enjeu, domicile, niveau adverse et forme absents.
+Lot production/concession : quatre valeurs contrôlées dans le D0 ; possessions, tirs, efficacité, rebonds et pertes de balle absents.
+Lot configurations : joueurs, cinq, banc, rotations, minutes, usage et rapport de blessures absents. Aucun statut de disponibilité déductible.
+Collecte interne complète pour les champs fournis, couverture sportive partielle. Les compléments externes sont interdits par la mission, et non déclarés techniquement inaccessibles. Pas de contradiction interne relevée ; aucune confirmation indépendante revendiquée.
+
+3. ANALYSE SPORTIVE
+Chaque participant présente une production supérieure de dix points à sa concession sur son unique ligne. Ce constat est favorable au bilan descriptif individuel, mais il ne permet pas de transposer un avantage de dix points à la confrontation. En particulier, les deux différentiels positifs ne sont pas les marges opposées d'un même match A–B. Il ne faut pas reconstruire un H2H à partir de ces lignes.
+Opposition : la production de A (100) rencontre une référence de concession de B (90), et réciproquement. Les références présentent donc la même tension de dix points dans les deux directions. Sans qualité des adversaires, aucune raison de privilégier la production plutôt que la résistance. Cette symétrie limite l'identification d'un favori ; elle ne mesure pas la probabilité de victoire.
+L'efficacité offensive et défensive par 100 possessions n'est pas calculable. Les valeurs brutes ne distinguent pas rythme, volume d'occasions ou réussite. Les profils de tir, création, transition, rebond, pertes de balle et protection du panier ne sont pas documentés. Aucun style ni mécanisme tactique propre à A ou B ne peut être attribué. La forme récente, la régularité, le niveau de fond, les confrontations directes et les adversaires comparables restent indéterminés. Aucun test de retrait d'une observation atypique n'est informatif : retirer l'unique ligne supprime toute référence pour le participant.
+
+4. SCÉNARIOS ENVISAGÉS
+Les trajectoires suivantes sont des hypothèses de lecture, non des prédictions. Elles ne sont ni exclusives ni exhaustives ; aucune pondération n'est calculée.
+
+Symétrie maintenue : si les conditions de production et de résistance sont comparables et se transfèrent à cette opposition, aucun avantage durable ne se dégage nécessairement. Une opposition longtemps disputée est possible. Argument : identité des valeurs brutes. Objection : elles ne renseignent ni la dispersion ni les configurations. Une différence de rythme, d'efficacité ou de rotation pourrait rompre cette trajectoire ; l'écart final demeure inconnu.
+
+Avantage unilatéral (A ou B, variantes symétriques) : si l'un impose une meilleure efficacité ou davantage de possessions utiles, il peut créer un écart. L'autre pourrait le réduire par des ajustements, dont la nature n'est pas documentée. Les marges descriptives positives montrent seulement que chacun a une référence de production supérieure à sa concession. Aucune preuve ne désigne le bénéficiaire ni l'ampleur de l'écart. Une configuration de joueurs ou une différence de niveau adverse pourrait départager les variantes.
+
+Variation de production collective : si l'opposition favorise les deux attaques ou accélère le rythme, le total peut monter ; si les défenses limitent la production ou si le rythme baisse, il peut descendre. Les références 100 et 90 rendent ces deux mécanismes intelligibles sans établir leur occurrence. Cette dimension peut coexister avec chacune des trajectoires d'écart. Les possessions et l'efficacité seraient nécessaires pour la départager.
+
+Aucun scénario dominant : le D0 ne permet ni d'établir une rencontre serrée, ni de privilégier un large écart, ni de qualifier le total attendu de haut ou bas.
+
+5. PROJECTION DU DÉROULEMENT
+Départ : cinq initiaux inconnus. Aucun avantage initial documenté. Si un participant prend l'ascendant en production ou en contrôle des possessions, l'autre devra compenser ; aucune direction ni score de premier quart-temps défendable.
+Premières rotations et ajustements : la conservation ou la disparition d'un éventuel avantage dépend des configurations de banc et des réponses tactiques. Ces variables sont absentes. Une bascule est possible dans les deux sens, sans attribution ni chiffrage par période.
+Fin : un écart faible pourrait maintenir l'enjeu des dernières possessions ; un écart important pourrait modifier l'utilisation des joueurs. Rien ne permet de retenir l'un ou l'autre, ni d'anticiper prolongation, fautes ou rythme final. Pas de chronologie chiffrée.
+
+Contrôle de sensibilité arithmétique (hypothèses non validées, pas une projection calibrée) : pour examiner les références opposées, soit w un poids commun donné à la production, entre 0 et 1. Pour chaque équipe, référence illustrative = w×100+(1−w)×90 = 90+10w. Pour w=0, 0,5 et 1, les références individuelles sont respectivement 90, 95 et 100, et leurs sommes 180, 190 et 200. Le poids intermédiaire est un choix analytique arbitraire, non appris sur des données. L'écart nul résulte mécaniquement de l'hypothèse de poids commun. Si les poids diffèrent, la différence illustrative devient 10(wA−wB) ; elle peut changer de signe. Cette construction ne borne pas les scores réels et n'intègre ni rythme, ni qualité adverse, ni dispersion. Les sommes ne constituent ni intervalle probabiliste ni fourchette prévisionnelle. Aucun modèle de simulation n'est disponible dans le dossier ; aucune simulation ni probabilité produite.
+
+6. MARCHÉS ET LIGNES ÉVENTUELLES
+Résultat (vainqueur du match) : non retenu. L'avantage unilatéral est possible dans les deux directions ; aucun facteur distinctif établi. Impossible de conclure à une chance égale de victoire.
+Handicaps (écart final ajusté par un seuil) : non retenus. Le différentiel de +10 de chaque ligne n'est pas une marge attendue contre l'autre. Aucun seuil ni protection d'écart défendable, y compris un handicap positif, faute de dispersion et de distribution des écarts.
+Total du match : exploratoire uniquement. Il traduit la production conjointe, mieux reliée aux quatre chiffres que les marchés individuels, mais dépend du rythme et de l'efficacité. Comparaison de seuils tests fictifs, non proposés comme lignes : 189,5 ; 190,5. La somme illustrative 180 est inférieure aux deux ; 190 est supérieure au premier et inférieure au second ; 200 est supérieure aux deux. Le choix arbitraire du poids change ainsi la direction commune et la distinction entre seuils voisins. Aucune fréquence de franchissement prospective ni direction robuste. Aucun seuil retenu.
+Totaux par équipe : exploratoires uniquement, symétriques. Seuils tests fictifs 94,5 et 95,5 : la référence 90 reste en dessous des deux ; 95 franchit uniquement 94,5 ; 100 franchit les deux. Le basculement dépend du même poids non validé. Aucune direction justifiée, ni pour A ni pour B. Une défense ou un rythme différents pourraient invalider les références illustratives.
+Totaux par période : non retenus. Sans ventilation temporelle ni rotations, diviser un total par quatre imposerait une homogénéité non démontrée.
+Statistiques individuelles (points, rebonds, passes, combinaisons) : non retenues. Aucun joueur identifié, aucune minute, aucun rôle, aucun volume ou profil d'opposition. La production collective ne permet pas d'établir un seuil individuel.
+
+Comparaison : les totaux collectifs sont les pistes descriptives les plus directement rattachées aux mesures, mais ne bénéficient pas d'une preuve directionnelle supérieure suffisante. Les totaux d'équipe et de match partagent les mêmes entrées et sont arithmétiquement liés à période identique ; ils ne constituent pas des confirmations indépendantes. Résultat et handicaps dépendent également de la même différence de scores. Le règlement sur prolongation et l'abandon n'est pas précisé ; aucune hypothèse opérateur ni disponibilité de marché. Aucun marché conditionnel précis : les lacunes sont multiples et leur résolution ne dépend pas d'une seule information identifiable. Aucun marché soutenu sportivement.
+
+7. AVIS SPORTIF FINAL
+La seule lecture privilégiée est descriptive : indifférenciation des participants par les mesures disponibles, sans assimilation à un équilibre sportif réel. Les scénarios de déroulement ne sont pas hiérarchisables. Les essais arithmétiques confirment la dépendance aux hypothèses, non une direction de total.
+Qualité des données : cohérente et traçable dans le cadre synthétique, très faible pour l'inférence sportive.
+Solidité de la lecture sportive : très faible pour le déroulement, élevée uniquement pour le constat d'identité des valeurs enregistrées.
+Solidité des arguments de marché : insuffisante pour toute sélection ou ligne.
+Décision : AUCUN MARCHÉ RETENU — NO BET À CE STADE.
+Les éléments susceptibles de modifier cet avis seraient notamment des séries contextualisées, des possessions et rendements comparables, des distributions de production et d'écart, et des configurations de joueurs documentées avant la coupure. Aucun complément n'est demandé dans cette expérience isolée.
+Travail accompli : lecture du fichier unique, vérification temporelle et de l'empreinte, calculs descriptifs, scénarios, projection limitée et examen des familles NBA. Aucun accès au moteur, aucune recherche sportive externe, aucune consultation de la branche A, aucune comparaison interbranches effectuée. Rapport arrêté à l'avis pré-cotes.
