@@ -159,3 +159,5 @@ P3.1 Android preview: independent repository BET-ANALYST-P31-PREVIEW; online And
 P3.1 physical retest: user confirms football/NBA/tennis accessible offline, but full offline page reload NOT_CONFIRMED. Do not infer successful reload or close P3.1. Targeted reload confirmation pending; P3.2-A implementation deferred until closure. G0/KRAFT unchanged.
 
 P3.1 physical retest 2026-11-26: user confirms football, NBA and tennis report accessibility; offline reload explicitly not confirmed. No inference of successful offline reload or new failure. Chromium 12/12 remains verified. Closure pending targeted reload confirmation. P3.2-A presentation-only work deferred until closure; preserve synthetic replay and all locks.
+
+P3.1 CLOSED 2026-11-26: user explicitly confirms full page reload in airplane mode and all three reports including expanded analysis. Chromium 12/12 and Pages success previously recorded. Scope: precomputed synthetic consultation only, no dynamic engine or sporting validation. P3.2-A authorized: French presentation and mobile readability, no engine changes.
