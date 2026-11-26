@@ -1,0 +1,56 @@
+{
+  "football": {
+    "subject": "home",
+    "unit": "goals",
+    "period": "regulation",
+    "bounds": [
+      2,
+      3
+    ],
+    "thresholds": [
+      1.5,
+      2.5,
+      3.5
+    ]
+  },
+  "nba": {
+    "subject": "A",
+    "unit": "points",
+    "period": "including_overtime",
+    "bounds": [
+      105,
+      115
+    ],
+    "thresholds": [
+      100.5,
+      110.5,
+      120.5
+    ]
+  },
+  "tennis": {
+    "subject": "A",
+    "unit": "games",
+    "period": "completed_match",
+    "bounds": [
+      10,
+      12
+    ],
+    "thresholds": [
+      9.5,
+      11.5,
+      12.5
+    ]
+  },
+  "expected": [
+    "ABOVE",
+    "UNRESOLVED",
+    "BELOW"
+  ],
+  "mutations": {
+    "contract": "REJECT",
+    "threshold": "REJECT",
+    "time": "REJECT",
+    "hash": "REJECT",
+    "missing": "REJECT"
+  }
+}
