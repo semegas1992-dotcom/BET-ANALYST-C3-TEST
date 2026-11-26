@@ -54,3 +54,7 @@ Option A validée. Dépôt privé BET-ANALYST-PRIVATE-DATA, contact public issue
 
 ## OpenLigaDB — jalons 5 et 6
 Run privé 45880453678 réussi, 216 rencontres, archive sélective durable. SHA-256 recalculé indépendamment sur le texte UTF-8 récupéré : identique au manifeste privé. Jalon 5 validé sur périmètre sélectif uniquement; original non conservé. Jalon 6 : lecteur local 5c5c80e, interface 6a1a50e, cache v5 61e37d1, tests synthétiques 64362a1, workflow 0bfa0bd. CI déclenchée par push, résultat non encore vérifié. Test physique Android et non-régression complète non confirmés. Aucun jeton ni donnée privée dans le dépôt public. Admission, publication des données et qualification bloquées. G0 et KRAFT inchangés.
+
+
+### Validation CI du lecteur OpenLigaDB — 26/11/2026
+Run 45880909910 : échec initial du bootstrap WebCrypto Node 22 (aucun contrôle fonctionnel exécuté). Correctif 08cc191 sans modification des assertions. Run 45881795145, job 140122668314 : SUCCESS, 10 tests réussis, 0 échec. Jalon 6 validé au niveau des tests unitaires et déclaration du cache v5; validation navigateur hors ligne, Android physique et non-régression globale restent à confirmer. Jalon 5 sélectif confirmé. Aucune admission moteur, aucune publication de données privées. Pas de clôture globale anticipée.
