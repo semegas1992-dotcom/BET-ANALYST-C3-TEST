@@ -86,3 +86,7 @@ Lecteur 4c4c735 et tests ed6f9f8 : paquet OPENLIGA_BUNDLE_V1 avec texte original
 
 ### Paquet permanent — validation 26/11/2026
 Workflow privé #2 vert selon capture utilisateur; lecteur #7 vert commit ed6f9f8 selon capture. Fichier latest/calendar.bundle.json relu depuis dépôt privé, SHA-256 recalculé indépendamment sur texte UTF-8 sélectif : 841bf7058f01823e2444c5e9ca3d00371dc1a489feab040648e46916734efbad, concordance exacte, 216 rencontres, engine_access=false, publication=BLOCKED, qualification=BLOCKED. Empreinte interne non authentifiante; original intégral non conservé. PREVIEW lecteur e83ff24, cache 0c49c50 publiés; déploiement Pages et tests navigateur du paquet V7 restent à confirmer ensemble. Aucune nouvelle collecte, aucun jeton ou donnée privée publié. Budget autorisé 0 EUR; G0/KRAFT inchangés.
+
+
+### Clôture technique V7 — 26/11/2026
+Chromium #14 commit 641c596 : succès 1m08s selon capture utilisateur. PREVIEW openliga cache v7 et lecteur vérifiés dans le dépôt. Validation Android rapportée par utilisateur : calendar.bundle.json importé sans SHA externe, 216 rencontres, capture 20:41 heure de Paris, empreinte interne vérifiée, origine non authentifiée, quarantaine aucune admission, dates françaises et pagination 1/11, recherche présente. Recherche et navigation entre pages non retestées physiquement dans cette restitution; hors ligne V7 couvert par CI, non retesté physiquement. Clôture du périmètre import simplifié; aucune admission moteur ni qualification sportive. Aucune nouvelle collecte. Budget autorisé 0 EUR. G0/KRAFT V3.0 préservés.
