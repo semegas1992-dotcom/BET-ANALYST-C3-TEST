@@ -1,0 +1,64 @@
+BET ANALYST V3 — P3.2-C — TENNIS — BRANCHE B INDÉPENDANTE
+Dossier P27C-tennis | Rapport final figé | KRAFT V3.0
+Source unique : https://raw.githubusercontent.com/semegas1992-dotcom/BET-ANALYST-C3-TEST/35a051d7448d0a8009df46d8b8b837c25cbb7832/experimental/P32C_TENNIS_B_INPUT.txt
+Empreinte D0 déclarée : 9e45d7e3f08777170979fa261bd3179834c4c13e235d413894ffe27747dc3669 (non recalculée ; convention de canonicalisation non spécifiée).
+
+1. SYNTHÈSE RAPIDE
+Rencontre synthétique A contre B, prévue le 3 janvier 2026 à 00 h UTC. Étude historique figée au 2 janvier 2026 à 00 h UTC, antérieure au début prévu. A et B présentent chacun 30 points gagnés sur 50 au service dans leur unique observation. Cette égalité descriptive ne permet ni de désigner un favori ni de conclure à un match serré. Les trajectoires restent non départagées. Aucune projection chiffrée du score, de la durée ou des breaks n'est défendable. Le principal obstacle est l'absence de données de retour, de contexte et de format. Aucun marché soutenu sportivement.
+
+2. REPÈRES ET DONNÉES DÉTERMINANTES
+Source interne : D0, observations A et B, lignes 4–41 du fichier fourni (numérotation à partir de zéro).
+Faits du dossier synthétique : deux participants, origine synthetic, schéma D0_EXPERIMENTAL_V1, engine_access=false. Aucun moteur consulté. Pour les deux lignes : fin d'événement le 1er janvier à 00 h UTC ; disponibilité à 01 h ; capture à 02 h. Les trois horodatages précèdent la coupure du 2 janvier, elle-même antérieure au début prévu du 3 janvier. Les deux lignes sont donc admissibles selon les horodatages fournis. Aucun statut réel de compétition ne peut être confirmé.
+
+Indicateur                              A          B
+Observations renseignées                1          1
+Points joués au service                 50         50
+Points gagnés au service                30         30
+Points perdus au service (calcul)        20         20
+Taux de réussite service (calcul)       60 %       60 %
+Taux de perte service (calcul)          40 %       40 %
+
+Calculs : 30/50 = 0,60 ; 50−30 = 20 ; 20/50 = 0,40. Différence A−B : 0 point de pourcentage. Contrôle : numérateurs compris entre zéro et dénominateur, sommes cohérentes. Aucune exclusion. Une observation par joueur, pas nécessairement un match complet ; le nombre de matchs distincts et le lien entre les événements ne sont pas établis. Les 100 points cumulés ne constituent pas une mesure de cette future opposition. Les taux complémentaires ne sont pas des preuves indépendantes.
+
+Lot A — contexte : participants et dates disponibles ; saison sportive, compétition, catégorie, classement, surface, lieu, indoor/extérieur, format, scores et adversaires absents.
+Lot B — production : points de service contrôlés dans D0 ; retour, premières et secondes balles, jeux de service, occasions de break, aces, doubles fautes et tie-breaks absents.
+Lot C — configuration : état physique, disponibilité effective, durée des prestations, repos réel et styles non documentés. Le délai de 48 h entre fin d'événement et début prévu ne prouve pas 48 h de repos.
+Statut : extraction complète des observations autorisées, couverture sportive partielle. Données contrôlées en interne seulement ; aucune contradiction apparente. Les éléments absents n'ont pas été recherchés hors D0 conformément au verrou expérimental. Ils ne valent pas zéro.
+
+3. ANALYSE SPORTIVE
+Forme et niveau : une observation par participant ne permet pas de déterminer une tendance, une régularité, une dispersion entre matchs ou un niveau de fond. Aucun ajustement à la surface ou à la qualité adverse n'est possible. Aucun résultat de match n'est fourni. Aucun H2H ni adversaire comparable identifiable.
+Opposition : les deux joueurs ont gagné une majorité de leurs points de service observés. Cela décrit une efficacité agrégée identique, sans expliquer comment les points ont été construits. Pour transposer cette efficacité, il faudrait notamment connaître la qualité du retour adverse et les conditions de jeu. Il serait erroné d'attribuer les 20 points perdus par A au retour de B, ou inversement, faute de preuve que les observations se rapportent à une confrontation commune. Une égalité agrégée peut masquer des écarts en première balle, seconde balle, points importants ou répartition par jeu. Aucun style ni avantage spécifique ne peut être identifié.
+
+4. SCÉNARIOS ENVISAGÉS
+Trajectoire de conservation des engagements : si les deux services résistent au retour adverse et aux points de pression, les jeux pourraient rester proches et les sets se prolonger. Appui limité : les deux taux observés sont identiques et majoritaires. Objection : 60 % des points gagnés ne donne pas directement la fréquence des jeux conservés ; le retour et la distribution des points sont inconnus. Bascule : pression accrue sur un engagement ou incapacité à convertir les occasions de retour.
+Trajectoire de domination d'un participant : si A ou B possède un retour supérieur, une meilleure seconde balle ou une meilleure résistance à la pression, il pourrait obtenir un avantage de breaks et d'écart. Aucun de ces avantages n'est observé dans D0 ; les deux directions sont symétriquement non départageables. Bascule : différence effective de rendement dans la confrontation.
+Trajectoire d'alternance : si les deux retours perturbent les engagements ou si les rendements changent en cours de match, des échanges de breaks ou de domination entre sets sont envisageables. Les 20 points perdus au service de chaque joueur rendent seulement compatible une perte de points, pas une fréquence de breaks. Un retour peu efficace ou une bonne gestion des points importants pourrait invalider cette trajectoire.
+Ces hypothèses illustrent des mécanismes différents, éventuellement combinables ; elles ne sont ni exhaustives ni probabilisées. Aucun scénario dominant établi.
+
+5. PROJECTION DU DÉROULEMENT
+Installation : comparer la capacité de chacun à protéger son service face au retour de l'autre. Le seul repère disponible est le taux descriptif de 60 % pour chacun. Un écart effectif de retour ou de seconde balle pourrait modifier immédiatement cette lecture.
+Évolution du set : si les engagements résistent, la pression peut se déplacer vers la fin du set ; si un joueur obtient régulièrement des occasions de break, il peut creuser un écart. Ni le nombre ni la conversion des occasions ne sont estimables.
+Fin du set : une conservation réciproque des engagements peut conduire à une fin serrée, éventuellement à un tie-break si le règlement le prévoit ; une domination au retour peut conduire à une fin plus rapide. Aucun score ni moment de break n'est projeté.
+Sets suivants : adaptations au retour, maintien du rendement et fatigue pourraient prolonger ou écourter la rencontre. Le format inconnu interdit une projection du nombre de sets et des totaux.
+Chiffrage : seuls les calculs descriptifs de la section 2 sont retenus. À titre de sensibilité arithmétique, un point gagné de plus ou de moins sur 50 ferait varier le taux de 2 points de pourcentage ; ce n'est ni un intervalle de confiance ni une estimation future. Aucun modèle adapté fourni, aucune simulation exécutée, aucune probabilité attribuée. L'indépendance et la stabilité des points ne sont pas établies.
+
+6. MARCHÉS ET LIGNES ÉVENTUELLES
+Examen comparatif interne au dossier (aucune comparaison de branches).
+Famille | Mécanisme envisagé | Limite / contre-scénario | Statut
+Résultat match A ou B | domination relative service-retour | aucune asymétrie documentée ; domination inverse possible | Non retenu
+Gain d'au moins un set par A ou B ; nombre de sets | alternance ou résistance | un joueur peut dominer ; format inconnu | Non retenu
+Handicap de jeux ou de sets | écart de domination | amplitude et direction inconnues ; trajectoires opposées compatibles | Non retenu
+Totaux de jeux match, joueur ou set | conservation des services ou alternance | breaks, format et répartition des jeux inconnus ; domination rapide possible | Non retenu
+Tie-break dans un set ou le match | conservation réciproque | taux de jeux conservés et règlement inconnus ; breaks possibles | Exploratoire uniquement, non sélectionné
+Breaks par joueur ou match | pression au retour | aucune donnée de retour, d'occasions ou de conversion ; engagements potentiellement résistants | Exploratoire uniquement, non sélectionné
+Aces et doubles fautes par joueur ou match | qualité et risque du service | aucune ventilation disponible ; taux global compatible avec de nombreux profils | Non retenu
+Les breaks et tie-breaks sont des pistes d'étude plus directement liées à l'indicateur disponible que le résultat final, mais ne sont pas mieux établis au point de permettre une direction. Les totaux et handicaps dépendent aussi du format et de la distribution par jeu ; aucune référence historique à ces niveaux n'est fournie. Aucun seuil voisin numérique ne peut être comparé de manière défendable sans fabriquer des entrées. Les totaux, tie-breaks et conservation des engagements ainsi que les handicaps et résultats peuvent partager des mécanismes ; leur convergence éventuelle ne constituerait pas une validation indépendante. Règles d'abandon, format et règlement de tie-break inconnus. Aucun opérateur ni règlement commercial présumé. Aucun marché conditionnel retenu : les lacunes sont multiples et non résolues par un seul déclencheur identifié.
+
+7. AVIS SPORTIF FINAL
+Position : égalité du seul indicateur descriptif observé, rapport de force global indéterminé. Cette symétrie documentaire ne démontre pas une égalité de niveau, une probabilité de victoire de 50 % ni un match disputé. Aucun scénario ne peut être privilégié.
+Qualité des données : faible pour l'objectif prédictif, malgré leur cohérence arithmétique et temporelle interne ; une seule observation synthétique par joueur.
+Solidité de la lecture sportive : faible pour anticiper le match ; solide uniquement pour constater l'absence de différenciation sur l'indicateur fourni.
+Solidité des arguments pour les marchés : insuffisante pour une sélection directionnelle ou un seuil.
+Décision : AUCUN MARCHÉ RETENU — NO BET À CE STADE. Conclusion sportive uniquement.
+Facteurs susceptibles de modifier l'avis dans un autre dossier autorisé : séries comparables service/retour, distribution des points et jeux, format, surface, niveau des adversaires, état physique. Aucun complément demandé dans cette expérience figée.
+Travail accompli : sept sections produites à partir de la seule source autorisée ; calculs descriptifs et admissibilité temporelle examinés ; scénarios et familles de marchés confrontés aux lacunes. Aucune recherche extérieure, aucun résultat du match, aucune cote, aucun accès moteur, aucune consultation de branche A ni comparaison interbranches. Limite technique : empreinte déclarée non vérifiée indépendamment. Rapport arrêté à l'avis sportif pré-cotes.
