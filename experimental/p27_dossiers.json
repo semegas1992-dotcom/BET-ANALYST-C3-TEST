@@ -1,0 +1,24 @@
+[
+  {
+    "origin": "synthetic",
+    "engine_access": false,
+    "id": "P27-A",
+    "payload": {
+      "bounds": [
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "origin": "synthetic",
+    "engine_access": false,
+    "id": "P27-B",
+    "payload": {
+      "bounds": [
+        10,
+        12
+      ]
+    }
+  }
+]
