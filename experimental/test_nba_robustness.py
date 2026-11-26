@@ -36,6 +36,7 @@ class RobustnessTests(unittest.TestCase):
         trace=[]
         grouped({1,2},2026,NOW,"test",trace,[],[])
         self.assertTrue(verify_pages(trace))
+        self.assertIsNotNone(stamp(trace[0]["received_at"]).tzinfo)
         trace[0]["payload"]["data"][0]["id"]=999
         self.assertFalse(verify_pages(trace))
     def test_same_day(self):

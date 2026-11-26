@@ -1,4 +1,5 @@
 import hashlib,json,time,urllib.parse
+from datetime import datetime,timezone
 from statistics import mean,median,stdev
 from nba_history import BASE,request_json,stamp
 
@@ -11,7 +12,7 @@ def grouped(teams,season,cutoff,key,trace,errors,partial):
         p=request_json(BASE+"?"+urllib.parse.urlencode(q,doseq=True),key,errors)
         if not isinstance(p.get("data"),list) or not isinstance(p.get("meta"),dict):raise ValueError("invalid group page")
         cursor=p["meta"].get("next_cursor")
-        trace.append({"payload":p,"query":q,"count":len(p["data"]),"next_cursor":cursor,"sha256":hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
+        trace.append({"payload":p,"query":q,"received_at":datetime.now(timezone.utc).isoformat(),"count":len(p["data"]),"next_cursor":cursor,"sha256":hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",",":")).encode()).hexdigest()})
         partial.extend(p["data"])
         time.sleep(16)
         if cursor is None:return partial
