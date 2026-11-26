@@ -66,3 +66,7 @@ Run 45881969775, job 140123245714 : SUCCESS. Chromium 141.0.7390.37; replay PWA 
 
 ### Clôture technique OpenLigaDB — 26/11/2026
 Preview isolée BET-ANALYST-P31-PREVIEW/openliga, commit cfc75c5. Captures utilisateur Android 20:21–20:26 : section 8 visible, import réel 216 rencontres, empreinte acceptée, quarantaine affichée, page et import visibles en mode avion, champs réinitialisés. Action Effacer isolément non démontrée par captures mais validée en Chromium run 45881969775. Jalon 6 et chantier sélectif lecture seule clôturés sur ce périmètre; aucune admission moteur ni validation sportive. Original non conservé; intégrité sélective vérifiée uniquement. Dette ergonomique : liste longue, recherche équipe, filtre date, pagination 20 proposées, non implémentées. Preview sans icônes d'installation; application principale non remplacée. Aucun jeton ni archive privée publié. Budget autorisé 0 EUR. G0/KRAFT inchangés.
+
+
+### Ergonomie mobile OpenLigaDB
+Lecteur 215dda3 : recherche sans accents, filtre jour Europe/Paris, tri chronologique, pagination 20, format français, invalidation des imports asynchrones lors de l'effacement. Cache v6 66ad4d2; tests unitaires 8b66a6f (14 assertions de test au total), navigateur 9bf20ad (recherche et filtre hors ligne). Résultats CI non vérifiés; preview non actualisée avant validation. Clôture technique précédente inchangée, aucune admission ni publication de données privées.
