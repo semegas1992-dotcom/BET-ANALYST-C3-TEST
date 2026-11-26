@@ -1,5 +1,6 @@
 """OpenLigaDB prospective capture; never admits data to the engine."""
-import hashlib,json
+import hashlib,json,time,os
+from urllib.error import HTTPError
 from datetime import datetime,timezone
 from urllib.request import urlopen,Request
 from d0_contract import stamp
@@ -13,8 +14,15 @@ def capture(season,cutoff,fetch=None,clock=None):
     url=BASE+str(season)
     if fetch is None:
         def fetch(url):
-            with urlopen(Request(url,headers={"Accept":"application/json"}),timeout=30) as response:
-                return response.read(5000001)
+            agent=os.environ.get("OPENLIGA_USER_AGENT")
+            if not agent or "BET-ANALYST" not in agent: raise ValueError("contact user agent required")
+            for attempt in range(3):
+                try:
+                    with urlopen(Request(url,headers={"Accept":"application/json","User-Agent":agent}),timeout=30) as response:
+                        return response.read(5000001)
+                except HTTPError as exc:
+                    if (exc.code!=429 and not 500<=exc.code<600) or attempt==2: raise
+                    time.sleep(60*2**attempt)
     raw=fetch(url)
     captured=clock()
     if captured>limit: raise ValueError("late capture")
