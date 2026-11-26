@@ -3,7 +3,7 @@ from unittest.mock import patch
 from datetime import timedelta
 from nba_batch import build_grouped,select,verify_pages,reciprocity
 from nba_enrichment import grouped,distribute
-from nba_history import normalize
+from nba_history import normalize,stamp
 from test_nba_batch import NOW,event,report
 from test_nba_history import game
 
