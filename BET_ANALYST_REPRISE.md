@@ -50,3 +50,7 @@ CI 45874120396 job 140096757380 success, commit b897d63. Logs: 2 tests Python OK
 
 ## Archivage sélectif OpenLigaDB
 Option A validée. Dépôt privé BET-ANALYST-PRIVATE-DATA, contact public issue #1, budget Actions 0 USD avec Usage blocked confirmé par captures utilisateur. Module 48a6e90, workflow 18793f2, test 4c34482, CI configurée 750c8e0. Projection calendrier seulement, original non conservé, empreinte source non recalculable après destruction, empreinte projection vérifiable. Persistance Git privée par run_id, permissions contents write requises. Exécution et tests non confirmés; jalon 5 partiel, jalon 6 ouvert. Aucune admission ni publication de données. Main du dépôt public inchangée.
+
+
+## OpenLigaDB — jalons 5 et 6
+Run privé 45880453678 réussi, 216 rencontres, archive sélective durable. SHA-256 recalculé indépendamment sur le texte UTF-8 récupéré : identique au manifeste privé. Jalon 5 validé sur périmètre sélectif uniquement; original non conservé. Jalon 6 : lecteur local 5c5c80e, interface 6a1a50e, cache v5 61e37d1, tests synthétiques 64362a1, workflow 0bfa0bd. CI déclenchée par push, résultat non encore vérifié. Test physique Android et non-régression complète non confirmés. Aucun jeton ni donnée privée dans le dépôt public. Admission, publication des données et qualification bloquées. G0 et KRAFT inchangés.
