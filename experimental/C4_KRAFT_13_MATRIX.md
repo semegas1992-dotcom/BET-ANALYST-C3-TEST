@@ -199,3 +199,5 @@ P3.2-B CLOSED: user explicitly confirmed corrected tracked URL reload in airplan
 P3.2-C operational preparation: input-only freeze workflow verifies existing registry pin, each registered dossier digest and D0 contract, records KRAFT file hash and application commit. Branch B packets exclude full dossier payload and A output. No report generated. Isolation procedural: separate fresh conversation for B, freeze B before A retrieval/comparison; public repository is not access-controlled isolation. CI pending.
 
 P32C freeze CI 45863309760 SUCCESS, artifact 15138892921; all 3 registered dossier and D0 digests verified. Other CI 45863309559 and 45863309575 SUCCESS. Football B input-only packet staged; independent session required, A output not retrieved. No comparison yet.
+
+P32C freeze CI 45863309760 SUCCESS; fast 45863309559 SUCCESS; history 45863309575 SUCCESS. Artifact 15138892921, SHA256 34db2df82a1b40b764e4e3f3ddbc62138b4612ecee44334a46200a3a946d4c1f. Football D0 03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24. Single input-only Football B text packet prepared; no A report accessed or generated in this step. Independent session pending.
