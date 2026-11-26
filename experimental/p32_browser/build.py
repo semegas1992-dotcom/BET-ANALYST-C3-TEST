@@ -10,7 +10,7 @@ shutil.copytree(runtime,out/'runtime',dirs_exist_ok=True)
 with zipfile.ZipFile(out/'engine.zip','w',zipfile.ZIP_DEFLATED) as z:
     for p in sorted(root.glob('*.py')):
         z.write(p,p.name)
-    for name in ('p27c_registry.json','p27c_dossiers.json'):
+    for name in ('p27c_registry.json','p27c_dossiers.json','KRAFT_V3_REFERENCE.txt'):
         z.write(root/name,name)
 assets=[p.relative_to(out).as_posix() for p in sorted(out.rglob('*')) if p.is_file() and p.name!='assets.json']
 (out/'assets.json').write_text(json.dumps(assets))

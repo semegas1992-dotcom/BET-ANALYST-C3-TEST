@@ -179,3 +179,5 @@ P3.2-B loopback CI 45851855832/45851855847 passed 424/424 each. Browser candidat
 Browser CI 45852163705 failed at first calculation timeout (120s), no PASS markers. Python suites 424/424. Retry adds fail-fast terminal status assertion, request/page diagnostics, worker initialization error reporting and retry. Root cause not yet established. No publication authorized until browser pass.
 
 CI f0d5b07: native 424/424 twice; browser 45853507588 fails closed with Synthetic registry gate rejected. Added diagnostic wrapper tracing exact rejection line, registry/dossier hash equality and Python version; native Python 3.12 parity check before browser. No gate bypass, no publication. UX benchmark proposal deferred, no new workstream.
+
+CI c705e0e native 424/424 twice, Python 3.12 parity 4/4. Browser 45854429141 confirms registry_match and dossier_match true; exact rejection missing /engine/KRAFT_V3_REFERENCE.txt. Package original reference unchanged in engine.zip; browser regression pending. No gates or pinned hashes changed; no deployment until 6/6.
