@@ -3,7 +3,7 @@ import {webcrypto,createHash} from 'node:crypto';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 if (!globalThis.crypto) Object.defineProperty(globalThis,'crypto',{value:webcrypto,configurable:true});
-const {readCalendar,calendarPage}=await import('data:text/javascript;base64,'+Buffer.from(readFileSync('openliga-reader.js')).toString('base64'));
+const {readCalendar,calendarPage,readBundle}=await import('data:text/javascript;base64,'+Buffer.from(readFileSync('openliga-reader.js')).toString('base64'));
 const d={schema:'OPENLIGA_SELECTIVE_V1',source:'OpenLigaDB',license:'ODbL-1.0',original_retained:false,engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',source_sha256:'a'.repeat(64),captured_at:'2026-01-01T00:00:00Z',cutoff:'2026-01-01T01:00:00Z',matches:[{id:1,kickoff:'2026-01-02T00:00:00Z',home:'A',away:'B'}]};
 const bytes=x=>Buffer.from(JSON.stringify(x)),hash=x=>createHash('sha256').update(x).digest('hex'),read=x=>readCalendar(bytes(x),hash(bytes(x)));
 test('valid',async()=>assert.equal((await read(d)).matches.length,1));
@@ -18,3 +18,8 @@ test('pagination',()=>{assert.equal(calendarPage(many).rows.length,20);assert.eq
 test('accent search',()=>assert.equal(calendarPage(many,'equipe 40').total,1));
 test('Paris date boundary',()=>{assert.equal(calendarPage(many,'','2026-01-03').total,41);assert.equal(calendarPage(many,'','2026-01-02').total,0)});
 test('empty results',()=>assert.equal(calendarPage(many,'absent').rows.length,0));
+
+const bundle={schema:'OPENLIGA_BUNDLE_V1',calendar:JSON.stringify(d),sha256:hash(bytes(d))};
+test('bundle integrity only',async()=>assert.equal((await readBundle(bytes(bundle))).integrity,'SELF_CONTAINED_UNAUTHENTICATED'));
+test('bundle tampering',async()=>assert.rejects(readBundle(bytes({...bundle,calendar:JSON.stringify({...d,matches:[]})}))));
+test('bundle quarantine',async()=>{const bad=JSON.stringify({...d,engine_access:true});await assert.rejects(readBundle(bytes({...bundle,calendar:bad,sha256:hash(bad)})))});
