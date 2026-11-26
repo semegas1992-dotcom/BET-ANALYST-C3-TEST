@@ -175,3 +175,5 @@ P3.2-B initial implementation: on-demand Python CLI for three registered frozen 
 P3.2-B.1 verified: CI 45851593870 and 45851593885 each 423/423, four dynamic tests pass. P3.2-B.3 initial loopback-only HTTP bridge and mobile HTML client added, standard-library Python, no paid backend; integration tests pending. Android requires local Python runtime, physical feasibility unconfirmed; existing stable PWA untouched. DM integration deferred per transversal decision; no DM development.
 
 P3.2-B loopback CI 45851855832/45851855847 passed 424/424 each. Browser candidate added with pinned Pyodide 0.27.7, worker, local engine archive, explicit asset cache and Chromium online/offline reload test. CI and Android validation pending; stable preview untouched. No G0/KRAFT/DM change.
+
+Browser CI 45852163705 failed at first calculation timeout (120s), no PASS markers. Python suites 424/424. Retry adds fail-fast terminal status assertion, request/page diagnostics, worker initialization error reporting and retry. Root cause not yet established. No publication authorized until browser pass.

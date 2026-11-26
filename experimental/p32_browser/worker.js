@@ -1,6 +1,7 @@
-importScripts('./runtime/pyodide.js');
+
 let runtime;
 async function initialize(){
+ importScripts('./runtime/pyodide.js');
  const py=await loadPyodide({indexURL:new URL('./runtime/',self.location.href).href});
  const r=await fetch('./engine.zip');if(!r.ok)throw Error('Moteur indisponible');
  py.unpackArchive(await r.arrayBuffer(),'zip',{extractDir:'/engine'});
@@ -13,4 +14,4 @@ self.onmessage=async({data:sport})=>{try{
  py.globals.set('requested_sport',sport);
  const result=JSON.parse(await py.runPythonAsync("json.dumps(generate_registered(requested_sport))"));
  self.postMessage({result});
-}catch(e){self.postMessage({error:String(e)});}};
+}catch(e){runtime=undefined;self.postMessage({error:String(e.stack||e)});}};
