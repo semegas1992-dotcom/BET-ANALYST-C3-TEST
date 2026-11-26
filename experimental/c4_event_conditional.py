@@ -22,7 +22,7 @@ def compare(d,event,dependencies,trajectories,contract,packet,expected_hash,thre
         return result("REJECT")
     if event.get("participants")!=d.get("participants") or any(row["issues"] for row in trajectories["trajectories"]):
         return result("ABSTENTION")
-    e4=generate(d,[1],"fixture",{},1,1,[],{})
+    e4=generate(d,[1],"fixture",{},1,1,{},{})
     if packet.get("e4_sha256")!=digest(e4):
         return result("REJECT")
     metric=e4["metrics"][contract["subject"]]["points_for"]

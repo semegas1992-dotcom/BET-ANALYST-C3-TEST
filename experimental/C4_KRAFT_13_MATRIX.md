@@ -125,3 +125,5 @@ Linked opposition: e19bf32 integrates documentary linkage; 60f1773 publishes fiv
 
 
 P2.4-B: isolated conditional NBA team points contract and P01-P09 unittest published, using E3 trajectory audit, E4 generate, E5 scope and nesting audit. Supplied fictional bounds only; no historical forecast conversion. Existing gates untouched. CI results pending; no predictive validation. Zero spend.
+
+P2.4-C: both CI failed (45800760544, 45800760509), 413 tests each, nine P24 errors before classification. Traceback exclusion rationale: E4 atypical_ids requires dict, not list. Corrected both new callers only; oracle unchanged. Retest pending.
