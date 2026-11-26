@@ -250,5 +250,17 @@
         "captured_at": null
       }
     ]
+  },
+  "documentary_review": {
+    "reviewed_at": "2026-11-26T06:17:52Z",
+    "review_time_semantics": "consultation session clock, not original capture or publication timestamp",
+    "status": "IDENTITY_CORROBORATED_RIGHTS_BLOCKED",
+    "identity_review": "Competition organizer and club agree revised schedule and venue; numeric event ID not independently checked.",
+    "rights_review": "Organizer website terms intellectual property and club website limited licence restrict database/reuse or republication without permission. Personal consultation only in this review; no source payload archived or imported.",
+    "rights_status": "NOT_CLEARED",
+    "historical_timestamps": "unchanged",
+    "source_payload_sha256": null,
+    "cutoff_status": "not frozen",
+    "observations_admitted": 0
   }
 }
