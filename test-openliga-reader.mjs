@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import {webcrypto,createHash} from 'node:crypto';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-globalThis.crypto=webcrypto;
+if (!globalThis.crypto) Object.defineProperty(globalThis,'crypto',{value:webcrypto,configurable:true});
 const {readCalendar}=await import('data:text/javascript;base64,'+Buffer.from(readFileSync('openliga-reader.js')).toString('base64'));
 const d={schema:'OPENLIGA_SELECTIVE_V1',source:'OpenLigaDB',license:'ODbL-1.0',original_retained:false,engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',source_sha256:'a'.repeat(64),captured_at:'2026-01-01T00:00:00Z',cutoff:'2026-01-01T01:00:00Z',matches:[{id:1,kickoff:'2026-01-02T00:00:00Z',home:'A',away:'B'}]};
 const bytes=x=>Buffer.from(JSON.stringify(x)),hash=x=>createHash('sha256').update(x).digest('hex'),read=x=>readCalendar(bytes(x),hash(bytes(x)));
