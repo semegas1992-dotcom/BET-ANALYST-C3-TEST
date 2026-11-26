@@ -30,3 +30,7 @@ Complément de pilotage, sans modification de G0, KRAFT V3.0, IO V1.0 ni des pro
 
 ## P3.2-C — consolidation multisport 26/11/2026
 CI NBA 45869752788 et Tennis 45869758359 réussies; rapports A et B archivés. D0 commun vérifié par égalité JSON pour les trois sports; entrées auxiliaires non équivalentes. Comparaison descriptive terminée: experimental/p32c/CONSOLIDATION.md. Réserve: recalcul indépendant des octets ZIP et identité exacte des archives NBA/Tennis non démontré; ne pas déclarer clôture intégrité. Prochaine étape: T01 en quarantaine selon protocole existant, admission BLOCKED jusqu'aux contrôles documentaires et revue. Aucun nouveau cycle synthétique ni modification G0/KRAFT.
+
+
+## T01.2 — 26/11/2026
+Réception Python locale réussie sur original T01, SHA256 conforme, trois modules exécutés, identité blobs vérifiée. Preuve et correspondance préparatoire: experimental/T01_2_RECEIPT_EVIDENCE.md. Zéro observation admise; droits et horodatages manquants, adaptateur et revue requis. Contrat synthétique rejette original. engine_access false, publication et qualification BLOCKED. Ne pas publier le D0. Prochaine étape recommandée: dossier prospectif documenté si preuves T01 introuvables; aucune reconstruction ni nouveau cycle synthétique.
