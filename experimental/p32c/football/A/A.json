@@ -1,0 +1,5146 @@
+{
+  "scope": "DYNAMIC_REGISTERED_SYNTHETIC",
+  "report": {
+    "schema": "C4_KRAFT_REPORT_SYNTHETIC_V1",
+    "input_sha256": "03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24",
+    "stage_sha256": {
+      "E1": "23500c7a32a331942f05096ce26813dd147afa72ddb6f31edef08333794210c6",
+      "E2": "ce697a9fa4a324f9e63099291aaed489cfe45f8cddd29f39258d948266c45f23",
+      "E3": "c8013e66bb3c7d535d1e82d3b094938e71ec96311ea5cdcd7680d86315ba0190",
+      "E4": "0c70dd7a93fb5dc4dee25958d13ef53ee73d92190cf40fd064795c8a3b4835c4",
+      "E5": "1b5af8a5d563f6d9c1337af941f04805f5ac07064eefef0043002a7d87f09e60",
+      "context": "cbca679a4125b00a20be3143c798c38c5df4314804bbe412f5d055b9f0588dcd",
+      "specific_dependencies": "e5b56a77ce7e56fed6f72617a6fc91ff0ecc246028fec927927876818f9f5394",
+      "dependency_audit": "64d77591ae00d90063d094cf8dca815dcf71e5521d57ae3abc07c6484ef6923d",
+      "trajectories": "70e2a2df46b221bc951e58d204d9c57a8b623cedfd187d02d21900b93e0776ff",
+      "scoped_uncertainty": "eaab5f76434a903f327ba05c3f76808458ad420ae4b939173ac4b02f783cb6e6",
+      "trajectory_prompts": "bc96d482fc74a5f7dc96d7058dbe0a264e7056265cd5a5a13642a0710207036f",
+      "interactions": "fa836e32702e8d94bd8be826c12128773fb3720fc9b87ff43fa00d79941d5628",
+      "context_analysis": "c6bdce82ee1569586d0f68dcfc23afa7b1900cc9d0a3e458c19d0f030a9aa1a1",
+      "availability_review": "7392ccebd7002f4d4afe14c7369d2d460d3847841b2e93a61a396554272c92c9",
+      "availability_routing": "2dc121a601db54cd23789df06ab0813f1aa6f0b7247c1d663ea58ff654f7e6ba"
+    },
+    "event_sha256": "7358b684a193e0d072a60bd70ad79ab8534fea26a05c98c0399ce1deab585c2f",
+    "audits": [
+      {
+        "checks": 600,
+        "issues": [],
+        "passed": true
+      },
+      {
+        "checks": 296,
+        "issues": [],
+        "passed": true
+      },
+      {
+        "passed": true,
+        "checks": 28,
+        "scope": "structural replay only"
+      },
+      {
+        "passed": true,
+        "checks": 16
+      },
+      {
+        "passed": true,
+        "checks": 16,
+        "scope": "structural interaction audit"
+      },
+      {
+        "passed": true,
+        "checks": 64,
+        "issues": []
+      }
+    ],
+    "quick_summary": {
+      "event_sha256": "7358b684a193e0d072a60bd70ad79ab8534fea26a05c98c0399ce1deab585c2f",
+      "sporting_conclusion": "NOT_ESTABLISHED",
+      "dominant_trajectory": null,
+      "markets": [],
+      "missing": [
+        "identity"
+      ],
+      "decision": "NOT_ESTABLISHED",
+      "limitations": [
+        "Event identity only matched to synthetic labels and kickoff",
+        "Documentary records not authenticated or linked to individual observations",
+        "No verified tactical or sequence projection",
+        "No event market evaluation"
+      ],
+      "engine_access": false,
+      "publication": "BLOCKED",
+      "qualification": "BLOCKED"
+    },
+    "sections": [
+      {
+        "number": 1,
+        "title": "Synthèse rapide",
+        "status": "INCOMPLETE",
+        "detail": "Synthetic replay; no verified sporting conclusion"
+      },
+      {
+        "number": 2,
+        "title": "Repères et données déterminantes",
+        "evidence": "23500c7a32a331942f05096ce26813dd147afa72ddb6f31edef08333794210c6",
+        "missing": [
+          "identity"
+        ]
+      },
+      {
+        "number": 3,
+        "title": "Analyse sportive",
+        "evidence": "ce697a9fa4a324f9e63099291aaed489cfe45f8cddd29f39258d948266c45f23",
+        "context": {
+          "home": {},
+          "away": {}
+        },
+        "matched_opposition": null,
+        "status": "DESCRIPTIVE_ONLY"
+      },
+      {
+        "number": 4,
+        "title": "Scénarios envisagés",
+        "evidence": "c8013e66bb3c7d535d1e82d3b094938e71ec96311ea5cdcd7680d86315ba0190",
+        "scenarios": [
+          {
+            "id": "0:volume:holds",
+            "mechanism_ids": [
+              "0:volume"
+            ],
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "course": "Maintien du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "0:volume",
+            "condition_state": "holds"
+          },
+          {
+            "id": "0:volume:fails",
+            "mechanism_ids": [
+              "0:volume"
+            ],
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "course": "Révision du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "0:volume",
+            "condition_state": "fails"
+          },
+          {
+            "id": "0:target:holds",
+            "mechanism_ids": [
+              "0:target"
+            ],
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "course": "Maintien du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "0:target",
+            "condition_state": "holds"
+          },
+          {
+            "id": "0:target:fails",
+            "mechanism_ids": [
+              "0:target"
+            ],
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "course": "Révision du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "0:target",
+            "condition_state": "fails"
+          },
+          {
+            "id": "1:volume:holds",
+            "mechanism_ids": [
+              "1:volume"
+            ],
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "course": "Maintien du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "1:volume",
+            "condition_state": "holds"
+          },
+          {
+            "id": "1:volume:fails",
+            "mechanism_ids": [
+              "1:volume"
+            ],
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "course": "Révision du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "1:volume",
+            "condition_state": "fails"
+          },
+          {
+            "id": "1:target:holds",
+            "mechanism_ids": [
+              "1:target"
+            ],
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "course": "Maintien du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "1:target",
+            "condition_state": "holds"
+          },
+          {
+            "id": "1:target:fails",
+            "mechanism_ids": [
+              "1:target"
+            ],
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "course": "Révision du mécanisme",
+            "trigger": "Observation future contraire à la condition",
+            "consequence": "Réexaminer les hypothèses liées",
+            "objection": "Aucun seuil ni probabilité calibrés",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "status": "BLOCKED",
+            "group": "1:target",
+            "condition_state": "fails"
+          }
+        ],
+        "opposition_context": {},
+        "trajectories": {
+          "dependency_sha256": "e5b56a77ce7e56fed6f72617a6fc91ff0ecc246028fec927927876818f9f5394",
+          "trajectories": [
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:holds",
+                  "opening"
+                ],
+                [
+                  "0:target:holds",
+                  "middle"
+                ],
+                [
+                  "0:target:holds",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:holds",
+                  "opening"
+                ],
+                [
+                  "0:volume:holds",
+                  "middle"
+                ],
+                [
+                  "0:volume:holds",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:holds",
+                  "opening"
+                ],
+                [
+                  "1:target:holds",
+                  "middle"
+                ],
+                [
+                  "1:target:holds",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:holds",
+                  "opening"
+                ],
+                [
+                  "1:volume:holds",
+                  "middle"
+                ],
+                [
+                  "1:volume:holds",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "sequence_refs": [
+                [
+                  "0:volume:fails",
+                  "opening"
+                ],
+                [
+                  "0:volume:fails",
+                  "middle"
+                ],
+                [
+                  "0:volume:fails",
+                  "ending"
+                ],
+                [
+                  "0:target:fails",
+                  "opening"
+                ],
+                [
+                  "0:target:fails",
+                  "middle"
+                ],
+                [
+                  "0:target:fails",
+                  "ending"
+                ],
+                [
+                  "1:volume:fails",
+                  "opening"
+                ],
+                [
+                  "1:volume:fails",
+                  "middle"
+                ],
+                [
+                  "1:volume:fails",
+                  "ending"
+                ],
+                [
+                  "1:target:fails",
+                  "opening"
+                ],
+                [
+                  "1:target:fails",
+                  "middle"
+                ],
+                [
+                  "1:target:fails",
+                  "ending"
+                ]
+              ],
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "status": "BLOCKED"
+            }
+          ],
+          "scope": "logical combinations only; feasibility and dominance not established",
+          "engine_access": false,
+          "publication": "BLOCKED",
+          "qualification": "BLOCKED"
+        },
+        "interactions": {
+          "trajectory_sha256": "70e2a2df46b221bc951e58d204d9c57a8b623cedfd187d02d21900b93e0776ff",
+          "rows": [
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "JOINT_MAINTENANCE",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "JOINT_MAINTENANCE",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "JOINT_MAINTENANCE",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "JOINT_MAINTENANCE",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "holds"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "holds",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "holds",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "interactions": [
+                {
+                  "mechanisms": [
+                    "0:volume",
+                    "0:target",
+                    "1:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                },
+                {
+                  "mechanisms": [
+                    "1:volume",
+                    "1:target",
+                    "0:target"
+                  ],
+                  "states": [
+                    "fails",
+                    "fails",
+                    "fails"
+                  ],
+                  "pattern": "MIXED_OR_REVISION",
+                  "record_ids": [],
+                  "turning_points": [
+                    "Change in pressing or substitution alters access to space",
+                    "Early pressure prevents clean progression",
+                    "Late tactical change alters opportunity volume"
+                  ]
+                }
+              ],
+              "issues": [
+                "CAUSAL_EFFECT_UNCALIBRATED",
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "plausibility": "UNDETERMINED",
+              "estimate": null
+            }
+          ],
+          "engine_access": false,
+          "publication": "BLOCKED",
+          "qualification": "BLOCKED"
+        },
+        "observation_prompts": {
+          "sport": "football",
+          "trajectory_sha256": "70e2a2df46b221bc951e58d204d9c57a8b623cedfd187d02d21900b93e0776ff",
+          "rows": [
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ],
+              "prompts": [
+                "opening pressing and progression",
+                "midmatch chance creation and transitions",
+                "late game-state changes"
+              ],
+              "status": "UNVERIFIED",
+              "estimate": null
+            }
+          ],
+          "dominant": null,
+          "qualification": "BLOCKED"
+        },
+        "scoped_uncertainty": {
+          "dependency_sha256": "e5b56a77ce7e56fed6f72617a6fc91ff0ecc246028fec927927876818f9f5394",
+          "trajectory_sha256": "70e2a2df46b221bc951e58d204d9c57a8b623cedfd187d02d21900b93e0776ff",
+          "rows": [
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "holds",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "holds",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "holds",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "holds"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "holds",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            },
+            {
+              "assignment": {
+                "0:target": "fails",
+                "0:volume": "fails",
+                "1:target": "fails",
+                "1:volume": "fails"
+              },
+              "links": [
+                {
+                  "mechanism_id": "0:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:finisher",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "0:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:defender",
+                    "ROLE_MISSING:home:creator",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:target",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:finisher",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                },
+                {
+                  "mechanism_id": "1:volume",
+                  "condition_state": "fails",
+                  "issues": [
+                    "COMPARABLE_MISSING:away",
+                    "COMPARABLE_MISSING:home",
+                    "DOCUMENTARY_GATE",
+                    "ROLE_MISSING:away:creator",
+                    "ROLE_MISSING:home:defender",
+                    "UNLINKED:away4",
+                    "UNLINKED:home4"
+                  ],
+                  "record_ids": [],
+                  "status": "UNVERIFIED"
+                }
+              ],
+              "global_issues": [
+                "COMPARABLE_MISSING:away",
+                "COMPARABLE_MISSING:home",
+                "DOCUMENTARY_GATE",
+                "ROLE_MISSING:away:creator",
+                "ROLE_MISSING:away:defender",
+                "ROLE_MISSING:away:finisher",
+                "ROLE_MISSING:home:creator",
+                "ROLE_MISSING:home:defender",
+                "ROLE_MISSING:home:finisher",
+                "UNLINKED:away4",
+                "UNLINKED:home4"
+              ]
+            }
+          ],
+          "qualification": "BLOCKED"
+        }
+      },
+      {
+        "number": 5,
+        "title": "Projection du déroulement",
+        "evidence": "0c70dd7a93fb5dc4dee25958d13ef53ee73d92190cf40fd064795c8a3b4835c4",
+        "descriptive_envelopes": {},
+        "sequences": [
+          {
+            "scenario_id": "0:volume:holds",
+            "phase": "opening",
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:volume:holds",
+            "phase": "middle",
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:volume:holds",
+            "phase": "ending",
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:volume:fails",
+            "phase": "opening",
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:volume:fails",
+            "phase": "middle",
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:volume:fails",
+            "phase": "ending",
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:target:holds",
+            "phase": "opening",
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:target:holds",
+            "phase": "middle",
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:target:holds",
+            "phase": "ending",
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:target:fails",
+            "phase": "opening",
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:target:fails",
+            "phase": "middle",
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "0:target:fails",
+            "phase": "ending",
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:volume:holds",
+            "phase": "opening",
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:volume:holds",
+            "phase": "middle",
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:volume:holds",
+            "phase": "ending",
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:volume:fails",
+            "phase": "opening",
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:volume:fails",
+            "phase": "middle",
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:volume:fails",
+            "phase": "ending",
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:target:holds",
+            "phase": "opening",
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:target:holds",
+            "phase": "middle",
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:target:holds",
+            "phase": "ending",
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:target:fails",
+            "phase": "opening",
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:target:fails",
+            "phase": "middle",
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          },
+          {
+            "scenario_id": "1:target:fails",
+            "phase": "ending",
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLES_MISSING",
+              "CONFIGURATION_MISSING",
+              "DOCUMENTARY_GATE",
+              "UNLINKED_OBSERVATIONS"
+            ],
+            "scope": "conditional template; no predicted score or tactical inference"
+          }
+        ],
+        "scoped_arguments": [
+          {
+            "scenario_id": "0:volume:holds",
+            "phase": "opening",
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: creation of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:creator",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:volume:holds",
+            "phase": "middle",
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: creation of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:creator",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:volume:holds",
+            "phase": "ending",
+            "condition": "volume de tirs de home: hypothèse confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: creation of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:creator",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:volume:fails",
+            "phase": "opening",
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: creation of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:creator",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:volume:fails",
+            "phase": "middle",
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: creation of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:creator",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:volume:fails",
+            "phase": "ending",
+            "condition": "volume de tirs de home: hypothèse non confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: creation of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:creator",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:target:holds",
+            "phase": "opening",
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: quality of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:finisher",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:target:holds",
+            "phase": "middle",
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: quality of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:finisher",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:target:holds",
+            "phase": "ending",
+            "condition": "tirs cadrés de home: hypothèse confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: quality of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:finisher",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:target:fails",
+            "phase": "opening",
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: quality of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:finisher",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:target:fails",
+            "phase": "middle",
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: quality of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:finisher",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "0:target:fails",
+            "phase": "ending",
+            "condition": "tirs cadrés de home: hypothèse non confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: quality of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:defender",
+              "ROLE_MISSING:home:finisher",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:volume:holds",
+            "phase": "opening",
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: creation of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:creator",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:volume:holds",
+            "phase": "middle",
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: creation of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:creator",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:volume:holds",
+            "phase": "ending",
+            "condition": "volume de tirs de away: hypothèse confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: creation of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:creator",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:volume:fails",
+            "phase": "opening",
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: creation of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:creator",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:volume:fails",
+            "phase": "middle",
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: creation of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:creator",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:volume:fails",
+            "phase": "ending",
+            "condition": "volume de tirs de away: hypothèse non confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: creation of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:creator",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:target:holds",
+            "phase": "opening",
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: quality of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:finisher",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:target:holds",
+            "phase": "middle",
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: quality of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:finisher",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:target:holds",
+            "phase": "ending",
+            "condition": "tirs cadrés de away: hypothèse confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: quality of shooting opportunities",
+            "branch": "holds",
+            "trajectory": "continuation",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:finisher",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:target:fails",
+            "phase": "opening",
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "argument": "Examine initial spacing and pressing response: quality of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Early pressure prevents clean progression",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:finisher",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:target:fails",
+            "phase": "middle",
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "argument": "Examine adaptation to opponent and score state: quality of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Change in pressing or substitution alters access to space",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:finisher",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          },
+          {
+            "scenario_id": "1:target:fails",
+            "phase": "ending",
+            "condition": "tirs cadrés de away: hypothèse non confirmée en observation future",
+            "argument": "Examine risk taking conditional on score state: quality of shooting opportunities",
+            "branch": "fails",
+            "trajectory": "revision",
+            "opponent_response": "Check whether opposing defender changes the interaction",
+            "turning_point": "Late tactical change alters opportunity volume",
+            "objection": "Historical comparability does not establish causal effect",
+            "record_ids": [],
+            "status": "BLOCKED",
+            "issues": [
+              "COMPARABLE_MISSING:away",
+              "COMPARABLE_MISSING:home",
+              "DOCUMENTARY_GATE",
+              "ROLE_MISSING:away:finisher",
+              "ROLE_MISSING:home:defender",
+              "UNLINKED:away4",
+              "UNLINKED:home4"
+            ]
+          }
+        ],
+        "status": "UNVERIFIED_TEMPLATES"
+      },
+      {
+        "number": 6,
+        "title": "Marchés et lignes éventuelles",
+        "evidence": "1b5af8a5d563f6d9c1337af941f04805f5ac07064eefef0043002a7d87f09e60",
+        "event_contracts": [],
+        "market_scopes": [],
+        "opposition_context": [],
+        "availability_routing": {
+          "event_sha256": "7358b684a193e0d072a60bd70ad79ab8534fea26a05c98c0399ce1deab585c2f",
+          "review_sha256": "7392ccebd7002f4d4afe14c7369d2d460d3847841b2e93a61a396554272c92c9",
+          "trajectory_sha256": "70e2a2df46b221bc951e58d204d9c57a8b623cedfd187d02d21900b93e0776ff",
+          "markets": [],
+          "qualification": "BLOCKED"
+        },
+        "status": "NOT_EVALUATED"
+      },
+      {
+        "number": 7,
+        "title": "Avis sportif final",
+        "status": "NOT_ESTABLISHED",
+        "data_quality": "SYNTHETIC_ONLY",
+        "sporting_reasoning": "UNVERIFIED",
+        "market_arguments": "NOT_EVALUATED"
+      }
+    ],
+    "limitations": [
+      "Event identity only matched to synthetic labels and kickoff",
+      "Documentary records not authenticated or linked to individual observations",
+      "No verified tactical or sequence projection",
+      "No event market evaluation"
+    ],
+    "engine_access": false,
+    "publication": "BLOCKED",
+    "qualification": "BLOCKED"
+  },
+  "registered_result": {
+    "state": "ABOVE",
+    "engine_access": false,
+    "publication": "BLOCKED",
+    "qualification": "BLOCKED",
+    "predictive_validity_verified": false
+  },
+  "dossier_sha256": "850c9979a73d13e74375098ce5b2e9dc9594615236349ced6ad670c922a2e10a"
+}
