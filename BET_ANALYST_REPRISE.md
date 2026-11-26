@@ -34,3 +34,7 @@ CI NBA 45869752788 et Tennis 45869758359 réussies; rapports A et B archivés. D
 
 ## T01.2 — 26/11/2026
 Réception Python locale réussie sur original T01, SHA256 conforme, trois modules exécutés, identité blobs vérifiée. Preuve et correspondance préparatoire: experimental/T01_2_RECEIPT_EVIDENCE.md. Zéro observation admise; droits et horodatages manquants, adaptateur et revue requis. Contrat synthétique rejette original. engine_access false, publication et qualification BLOCKED. Ne pas publier le D0. Prochaine étape recommandée: dossier prospectif documenté si preuves T01 introuvables; aucune reconstruction ni nouveau cycle synthétique.
+
+
+## T02 — préparation prospective 26/11/2026
+Plan experimental/T02_PROSPECTIVE_PREPARATION.md publié. PREPARED_NOT_COLLECTED; rencontre non sélectionnée, TERRAIN chargé de collecte prospective documentée. Réutiliser T01.2, corriger libellé T01 codé en dur avant réception T02, adaptateur séparé et revue requis. Admission BLOCKED. Aucun nouveau cycle synthétique.
