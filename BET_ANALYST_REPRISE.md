@@ -78,3 +78,7 @@ Captures utilisateur 26/11/2026 20:31–20:32 : OpenLiga reader tests #5 (8b66a6
 
 ### Clôture ergonomie Android V6 — 26/11/2026
 Captures utilisateur 20:37 : preview V6 accessible après URL versionnée, import 216 rencontres, pagination 1/11, recherche G donnant 151 rencontres et 8 pages, dates françaises et heure Europe/Paris, quarantaine maintenue. Filtre date visible mais utilisation physique et navigation entre pages non démontrées; CI verte selon captures précédentes. Champ date sans libellé visible : amélioration mineure possible. Clôture ergonomique sur périmètre observé et CI; application principale non remplacée, aucune admission moteur. Aucun nouveau test physique requis.
+
+
+### Import simplifié expérimental
+Lecteur 4c4c735 et tests ed6f9f8 : paquet OPENLIGA_BUNDLE_V1 avec texte original sélectif et SHA interne, contrôle de cohérence uniquement, origine non authentifiée explicitement affichée. Import historique avec empreinte externe conservé. Workflow privé produit le paquet lors d'une capture manuelle autorisée; aucun calendrier ni jeton public. CI et exécution privée non vérifiées, preview non publiée, automatisation périodique non activée. G0/KRAFT inchangés, budget autorisé 0 EUR.
