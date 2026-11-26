@@ -62,3 +62,7 @@ Run 45880909910 : échec initial du bootstrap WebCrypto Node 22 (aucun contrôle
 
 ### Validation navigateur OpenLigaDB
 Run 45881969775, job 140123245714 : SUCCESS. Chromium 141.0.7390.37; replay PWA PASS (cache, offline root/index/reload, export/restore, invalid restore refused, history keys unchanged); lecteur OpenLiga PASS (import synthétique hors ligne, empreinte incorrecte refusée, effacement, présence lecteurs C3/C4). Artefact replay 15147686247, rétention 14 jours. Android physique NOT_TESTED. Jalon 6 validé en CI, clôture physique et mise à disposition de la version testable restent à confirmer. Aucun accès moteur ni publication de données privées.
+
+
+### Clôture technique OpenLigaDB — 26/11/2026
+Preview isolée BET-ANALYST-P31-PREVIEW/openliga, commit cfc75c5. Captures utilisateur Android 20:21–20:26 : section 8 visible, import réel 216 rencontres, empreinte acceptée, quarantaine affichée, page et import visibles en mode avion, champs réinitialisés. Action Effacer isolément non démontrée par captures mais validée en Chromium run 45881969775. Jalon 6 et chantier sélectif lecture seule clôturés sur ce périmètre; aucune admission moteur ni validation sportive. Original non conservé; intégrité sélective vérifiée uniquement. Dette ergonomique : liste longue, recherche équipe, filtre date, pagination 20 proposées, non implémentées. Preview sans icônes d'installation; application principale non remplacée. Aucun jeton ni archive privée publié. Budget autorisé 0 EUR. G0/KRAFT inchangés.
