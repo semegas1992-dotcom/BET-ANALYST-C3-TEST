@@ -1,0 +1,60 @@
+name: P32C TENNIS A frozen browser
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['.github/workflows/p32c-tennis-a.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Fetch immutable public preview only
+        run: |
+          git clone --no-checkout https://github.com/semegas1992-dotcom/BET-ANALYST-P31-PREVIEW.git preview
+          git -C preview checkout --detach f8e62500d628fe897d68f1039d8187d514c96032
+          test "$(git -C preview rev-parse HEAD)" = f8e62500d628fe897d68f1039d8187d514c96032
+          test "$(git -C preview hash-object p32b/engine.zip)" = 33ccbe39e6de3ef09d187126efc188979182c412
+      - name: Browser export and verify
+        run: |
+          python -m pip install playwright==1.51.0
+          python -m playwright install --with-deps chromium
+          mkdir -p evidence
+          python -m http.server 8765 --directory preview > evidence/server.log 2>&1 &
+          python - <<'PY'
+          import json, hashlib, pathlib, os
+          from playwright.sync_api import sync_playwright
+          out = pathlib.Path('evidence')
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto('http://127.0.0.1:8765/p32b/')
+              page.locator('[data-sport="tennis"]').click()
+              page.wait_for_function("document.querySelector('#status').textContent === 'Calcul Python terminé'", timeout=120000)
+              raw = page.locator('#out details').last.locator('pre').text_content()
+              version = browser.version
+              browser.close()
+          v = json.loads(raw)
+          assert v['scope'] == 'DYNAMIC_REGISTERED_SYNTHETIC'
+          r = v['report']
+          assert r['input_sha256'] == '9e45d7e3f08777170979fa261bd3179834c4c13e235d413894ffe27747dc3669'
+          for x in (r, r['quick_summary'], v['registered_result']):
+              assert x['engine_access'] is False and x['publication'] == x['qualification'] == 'BLOCKED'
+          assert len(r['sections']) == 7
+          assert r['quick_summary']['decision'] == 'NOT_ESTABLISHED'
+          (out/'A.json').write_bytes(raw.encode('utf-8'))
+          manifest = dict(preview_commit='f8e62500d628fe897d68f1039d8187d514c96032', engine_git_blob='33ccbe39e6de3ef09d187126efc188979182c412', engine_sha256=hashlib.sha256(pathlib.Path('preview/p32b/engine.zip').read_bytes()).hexdigest(), report_sha256=hashlib.sha256(raw.encode()).hexdigest(), d0_sha256=r['input_sha256'], dossier_sha256=v['dossier_sha256'], browser=version, run_id=os.environ['GITHUB_RUN_ID'], workflow_sha=os.environ['GITHUB_SHA'])
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest))
+          print('A_RAW_JSON_BEGIN')
+          print(raw)
+          print('A_RAW_JSON_END')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p32c-tennis-a-frozen
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
