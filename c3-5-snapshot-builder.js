@@ -1,0 +1,44 @@
+// C3.5-T — Convert an approved provider response to a static read-only snapshot.
+// This module does not fetch data, schedule jobs, or publish anything.
+export function createMatchSnapshot(raw,{competition,retrievedAt=new Date().toISOString()}={}){
+ if(typeof competition!=='string'||!/^[A-Z0-9]{2,8}$/.test(competition))throw new Error('INVALID_COMPETITION');
+ if(!raw||!Array.isArray(raw.matches))throw new Error('INVALID_PROVIDER_RESPONSE');
+ if(!Number.isFinite(Date.parse(retrievedAt)))throw new Error('INVALID_RETRIEVAL_DATE');
+ // Keep the next scheduled fixtures first when the provider returns more than 100.
+ // Preserve the provider's data without fabricating missing matches.
+ const referenceTime=Date.parse(retrievedAt);
+ const rank=m=>{
+  const time=Date.parse(m?.utcDate);
+  if((m?.status==='SCHEDULED'||m?.status==='TIMED')&&Number.isFinite(time)&&time>=referenceTime)return 0;
+  if(m?.status==='IN_PLAY'||m?.status==='PAUSED'||m?.status==='LIVE')return 1;
+  if(m?.status==='SCHEDULED'||m?.status==='TIMED')return 2;
+  return 3;
+ };
+ if(raw.matches.some(m=>!Number.isSafeInteger(m?.id)||m.id<=0||typeof m.utcDate!=='string'||!Number.isFinite(Date.parse(m.utcDate))||typeof m.homeTeam?.name!=='string'||!m.homeTeam.name.trim()||typeof m.awayTeam?.name!=='string'||!m.awayTeam.name.trim()))throw new Error('INCOMPLETE_MATCH_DATA');
+ if(new Set(raw.matches.map(m=>m.id)).size!==raw.matches.length)throw new Error('DUPLICATE_MATCH_IDS');
+ const selected=[...raw.matches].sort((a,b)=>{
+  const group=rank(a)-rank(b);
+  if(group!==0)return group;
+  const ta=Date.parse(a.utcDate),tb=Date.parse(b.utcDate);
+  // Upcoming: nearest first; past/finished: most recent first.
+  return rank(a)===3||rank(a)===2?tb-ta:ta-tb;
+ }).slice(0,100);
+ const matches=selected.map(m=>({
+  id:Number.isSafeInteger(m?.id)?m.id:null,
+  utcDate:typeof m?.utcDate==='string'?m.utcDate:null,
+  status:typeof m?.status==='string'?m.status:null,
+  homeTeam:typeof m?.homeTeam?.name==='string'?m.homeTeam.name:null,
+  awayTeam:typeof m?.awayTeam?.name==='string'?m.awayTeam.name:null
+ }));
+ return {
+  schema:'BET_ANALYST_MATCH_SNAPSHOT_V1',
+  status:'RECEIVED_UNVERIFIED',
+  provider:'football-data.org',
+  source_endpoint:'https://api.football-data.org/v4/competitions/'+competition+'/matches',
+  competition,
+  retrieved_at:retrievedAt,
+  coverage:'BASIC_MATCHES_ONLY',
+  truncated:raw.matches.length>100,
+  matches
+ };
+}
