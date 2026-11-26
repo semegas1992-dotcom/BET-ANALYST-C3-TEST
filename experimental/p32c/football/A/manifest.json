@@ -10,5 +10,5 @@
   "workflow_sha": "d1b366d443507dab358be9fd091ed1943356488c",
   "artifact_id": 15140613478,
   "artifact_sha256": "5d5ec2f16d7fe49326684e4fe4062511917286b9ed73698eedc0908e701ddf6a",
-  "archive_source": "CI log raw JSON; independent byte hash verification pending"
+  "archive_source": "CI log raw JSON; ZIP and A SHA256 independently verified with Python; Git blob expected 529c0261200fcb77a9fe1ba75160e8037c89650c"
 }
