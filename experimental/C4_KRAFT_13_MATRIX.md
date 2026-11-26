@@ -149,3 +149,5 @@ P3.1: Python export 7e6e2f3 runs 45840035512 and 45840035595 verified 419 OK eac
 P3.1-D: c577c90 browser run 45840354690 installing dependencies; six results not yet verified. Existing Android package excludes P31; add separate P31 artifact without touching existing package. HTTPS Pages URL not verified; physical Android pending. Zero spend.
 
 P3.1-D: browser run 45840354690 failed after football online PASS on next output assertion. Stale success status during async render identified; reset status, bind selected sport, disable button during load, await sport-specific completion; cache revision bumped. Package artifact 15127394549 verified exists from run 45840522969. Retest pending; HTTPS deployment and physical Android not verified.
+
+P3.1 validation: 529fde6, Chromium run 45840674461 six PASS (football/NBA/tennis online and offline), physical Android NOT_TESTED. Package run 45840674447 artifact 15128445289 SHA256 e88df8a77d74fd0b355d9877f32dff55e9439515c8798e768bd721981ac84342. Pages currently main/root, HTTPS enforced (owner screenshots). Separate HTTPS hosting pending; main untouched. Synthetic precomputed only; zero spend.
