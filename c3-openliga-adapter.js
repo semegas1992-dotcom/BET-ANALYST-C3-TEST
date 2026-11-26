@@ -1,5 +1,10 @@
 import {createMatchSnapshot} from './c3-5-snapshot-builder.js';
-export function openLigaSnapshot(rows,receipt){
+export async function openLigaSnapshot(raw,receipt){
+ if(!(raw instanceof Uint8Array))throw Error('ORIGINAL_BYTES_REQUIRED');
+ const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',raw)),x=>x.toString(16).padStart(2,'0')).join('');
+ if(hash!==receipt.sha256)throw Error('SOURCE_HASH_MISMATCH');
+ const rows=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+ if(!Array.isArray(rows))throw Error('INVALID_SOURCE');
  if(receipt.engine_access!==false||receipt.publication!=='BLOCKED'||receipt.qualification!=='BLOCKED'||receipt.source!=='OpenLigaDB')throw Error('QUARANTINE_REQUIRED');
  const cutoff=Date.parse(receipt.cutoff), captured=Date.parse(receipt.captured_at);
  if(!Number.isFinite(cutoff)||!Number.isFinite(captured)||captured>cutoff)throw Error('CUTOFF');
