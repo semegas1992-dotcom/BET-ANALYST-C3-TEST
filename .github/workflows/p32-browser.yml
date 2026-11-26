@@ -1,0 +1,23 @@
+name: P32 browser Python offline
+on:
+  push:
+    branches: [c3-nba-history]
+    paths: ['experimental/p32_browser/**','.github/workflows/p32-browser.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          npm install --no-save pyodide@0.27.7 playwright
+          npx playwright install --with-deps chromium
+          python experimental/p32_browser/build.py /tmp/p32-site node_modules/pyodide
+      - run: node experimental/p32_browser/test.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p32-browser-offline
+          path: /tmp/p32-site
