@@ -1,0 +1,15 @@
+name: OpenLiga reader tests
+on:
+  workflow_dispatch:
+  push:
+    branches: [c3-nba-history]
+    paths: ['openliga-reader.js','test-openliga-reader.mjs','sw.js','.github/workflows/openliga-reader.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --test test-openliga-reader.mjs
