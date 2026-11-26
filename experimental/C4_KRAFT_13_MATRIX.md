@@ -177,3 +177,5 @@ P3.2-B.1 verified: CI 45851593870 and 45851593885 each 423/423, four dynamic tes
 P3.2-B loopback CI 45851855832/45851855847 passed 424/424 each. Browser candidate added with pinned Pyodide 0.27.7, worker, local engine archive, explicit asset cache and Chromium online/offline reload test. CI and Android validation pending; stable preview untouched. No G0/KRAFT/DM change.
 
 Browser CI 45852163705 failed at first calculation timeout (120s), no PASS markers. Python suites 424/424. Retry adds fail-fast terminal status assertion, request/page diagnostics, worker initialization error reporting and retry. Root cause not yet established. No publication authorized until browser pass.
+
+CI f0d5b07: native 424/424 twice; browser 45853507588 fails closed with Synthetic registry gate rejected. Added diagnostic wrapper tracing exact rejection line, registry/dossier hash equality and Python version; native Python 3.12 parity check before browser. No gate bypass, no publication. UX benchmark proposal deferred, no new workstream.
