@@ -38,3 +38,7 @@ Réception Python locale réussie sur original T01, SHA256 conforme, trois modul
 
 ## T02 — préparation prospective 26/11/2026
 Plan experimental/T02_PROSPECTIVE_PREPARATION.md publié. PREPARED_NOT_COLLECTED; rencontre non sélectionnée, TERRAIN chargé de collecte prospective documentée. Réutiliser T01.2, corriger libellé T01 codé en dur avant réception T02, adaptateur séparé et revue requis. Admission BLOCKED. Aucun nouveau cycle synthétique.
+
+
+## OpenLigaDB — intégration prospective
+CI initiale 45872676169 job 140091816412 success. Collecteur 0324355, agent/backoff 7032f7b, cache 5f77cdb, adaptateur C3 5d0440a publiés; nouvelles vérifications CI non confirmées. Capture réelle bloquée par résolution DNS dans environnement local; agent de contact requis pour requête réelle. Cache immuable par saison, pas de politique de renouvellement; adaptateur calendrier uniquement, ne certifie pas liaison cryptographique entre rows et receipt. C4 inspect réutilisé dans collecteur, aucune admission, droits par capture et disponibilité non certifiés. Prochaine étape: CI ciblée, capture autorisée avec contact et contrôle intégrité bout en bout. Aucun échange inter-espace.
