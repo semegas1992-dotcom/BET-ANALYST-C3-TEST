@@ -145,3 +145,5 @@ P2.7-C: P27 minimal 416 OK and 9/9 in both prior runs. Python CI 45836834427 pro
 P2.7 closure: d10501e runs 45837057388 and 45837057414 logs verified 418 tests OK each (3.577s/2.598s), 21/21 integration cases, 15 rejected mutations and 6 nominal/replays. Synthetic registered replay closed. Next priority Android integrated synthetic prototype; no real admission or predictive qualification. Zero spend.
 
 P3.1: Python export 7e6e2f3 runs 45840035512 and 45840035595 verified 419 OK each; three reports published 0df511d. Isolated mobile Chromium online/offline tests added; execution pending. Precomputed replay only, Android physical NOT_TESTED, no real admission. Zero spend.
+
+P3.1-D: c577c90 browser run 45840354690 installing dependencies; six results not yet verified. Existing Android package excludes P31; add separate P31 artifact without touching existing package. HTTPS Pages URL not verified; physical Android pending. Zero spend.
