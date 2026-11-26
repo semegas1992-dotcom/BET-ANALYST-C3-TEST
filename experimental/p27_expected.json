@@ -1,0 +1,15 @@
+{
+  "schema": "P27_EXPECTED_V1",
+  "cases": {
+    "original": "VERIFIED",
+    "replay": "VERIFIED",
+    "substitution": "REJECT",
+    "alteration": "REJECT",
+    "rehashed": "REJECT",
+    "unknown": "REJECT",
+    "missing": "REJECT",
+    "malformed": "REJECT",
+    "registry_altered": "REJECT"
+  },
+  "policy": "Exact replay is allowed for deterministic experiments; not single-use authorization."
+}
