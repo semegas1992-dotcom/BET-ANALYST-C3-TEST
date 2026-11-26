@@ -1,0 +1,513 @@
+[
+  {
+    "engine_access": false,
+    "id": "P27C-football",
+    "origin": "synthetic",
+    "payload": {
+      "contract": {
+        "direction": "over",
+        "event_sha256": "ab362b781daf54364852bb2ea7b728f69837b8f8049d05a0c4474ff09fa603f3",
+        "family": "team_total",
+        "period": "regulation",
+        "sport": "football",
+        "subject": "home",
+        "unit": "goals"
+      },
+      "d": {
+        "cutoff": "2026-01-10T12:00:00Z",
+        "engine_access": false,
+        "kickoff": "2026-01-10T15:00:00Z",
+        "observations": [
+          {
+            "available_at": "2026-01-01T13:00:00Z",
+            "captured_at": "2026-01-01T14:00:00Z",
+            "event_end": "2026-01-01T12:00:00Z",
+            "id": "home0",
+            "side": "home",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-02T13:00:00Z",
+            "captured_at": "2026-01-02T14:00:00Z",
+            "event_end": "2026-01-02T12:00:00Z",
+            "id": "home1",
+            "side": "home",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-03T13:00:00Z",
+            "captured_at": "2026-01-03T14:00:00Z",
+            "event_end": "2026-01-03T12:00:00Z",
+            "id": "home2",
+            "side": "home",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-04T13:00:00Z",
+            "captured_at": "2026-01-04T14:00:00Z",
+            "event_end": "2026-01-04T12:00:00Z",
+            "id": "home3",
+            "side": "home",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-05T13:00:00Z",
+            "captured_at": "2026-01-05T14:00:00Z",
+            "event_end": "2026-01-05T12:00:00Z",
+            "id": "home4",
+            "side": "home",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-01T13:00:00Z",
+            "captured_at": "2026-01-01T14:00:00Z",
+            "event_end": "2026-01-01T12:00:00Z",
+            "id": "away0",
+            "side": "away",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-02T13:00:00Z",
+            "captured_at": "2026-01-02T14:00:00Z",
+            "event_end": "2026-01-02T12:00:00Z",
+            "id": "away1",
+            "side": "away",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-03T13:00:00Z",
+            "captured_at": "2026-01-03T14:00:00Z",
+            "event_end": "2026-01-03T12:00:00Z",
+            "id": "away2",
+            "side": "away",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-04T13:00:00Z",
+            "captured_at": "2026-01-04T14:00:00Z",
+            "event_end": "2026-01-04T12:00:00Z",
+            "id": "away3",
+            "side": "away",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          },
+          {
+            "available_at": "2026-01-05T13:00:00Z",
+            "captured_at": "2026-01-05T14:00:00Z",
+            "event_end": "2026-01-05T12:00:00Z",
+            "id": "away4",
+            "side": "away",
+            "source": "synthetic_fixture",
+            "stats": {
+              "shots_against": 8,
+              "shots_for": 10,
+              "target_against": 3,
+              "target_for": 4
+            }
+          }
+        ],
+        "origin": "synthetic",
+        "schema": "D0_EXPERIMENTAL_V1",
+        "sport": "football"
+      },
+      "dependencies": {
+        "mechanisms": {
+          "pace": {
+            "issues": []
+          }
+        },
+        "sequences": []
+      },
+      "event": {
+        "cutoff": "2026-01-10T12:00:00Z",
+        "input_sha256": "03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24",
+        "kickoff": "2026-01-10T15:00:00Z",
+        "origin": "synthetic",
+        "participants": [
+          "home",
+          "away"
+        ],
+        "sport": "football"
+      },
+      "packet": {
+        "basis": "explicit_fictional_assumptions",
+        "contract_sha256": "914d0e81df7bbce1766f7e0d27132fd2f3946e3d9ceb0282bc69436c8452890c",
+        "e4_sha256": "0c70dd7a93fb5dc4dee25958d13ef53ee73d92190cf40fd064795c8a3b4835c4",
+        "event_sha256": "ab362b781daf54364852bb2ea7b728f69837b8f8049d05a0c4474ff09fa603f3",
+        "evidence_ids": [
+          "home4"
+        ],
+        "input_sha256": "03c616dd2555ca5efb2cfa820946344a9f5ad132b66dc8908699302218beaa24",
+        "scenarios": [
+          {
+            "assignment": {
+              "pace": "holds"
+            },
+            "assumption": "Fictional event bounds, not derived from descriptive evidence",
+            "bounds": [
+              2,
+              3
+            ]
+          },
+          {
+            "assignment": {
+              "pace": "fails"
+            },
+            "assumption": "Fictional event bounds, not derived from descriptive evidence",
+            "bounds": [
+              2,
+              3
+            ]
+          }
+        ],
+        "threshold": 1.5,
+        "trajectory_sha256": "ec70547e5d1b70ea733db504d28084c9ce138dce35c79a7ae0789990e3103716"
+      },
+      "threshold": 1.5,
+      "trajectories": {
+        "dependency_sha256": "50cf6a0f8098e3ebdc9a92a1f0765733583b5065be1a35751f495b656d70963a",
+        "engine_access": false,
+        "publication": "BLOCKED",
+        "qualification": "BLOCKED",
+        "scope": "logical combinations only; feasibility and dominance not established",
+        "trajectories": [
+          {
+            "assignment": {
+              "pace": "holds"
+            },
+            "issues": [],
+            "sequence_refs": [],
+            "status": "UNVERIFIED_HYPOTHESIS"
+          },
+          {
+            "assignment": {
+              "pace": "fails"
+            },
+            "issues": [],
+            "sequence_refs": [],
+            "status": "UNVERIFIED_HYPOTHESIS"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "engine_access": false,
+    "id": "P27C-nba",
+    "origin": "synthetic",
+    "payload": {
+      "contract": {
+        "direction": "over",
+        "event_sha256": "259bf0f673a95537aad6f3175367dee5bf0dec8d1dbd9e56190a597b39d53103",
+        "family": "team_total",
+        "period": "including_overtime",
+        "sport": "nba",
+        "subject": "A",
+        "unit": "points"
+      },
+      "d": {
+        "cutoff": "2026-01-02T00:00:00Z",
+        "engine_access": false,
+        "kickoff": "2026-01-03T00:00:00Z",
+        "observations": [
+          {
+            "available_at": "2026-01-01T01:00:00Z",
+            "captured_at": "2026-01-01T02:00:00Z",
+            "event_end": "2026-01-01T00:00:00Z",
+            "id": "A",
+            "participant": "A",
+            "source": "synthetic_fixture",
+            "stats": {
+              "points_against": 90,
+              "points_for": 100
+            }
+          },
+          {
+            "available_at": "2026-01-01T01:00:00Z",
+            "captured_at": "2026-01-01T02:00:00Z",
+            "event_end": "2026-01-01T00:00:00Z",
+            "id": "B",
+            "participant": "B",
+            "source": "synthetic_fixture",
+            "stats": {
+              "points_against": 90,
+              "points_for": 100
+            }
+          }
+        ],
+        "origin": "synthetic",
+        "participants": [
+          "A",
+          "B"
+        ],
+        "schema": "D0_EXPERIMENTAL_V1",
+        "sport": "nba"
+      },
+      "dependencies": {
+        "mechanisms": {
+          "pace": {
+            "issues": []
+          }
+        },
+        "sequences": []
+      },
+      "event": {
+        "cutoff": "2026-01-02T00:00:00Z",
+        "input_sha256": "41a8ea8fcc0a476152f80ec8a8397c40cdced39ed739d02a65ce0b83462b1e06",
+        "kickoff": "2026-01-03T00:00:00Z",
+        "origin": "synthetic",
+        "participants": [
+          "A",
+          "B"
+        ],
+        "sport": "nba"
+      },
+      "packet": {
+        "basis": "explicit_fictional_assumptions",
+        "contract_sha256": "56612e565b1380bd5fc1db907ce9588b22ca061b679a76de40bde52a50df2bd2",
+        "e4_sha256": "8cf7674181cf1d995d06a599f414af0ef9ffa0e67c7a16763f55cf0b0e224bca",
+        "event_sha256": "259bf0f673a95537aad6f3175367dee5bf0dec8d1dbd9e56190a597b39d53103",
+        "evidence_ids": [
+          "A"
+        ],
+        "input_sha256": "41a8ea8fcc0a476152f80ec8a8397c40cdced39ed739d02a65ce0b83462b1e06",
+        "scenarios": [
+          {
+            "assignment": {
+              "pace": "holds"
+            },
+            "assumption": "Fictional event bounds, not derived from descriptive evidence",
+            "bounds": [
+              105,
+              115
+            ]
+          },
+          {
+            "assignment": {
+              "pace": "fails"
+            },
+            "assumption": "Fictional event bounds, not derived from descriptive evidence",
+            "bounds": [
+              105,
+              115
+            ]
+          }
+        ],
+        "threshold": 100.5,
+        "trajectory_sha256": "ec70547e5d1b70ea733db504d28084c9ce138dce35c79a7ae0789990e3103716"
+      },
+      "threshold": 100.5,
+      "trajectories": {
+        "dependency_sha256": "50cf6a0f8098e3ebdc9a92a1f0765733583b5065be1a35751f495b656d70963a",
+        "engine_access": false,
+        "publication": "BLOCKED",
+        "qualification": "BLOCKED",
+        "scope": "logical combinations only; feasibility and dominance not established",
+        "trajectories": [
+          {
+            "assignment": {
+              "pace": "holds"
+            },
+            "issues": [],
+            "sequence_refs": [],
+            "status": "UNVERIFIED_HYPOTHESIS"
+          },
+          {
+            "assignment": {
+              "pace": "fails"
+            },
+            "issues": [],
+            "sequence_refs": [],
+            "status": "UNVERIFIED_HYPOTHESIS"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "engine_access": false,
+    "id": "P27C-tennis",
+    "origin": "synthetic",
+    "payload": {
+      "contract": {
+        "direction": "over",
+        "event_sha256": "fd6bb94620d0d7b5fe6d4005b0ceb9607785a1a64e9bba04a817fe8980c0b101",
+        "family": "team_total",
+        "period": "completed_match",
+        "sport": "tennis",
+        "subject": "A",
+        "unit": "games"
+      },
+      "d": {
+        "cutoff": "2026-01-02T00:00:00Z",
+        "engine_access": false,
+        "kickoff": "2026-01-03T00:00:00Z",
+        "observations": [
+          {
+            "available_at": "2026-01-01T01:00:00Z",
+            "captured_at": "2026-01-01T02:00:00Z",
+            "event_end": "2026-01-01T00:00:00Z",
+            "id": "A",
+            "participant": "A",
+            "source": "synthetic_fixture",
+            "stats": {
+              "service_points_played": 50,
+              "service_points_won": 30
+            }
+          },
+          {
+            "available_at": "2026-01-01T01:00:00Z",
+            "captured_at": "2026-01-01T02:00:00Z",
+            "event_end": "2026-01-01T00:00:00Z",
+            "id": "B",
+            "participant": "B",
+            "source": "synthetic_fixture",
+            "stats": {
+              "service_points_played": 50,
+              "service_points_won": 30
+            }
+          }
+        ],
+        "origin": "synthetic",
+        "participants": [
+          "A",
+          "B"
+        ],
+        "schema": "D0_EXPERIMENTAL_V1",
+        "sport": "tennis"
+      },
+      "dependencies": {
+        "mechanisms": {
+          "pace": {
+            "issues": []
+          }
+        },
+        "sequences": []
+      },
+      "event": {
+        "cutoff": "2026-01-02T00:00:00Z",
+        "input_sha256": "9e45d7e3f08777170979fa261bd3179834c4c13e235d413894ffe27747dc3669",
+        "kickoff": "2026-01-03T00:00:00Z",
+        "origin": "synthetic",
+        "participants": [
+          "A",
+          "B"
+        ],
+        "sport": "tennis"
+      },
+      "packet": {
+        "basis": "explicit_fictional_assumptions",
+        "contract_sha256": "83e1d61b0fc636958ea062a9b551de75f6df67ea5285b02d692600369c6bb625",
+        "e4_sha256": "ab5326dd97b392ef013a56db88ed935ebf001b08874d6b5913168fd40b876268",
+        "event_sha256": "fd6bb94620d0d7b5fe6d4005b0ceb9607785a1a64e9bba04a817fe8980c0b101",
+        "evidence_ids": [
+          "A"
+        ],
+        "input_sha256": "9e45d7e3f08777170979fa261bd3179834c4c13e235d413894ffe27747dc3669",
+        "scenarios": [
+          {
+            "assignment": {
+              "pace": "holds"
+            },
+            "assumption": "Fictional event bounds, not derived from descriptive evidence",
+            "bounds": [
+              10,
+              12
+            ]
+          },
+          {
+            "assignment": {
+              "pace": "fails"
+            },
+            "assumption": "Fictional event bounds, not derived from descriptive evidence",
+            "bounds": [
+              10,
+              12
+            ]
+          }
+        ],
+        "threshold": 9.5,
+        "trajectory_sha256": "ec70547e5d1b70ea733db504d28084c9ce138dce35c79a7ae0789990e3103716"
+      },
+      "threshold": 9.5,
+      "trajectories": {
+        "dependency_sha256": "50cf6a0f8098e3ebdc9a92a1f0765733583b5065be1a35751f495b656d70963a",
+        "engine_access": false,
+        "publication": "BLOCKED",
+        "qualification": "BLOCKED",
+        "scope": "logical combinations only; feasibility and dominance not established",
+        "trajectories": [
+          {
+            "assignment": {
+              "pace": "holds"
+            },
+            "issues": [],
+            "sequence_refs": [],
+            "status": "UNVERIFIED_HYPOTHESIS"
+          },
+          {
+            "assignment": {
+              "pace": "fails"
+            },
+            "issues": [],
+            "sequence_refs": [],
+            "status": "UNVERIFIED_HYPOTHESIS"
+          }
+        ]
+      }
+    }
+  }
+]
