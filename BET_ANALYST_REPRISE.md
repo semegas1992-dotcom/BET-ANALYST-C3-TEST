@@ -70,3 +70,7 @@ Preview isolée BET-ANALYST-P31-PREVIEW/openliga, commit cfc75c5. Captures utili
 
 ### Ergonomie mobile OpenLigaDB
 Lecteur 215dda3 : recherche sans accents, filtre jour Europe/Paris, tri chronologique, pagination 20, format français, invalidation des imports asynchrones lors de l'effacement. Cache v6 66ad4d2; tests unitaires 8b66a6f (14 assertions de test au total), navigateur 9bf20ad (recherche et filtre hors ligne). Résultats CI non vérifiés; preview non actualisée avant validation. Clôture technique précédente inchangée, aucune admission ni publication de données privées.
+
+
+### Ergonomie mobile — validation CI et preview
+Captures utilisateur 26/11/2026 20:31–20:32 : OpenLiga reader tests #5 (8b66a6f), PWA Chromium #13 et NBA fast offline #201 (9bf20ad) verts. Run intermédiaire #4 rouge; journaux détaillés et cause exacte non vérifiés. Preview isolée actualisée : lecteur d7adcbc, cache v6 7e0f83c. Déploiement Pages et ergonomie physique nouvelle version non confirmés. Aucun transfert d'archive privée ni jeton; quarantaine inchangée. Budget autorisé 0 EUR.
