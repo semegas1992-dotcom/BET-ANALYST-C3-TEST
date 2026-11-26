@@ -2,7 +2,7 @@ name: OpenLiga capture checks
 on:
   push:
     branches: [c3-nba-history]
-    paths: ['experimental/openliga_capture.py','experimental/test_openliga_capture.py','.github/workflows/openliga-capture-check.yml']
+    paths: ['experimental/openliga_capture.py','experimental/test_openliga_capture.py','c3-openliga-adapter.js','c3-5-snapshot-builder.js','.github/workflows/openliga-capture-check.yml']
   workflow_dispatch:
 jobs:
   check:
@@ -11,3 +11,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: python -m unittest -v test_openliga_capture
         working-directory: experimental
+      - run: node --experimental-default-type=module --input-type=module -e "import {openLigaSnapshot} from './c3-openliga-adapter.js'; import assert from 'node:assert/strict'; const r={source:'OpenLigaDB',engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',cutoff:'2026-11-27T00:00:00Z',captured_at:'2026-11-26T00:00:00Z'}; const s=openLigaSnapshot([],r); assert.equal(s.engine_access,false); assert.equal(s.provider,'OpenLigaDB'); assert.throws(()=>openLigaSnapshot([],{...r,engine_access:true}));"
