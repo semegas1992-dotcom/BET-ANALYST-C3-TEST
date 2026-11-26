@@ -1,0 +1,14 @@
+import {readFileSync} from 'node:fs';
+import {webcrypto,createHash} from 'node:crypto';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+globalThis.crypto=webcrypto;
+const {readCalendar}=await import('data:text/javascript;base64,'+Buffer.from(readFileSync('openliga-reader.js')).toString('base64'));
+const d={schema:'OPENLIGA_SELECTIVE_V1',source:'OpenLigaDB',license:'ODbL-1.0',original_retained:false,engine_access:false,publication:'BLOCKED',qualification:'BLOCKED',source_sha256:'a'.repeat(64),captured_at:'2026-01-01T00:00:00Z',cutoff:'2026-01-01T01:00:00Z',matches:[{id:1,kickoff:'2026-01-02T00:00:00Z',home:'A',away:'B'}]};
+const bytes=x=>Buffer.from(JSON.stringify(x)),hash=x=>createHash('sha256').update(x).digest('hex'),read=x=>readCalendar(bytes(x),hash(bytes(x)));
+test('valid',async()=>assert.equal((await read(d)).matches.length,1));
+test('altered',async()=>assert.rejects(readCalendar(bytes({...d,matches:[]}),hash(bytes(d)))));
+for(const [key,value] of [['engine_access',true],['publication','ALLOWED'],['qualification','ALLOWED'],['original_retained',true],['captured_at','2027-01-01T00:00:00Z']])test('reject '+key,async()=>assert.rejects(read({...d,[key]:value})));
+test('duplicate',async()=>assert.rejects(read({...d,matches:[...d.matches,...d.matches]})));
+test('extra field',async()=>assert.rejects(read({...d,matches:[{...d.matches[0],result:1}]})));
+test('offline asset declaration',()=>{const sw=readFileSync('sw.js','utf8');for(const f of ['index.html','c3-reader.js','c4-reader.js','openliga-reader.js','manifest.webmanifest'])assert.ok(sw.includes("'./"+f+"'"));assert.ok(sw.includes('isolated-v5'));});
